@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>关于博客更新问题！ | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">关于博客更新问题！</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 6, 2019&nbsp;&nbsp;12:00:54</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>关于博客更新的问题我再次写上一片文章，完美图解，希望不会的小伙伴能够认真看，自己解决问题!</p>
+<h1 id="生成静态资源报错很多但是又不影响访问的问题！"><a href="#生成静态资源报错很多但是又不影响访问的问题！" class="headerlink" title="生成静态资源报错很多但是又不影响访问的问题！"></a>生成静态资源报错很多但是又不影响访问的问题！</h1><p>搭上我一直以来的经验，</p>
+<ol>
+<li><p>可能是你编辑文章使用的标签和博客需要生成的标签发生了冲突。</p>
+</li>
+<li><p>违背了主题语法，这个问题大多数出现在</p>
+<img src="/2019/09/06/博客更新问题/20190906120924.png">
+
+<p>比如titile 后面没有加上空格直接加文字，肯定会报错。再看看里面有没有什么特殊的符号。</p>
+<p>可能会让博客生成静态资源的时候出现问题。</p>
+</li>
+</ol>
+<h2 id="如何把博客部署到github上面？"><a href="#如何把博客部署到github上面？" class="headerlink" title="如何把博客部署到github上面？"></a>如何把博客部署到github上面？</h2><h3 id="准备内容："><a href="#准备内容：" class="headerlink" title="准备内容："></a>准备内容：</h3><ul>
+<li>博客项目，可以通过<code>hexo s</code> 正常访问的。</li>
+<li>github 账号，且知道账号密码。</li>
+</ul>
+<h3 id="上传到github并搭建自己的个人网站："><a href="#上传到github并搭建自己的个人网站：" class="headerlink" title="上传到github并搭建自己的个人网站："></a>上传到github并搭建自己的个人网站：</h3><ol>
+<li><p>进入pc登录自己的github账号，创建一个仓库，仓库名称是<code>&lt;必须是用户名&gt;.github.io</code>,用户名并且以github.io结尾的仓库。</p>
+<img src="/2019/09/06/博客更新问题/20190906121903.png">
+</li>
+<li><p>然后打开仓库的代码区。</p>
+<img src="/2019/09/06/博客更新问题/20190906132431.png">
+</li>
+<li><p>接下来进行git的基本操作将博客的静态资源push到仓库。</p>
+<p>接下来提供两种方法，并没有太大区别！</p>
+</li>
+</ol>
+<h4 id="方法一："><a href="#方法一：" class="headerlink" title="方法一："></a>方法一：</h4><ol>
+<li><p>通过 clone 的方法来push代码。</p>
+</li>
+<li><p>在项目目录下面克隆仓库。</p>
+<p>仓库地址在这里 ↓</p>
+<img src="/2019/09/06/博客更新问题/20190906132949.png">
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone &lt;仓库地址&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后会升生成一个和仓库名称一样的文件夹。</p>
+<img src="/2019/09/06/博客更新问题/20190906133246.png">
+</li>
+<li><p>修改静态资源生成的位置。</p>
+<img src="/2019/09/06/博客更新问题/20190906133514.png">
+
+<p>将<code>public_dir</code>后面的内容修改为你仓库的文件夹名称。</p>
+<p>因为他的作用是指定静态资源生成的位置。</p>
+</li>
+<li><p>在项目目录下运行 hexo g  生成静态资源。</p>
+</li>
+<li><p>进入仓库文件夹内。</p>
+</li>
+<li><p>git push三部曲</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .        //将当前文件夹内所有内容添加到暂存区</span><br><span class="line">git commit -m <span class="string">"&lt;随便敲一些备注&gt;"</span></span><br><span class="line">git push -u origin master   //将暂存区的代码提交到git。</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>这样就完成了。</p>
+<h4 id="方法二："><a href="#方法二：" class="headerlink" title="方法二："></a>方法二：</h4></li>
+<li><p>这次通过 <strong>git init</strong> 的方式来部署博客。</p>
+</li>
+<li><p>创建完成仓库之后。</p>
+</li>
+<li><p>进入项目目录。</p>
+</li>
+<li><p>使用  hexo g 命令生成静态资源。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>之后通过 ll 命令，查看目录结构。</p>
+<img src="/2019/09/06/博客更新问题/20190906135205.png">
+
+<p>这个文件夹就是博客的<strong>静态资源</strong>文件。</p>
+<blockquote>
+<p>只要是前端带页面的东西部署上去的都是静态资源。</p>
+</blockquote>
+</li>
+<li><p>进入静态资源文件夹。</p>
+</li>
+<li><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br><span class="line">git add .    <span class="comment">//将代码添加到暂存区</span></span><br><span class="line">git commit -m <span class="string">"&lt;备注&gt;"</span>  </span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>完成！</p>
+</li>
+</ol>
+<ol start="4">
+<li><p>打开打开仓库的 setting 设置。</p>
+<p>找到下面的内容。</p>
+<img src="/2019/09/06/博客更新问题/20190906134044.png">
+
+<p>看看是否存在。如果没有的话检查自己的博客地址和用户名是否一致。</p>
+<p>如果不一样，删掉仓库从新执行第一步。</p>
+</li>
+<li><p>点进去如果是404就刷新一下，清除一下信息。使用手机和电脑一起访问这个网址，看看有没有效果。</p>
+</li>
+</ol>
+<h2 id="将博客部署在服务器上-阿里云-百度云"><a href="#将博客部署在服务器上-阿里云-百度云" class="headerlink" title="将博客部署在服务器上(阿里云/百度云)"></a>将博客部署在服务器上(阿里云/百度云)</h2><h3 id="准备内容：-1"><a href="#准备内容：-1" class="headerlink" title="准备内容："></a>准备内容：</h3><ul>
+<li><p>服务器一台，并有git操作。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install git             //这个命令可以直接安装git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>服务器的 <strong>Ningx</strong></p>
+</li>
+<li><p>博客静态资源仓库。</p>
+</li>
+</ul>
+<h3 id="操作方法："><a href="#操作方法：" class="headerlink" title="操作方法："></a><strong>操作方法：</strong></h3><ol>
+<li><p>首先确定你有nginx。</p>
+</li>
+<li><p>nginx -v 显示版本号</p>
+<img src="/2019/09/06/博客更新问题/20190906143352.png">
+</li>
+<li><p>部署的博客需要开放指定端口，或者直接关闭防护墙。</p>
+<h4 id="打开指定端口："><a href="#打开指定端口：" class="headerlink" title="打开指定端口："></a><strong>打开指定端口：</strong></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --query-port=&lt;要查看的端口&gt;/tcp</span><br></pre></td></tr></table></figure>
+
+<p>yes 为开启，no为没有开启</p>
+<img src="/2019/09/06/博客更新问题/20180825092851369.png">
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --add-port=<span class="xml"><span class="tag">&lt;<span class="name">要开启的端口</span>&gt;</span>/tcp --permanent         //打开指定端口</span></span><br><span class="line"><span class="xml">firewall-cmd --reload                                        //重载配置文件</span></span><br><span class="line"><span class="xml">firewall-cmd --query-port=<span class="tag">&lt;<span class="name">要查看的端口</span>&gt;</span>/tcp                   //查看端口是否开启</span></span><br></pre></td></tr></table></figure>
+
+<img src="/2019/09/06/博客更新问题/20180825094232356.png">
+
+<p>再附上关闭端口的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --permanent --remove-port=&lt;要关闭的端口&gt;/tcp        //关闭指定端口</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="关闭防火墙："><a href="#关闭防火墙：" class="headerlink" title="关闭防火墙："></a><strong>关闭防火墙：</strong></h4><p>   这种方法就比较暴力了，关闭防火墙。不建议。</p>
+<blockquote>
+<p>查看防火墙状态</p>
+</blockquote>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>开启防火墙</p>
+</blockquote>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start firewalld</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>关闭防火墙</p>
+</blockquote>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>开启防火墙 </p>
+</blockquote>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service firewalld start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>若遇到无法开启<br>先用：systemctl unmask firewalld.service<br>然后：systemctl start firewalld.service</p>
+</blockquote>
+   <img src="/2019/09/06/博客更新问题/20180825093357657.png">
+
+<h4 id="部署到Nginx"><a href="#部署到Nginx" class="headerlink" title="部署到Nginx:"></a>部署到Nginx:</h4><ol start="4">
+<li><p>在服务器上进入下面路径。</p>
+<img src="/2019/09/06/博客更新问题/20190906144525.png">
+</li>
+<li><p>新建一个 以   <code>.conf</code> 结尾的配置文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &lt;配置文件的名称&gt;.conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>加入以下内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">      listen <span class="number">4000</span>;</span><br><span class="line">      server_name localhost;</span><br><span class="line">      location / &#123;</span><br><span class="line">           root /home/apibook/_book;</span><br><span class="line">           index index.html;</span><br><span class="line">           try_files $uri $uri/ =<span class="number">404</span>;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改一下两处</p>
+<ul>
+<li>listen  后面是指定的<strong>端口号</strong>（必须为开启的端口）</li>
+<li>root 后面指向的是你<strong>静态资源</strong>的路径</li>
+</ul>
+</li>
+<li><p>最后一步重载<strong>nginx配置</strong>文件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart mongod.service</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过服务器的IP和指定端口访问。</p>
+</li>
+</ol>
+<h2 id="更新、上传博客文章。"><a href="#更新、上传博客文章。" class="headerlink" title="更新、上传博客文章。"></a>更新、上传博客文章。</h2><h3 id="准备内容：-2"><a href="#准备内容：-2" class="headerlink" title="准备内容："></a>准备内容：</h3><ul>
+<li>github或服务器上已经部署了的个人网站。</li>
+<li>git </li>
+</ul>
+<h3 id="上传新的文章。"><a href="#上传新的文章。" class="headerlink" title="上传新的文章。"></a>上传新的文章。</h3><ol>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo n &lt;文章名称&gt;</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/09/06/博客更新问题/20190906140719.png">
+
+<p>这个内生成新的 .md 格式的文章。</p>
+</li>
+<li><p>更新完成之后再博客项目下进行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g         //生成静态资源</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入静态资源目录。</p>
+</li>
+<li><p>进行push代码三部曲。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add . </span><br><span class="line">git commit -m &quot;备注&quot;</span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>完成上传！</p>
+</li>
+</ol>
+<h3 id="如果是在服务器上："><a href="#如果是在服务器上：" class="headerlink" title="如果是在服务器上："></a>如果是在服务器上：</h3><p>需要进入服务器的静态资源目录内 pull ，最新代码。</p>
+<h2 id="更新文章进阶版"><a href="#更新文章进阶版" class="headerlink" title="更新文章进阶版"></a>更新文章进阶版</h2><p><strong>hexo给我们提供了push代码的方法，位置在博客目录下 _config.myl 文件的 80行左右。</strong></p>
+<img src="/2019/09/06/博客更新问题/20190906145221.png">
+
+<p><strong>正确写法：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: git@github.com:liuxianan/liuxianan.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p><strong>错误写法：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: github</span><br><span class="line">  repository: https://github.com/liuxianan/liuxianan.github.io.git</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+
+<p>type:  是类型一般用 git</p>
+<p>repository： 是项目仓库的地址。</p>
+<p>branch:  是指定那个分支  master是主分支。</p>
+<p>后面一种写法是hexo2.x的写法，现在已经不行了，无论是哪种写法，此时直接执行<code>hexo d</code>的话一般会报如下错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Deployer not found: github 或者 Deployer not found: git</span><br></pre></td></tr></table></figure>
+
+<p>原因是还需要安装一个插件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>配置完成这些之后。</p>
+<p>创建更新文章完成之后。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
+
+<p>直接生成静态资源，上传到仓库一起执行了</p>
+<p>过程中可能会提示你输入这个仓库的用户名和密码。输入正确就可以了！</p>
+<h2 id="常用的hexo命令"><a href="#常用的hexo命令" class="headerlink" title="常用的hexo命令"></a>常用的hexo命令</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hexo new <span class="string">"postName"</span> <span class="comment">#新建文章</span></span><br><span class="line">hexo new page <span class="string">"pageName"</span> <span class="comment">#新建页面</span></span><br><span class="line">hexo generate <span class="comment">#生成静态页面至public目录</span></span><br><span class="line">hexo server <span class="comment">#开启预览访问端口（默认端口4000，'ctrl + c'关闭server）</span></span><br><span class="line">hexo deploy <span class="comment">#部署到GitHub</span></span><br><span class="line">hexo help  <span class="comment"># 查看帮助</span></span><br><span class="line">hexo version  <span class="comment">#查看Hexo的版本</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>缩写：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">hexo n == hexo new</span><br><span class="line">hexo g == hexo generate</span><br><span class="line">hexo s == hexo server</span><br><span class="line">hexo d == hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p><strong>组合命令：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo s -g <span class="comment">#生成并本地预览</span></span><br><span class="line">hexo d -g <span class="comment">#生成并上传</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/09/06/博客更新问题/">http://weiinng.github.io/2019/09/06/博客更新问题/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Git/"># Git</a>
+                    
+                        <a href="/tags/Blog/"># Blog</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/09/03/思考mysql主从部署/">思考mysql主从部署</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

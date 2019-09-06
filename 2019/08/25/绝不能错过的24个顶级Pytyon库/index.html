@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>绝不能错过的24个顶级Pytyon库 | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">绝不能错过的24个顶级Pytyon库</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 25, 2019&nbsp;&nbsp;13:27:00</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-81d8564f4b9e1842abcc136797251e02_hd.jpg">
+
+<h3 id="Python有以下三个特点："><a href="#Python有以下三个特点：" class="headerlink" title="Python有以下三个特点："></a>Python有以下三个特点：</h3><ul>
+<li>易用性和灵活性</li>
+</ul>
+<ul>
+<li>全行业高接受度：Python无疑是业界最流行的数据科学语言</li>
+</ul>
+<ul>
+<li>用于数据科学的Python库的数量优势</li>
+</ul>
+<p>事实上，由于Python库种类很多，要跟上其发展速度非常困难。因此，本文介绍了24种涵盖端到端数据科学生命周期的Python库。</p>
+<p>文中提及了用于数据清理、数据操作、可视化、构建模型甚至模型部署(以及其他用途)的库。这是一个相当全面的列表，有助于你使用Python开启数据科学之旅。</p>
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+<p><strong>用于不同数据科学任务的Python库</strong></p>
+<p>用于数据收集的Python库</p>
+<p>· Beautiful Soup</p>
+<p>· Scrapy</p>
+<p>· Selenium</p>
+<p>用于数据清理和数据操作的Python库</p>
+<p>· Pandas</p>
+<p>· PyOD</p>
+<p>· NumPy</p>
+<p>· Spacy</p>
+<p>用于数据可视化的Python库</p>
+<p>· Matplotlib</p>
+<p>· Seaborn</p>
+<p>· Bokeh</p>
+<p>用于建模的Python库</p>
+<p>· Scikit-learn</p>
+<p>· TensorFlow</p>
+<p>· PyTorch</p>
+<p>用于模型解释的Python库</p>
+<p>· Lime</p>
+<p>· H2O</p>
+<p>用于语音处理的Python库</p>
+<p>· Librosa</p>
+<p>· Madmom</p>
+<p>· pyAudioAnalysis</p>
+<p>用于图像处理的Python库</p>
+<p>· OpenCV-Python</p>
+<p>· Scikit-image</p>
+<p>· Pillow</p>
+<p>作为数据库的Python库</p>
+<p>· Psycopg</p>
+<p>· SQLAlchemy</p>
+<p>用于模型部署的Python库</p>
+<p>· Flask</p>
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+<p>  <strong>用于数据收集的Python库</strong></p>
+<p>你是否曾遇到过这样的情况：缺少解决问题的数据？这是数据科学中一个永恒的问题。这也是为什么学习提取和收集数据对数据科学家来说是一项非常重要的技能。数据提取和收集开辟了前所未有的道路。</p>
+<h3 id="以下是三个用于提取和收集数据的Python库："><a href="#以下是三个用于提取和收集数据的Python库：" class="headerlink" title="以下是三个用于提取和收集数据的Python库："></a>以下是三个用于提取和收集数据的Python库：</h3><h4 id="Beautiful-Soup"><a href="#Beautiful-Soup" class="headerlink" title="Beautiful Soup"></a>Beautiful Soup</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank" rel="noopener">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a></p>
+<p>收集数据的最佳方式之一就是抓取网站（当然是以合乎道德和法律的手段！）徒手做这件事需要耗费大量的劳动和时间。Beautiful Soup无疑是一大救星。</p>
+<p>Beautiful Soup是一个HTML和XML解析器，可为被解析的页面创建解析树，从而用于从web页面中提取数据。从网页中提取数据的过程称为网页抓取。</p>
+<p>使用以下代码可安装BeautifulSoup：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install beautifulsoup4</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个可实现从HTML中提取所有锚标记的Beautiful Soup简单代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/python3</span><br><span class="line"># Anchor extraction from html document</span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line">from urllib.request import urlopen</span><br><span class="line"></span><br><span class="line">with urlopen(&apos;LINK&apos;) as response:</span><br><span class="line">    soup = BeautifulSoup(response, &apos;html.parser&apos;)</span><br><span class="line">    for anchor in soup.find_all(&apos;a&apos;):</span><br><span class="line">        print(anchor.get(&apos;href&apos;, &apos;/&apos;))</span><br></pre></td></tr></table></figure>
+
+<p>建议阅读下面的文章，学习如何在Python中使用Beautiful Soup：</p>
+<p>《新手指南：在Python中使用BeautifulSoup进行网页抓取》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2015/10/beginner-guide-web-scraping-beautiful-soup-python/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2015/10/beginner-guide-web-scraping-beautiful-soup-python/</a></p>
+<h4 id="Scrapy"><a href="#Scrapy" class="headerlink" title="Scrapy"></a>Scrapy</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//docs.scrapy.org/en/latest/intro/tutorial.html" target="_blank" rel="noopener">https://docs.scrapy.org/en/latest/intro/tutorial.html</a></p>
+<p>Scrapy是另一个可有效用于网页抓取的Python库。它是一个开源的协作框架，用于从网站中提取所需数据。使用起来快捷简单。</p>
+<p>下面是用于安装Scrapy的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install scrapy</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-0cc2481e60b38260a807641c83d4b78a_hd.jpg">
+
+
+
+
+
+<p>Scrapy是一个用于大规模网页抓取的框架。可提供所有需要的工具有效地从网站中抓取数据，且依需要处理数据，并以使用者偏好的结构和格式存储数据。</p>
+<p>下面是一个实现Scrapy的简单代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import scrapy</span><br><span class="line"></span><br><span class="line">class Spider(scrapy.Spider):</span><br><span class="line">    name = &apos;NAME&apos;</span><br><span class="line">    start_urls = [&apos;LINK&apos;]</span><br><span class="line"></span><br><span class="line">    def parse(self, response):</span><br><span class="line">        for title in response.css(&apos;.post-header&gt;h2&apos;):</span><br><span class="line">            yield &#123;&apos;title&apos;: title.css(&apos;a ::text&apos;).get()&#125;</span><br><span class="line"></span><br><span class="line">        for next_page in response.css(&apos;a.next-posts-link&apos;):</span><br><span class="line">            yield response.follow(next_page, self.parse</span><br></pre></td></tr></table></figure>
+
+<p>下面是一个学习Scrapy并在Python中实现Scrapy的绝佳教程：</p>
+<p>《使用Scrapy在Python中进行网页抓取（含多个示例）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/07/web-scraping-in-python-using-scrapy/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/07/web-scraping-in-python-using-scrapy/</a></p>
+<h4 id="Selenium"><a href="#Selenium" class="headerlink" title="Selenium"></a>Selenium</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//www.seleniumhq.org/" target="_blank" rel="noopener">https://www.seleniumhq.org/</a></p>
+<p>Selenium是一个倍受欢迎的自动化浏览器工具。在业界常用于测试，但对于网页抓取也非常方便。Selenium在IT领域非常流行。</p>
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-3d71e4df373d989f76022567b284f3a2_hd.jpg">
+
+
+<p>  编写Python脚本来自动化使用Selenium的web浏览器是很容易的。它允许免费高效地提取数据，并将其存储在首选格式中以备后用。</p>
+<p>关于使用Python和Selenium抓取YouTube视频数据的文章：</p>
+<p>《数据科学项目：使用Python和Selenium抓取YouTube数据对视频进行分类》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2019/05/scraping-classifying-youtube-video-data-python-selenium/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2019/05/scraping-classifying-youtube-video-data-python-selenium/</a></p>
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+<h3 id="用于数据清理和数据操作的Python库"><a href="#用于数据清理和数据操作的Python库" class="headerlink" title="用于数据清理和数据操作的Python库"></a><strong>用于数据清理和数据操作的Python库</strong></h3><p>收集了数据之后，接下来要清理可能面临的任何混乱数据，并学习如何操作数据，方便数据为建模做好准备。</p>
+<p>下面是四个可用于数据清理和数据操作的Python库。请记住，文中仅指明在现实世界中处理结构化（数值）数据和文本数据（非结构化）——而该库列表涵盖了所有内容。</p>
+<h4 id="Pandas"><a href="#Pandas" class="headerlink" title="Pandas"></a>Pandas</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//pandas.pydata.org/pandas-docs/stable/" target="_blank" rel="noopener">https://pandas.pydata.org/pandas-docs/stable/</a></p>
+<p>在数据操作和数据分析方面，Pandas绝无敌手。Pandas一度是最流行的Python库。Pandas是用Python语言编写的，主要用于数据操作和数据分析。</p>
+<p>这个名称来源于术语“面板数据”，“面板数据”是一个计量经济学术语，指的是包含同一个人在多个时间段内的观察结果的数据集。</p>
+<p>Pandas在Python or Anaconda中已完成预安装，但以防需要，安装代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pandas</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-27c5d5b96f4e6fcf0bc045c07f576451_hd.jpg">
+
+<p>Pandas有以下特点：</p>
+<p>· 数据集连接和合并</p>
+<p>· 删除和插入数据结构列</p>
+<p>· 数据过滤</p>
+<p>· 重塑数据集</p>
+<p>· 使用DataFrame对象来操作数据等</p>
+<p>下面是一篇文章以及一份很棒的Cheatsheet，有助于使Pandas技能达标：</p>
+<p>《Python中用于数据操作的12种有用的Pandas技术》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/</a></p>
+<p>《CheatSheet:在Python中使用Pandas进行数据探索》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2015/07/11-steps-perform-data-analysis-pandas-python/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2015/07/11-steps-perform-data-analysis-pandas-python/</a></p>
+<h4 id="PyOD"><a href="#PyOD" class="headerlink" title="PyOD"></a>PyOD</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//pyod.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://pyod.readthedocs.io/en/latest/</a></p>
+<p>难以发现异常值？这绝非个例。别担心，PyOD库就在这里。</p>
+<p>PyOD是一个全面的、可伸缩的Python工具包，用于检测外围对象。离群值检测基本上是识别与大多数数据显著不同的稀有项或观测值。</p>
+<p>以下代码可用于下载pyOD：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyod</span><br></pre></td></tr></table></figure>
+
+<p>PyOD是如何工作的？如何实现PyOD？下面一则指南将回答所有关于PyOD的问题:</p>
+<p>《学习在Python中使用PyOD库检测异常值的绝佳教程》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2019/02/outlier-detection-python-pyod/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2019/02/outlier-detection-python-pyod/</a></p>
+<h4 id="NumPy"><a href="#NumPy" class="headerlink" title="NumPy"></a>NumPy</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//www.numpy.org/" target="_blank" rel="noopener">https://www.numpy.org/</a></p>
+<p>与Pandas一样，NumPy也是一个非常受欢迎的Python库。NumPy引入了支持大型多维数组和矩阵的函数，同时还引入了高级数学函数来处理这些数组和矩阵。</p>
+<p>NumPy是一个开源库，有多方贡献者。在 Anaconda和Python中已预安装Numpy，但以防需要，下面是安装代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install numpy</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-530333e7f942d77675f2cb997724835f_hd.jpg">
+
+<p>下面是使用NumPy可执行的一些基本功能：</p>
+<h5 id="创建数组"><a href="#创建数组" class="headerlink" title="创建数组"></a><strong>创建数组</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">x = np.array([1, 2, 3])</span><br><span class="line">print(x)</span><br><span class="line">y = np.arange(10)</span><br><span class="line">print(y)</span><br><span class="line">output - [1 2 3]</span><br><span class="line">         [0 1 2 3 4 5 6 7 8 9]</span><br></pre></td></tr></table></figure>
+
+<h5 id="基本运算"><a href="#基本运算" class="headerlink" title="基本运算"></a><strong>基本运算</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([1, 2, 3, 6])</span><br><span class="line">b = np.linspace(0, 2, 4)</span><br><span class="line">c = a - b</span><br><span class="line">print(c)</span><br><span class="line">print(a**2)</span><br><span class="line">output - [1. 1.33333333 1.66666667 4. ]</span><br><span class="line">         [ 1 4 9 36]</span><br></pre></td></tr></table></figure>
+
+<p>以及更多其他功能！</p>
+<h4 id="SpaCy"><a href="#SpaCy" class="headerlink" title="SpaCy"></a>SpaCy</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//spacy.io/" target="_blank" rel="noopener">https://spacy.io/</a></p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-4afbbf75426db7cfe5cc1b56182db813_hd.jpg">
+
+<p>目前已经讨论了如何清理数据和处理数值数据。但是如果正在处理文本数据呢?到目前为止，现有的库都无法解决该问题。</p>
+<p>Spacy是一个非常有用且灵活的自然语言处理( NLP )库和框架，用于清理创建模型的文本文档。与类似用途的其他库相比，SpaCy速度更快。</p>
+<p>在Linux中安装Spacy：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install -U spacy</span><br><span class="line">python -m spacy download en</span><br></pre></td></tr></table></figure>
+
+<p>其他操作系统上安装Spacy，请点击：<a href="https://link.zhihu.com/?target=https%3A//spacy.io/usage" target="_blank" rel="noopener">https://spacy.io/usage</a></p>
+<p>以下是学习spaCy的课程：</p>
+<p>《简化自然语言处理——使用SpaCy（在Python中）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/04/natural-language-processing-made-easy-using-spacy-%e2%80%8bin-python/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/04/natural-language-processing-made-easy-using-spacy-%e2%80%8bin-python/</a></p>
+<p><img src="https://pic3.zhimg.com/80/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg" alt="img"></p>
+<h3 id="用于数据可视化的Python库"><a href="#用于数据可视化的Python库" class="headerlink" title="用于数据可视化的Python库"></a><strong>用于数据可视化的Python库</strong></h3><p>下一步是什么呢？数据可视化！此处假设已得到验证，并且发掘了隐藏的观点和模式。</p>
+<p>下面是三个用于数据可视化的绝佳Python库。</p>
+<h4 id="Matplotlib"><a href="#Matplotlib" class="headerlink" title="Matplotlib"></a>Matplotlib</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//matplotlib.org/" target="_blank" rel="noopener">https://matplotlib.org/</a></p>
+<p>Matplotlib是Python中最流行的数据可视化库。允许生成和构建各种各样的图。Matplotlib是笔者的首选库，可与Seaborn一起用于进行数据可视化研究。</p>
+<p>以下是安装Matplotli的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install matplotlib</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-945fae4031592a5ea9939dbe45d6ffbf_hd.jpg">
+
+<p>下面是使用Matplotlib构建的不同类型图示的部分例子：</p>
+<h5 id="柱状图"><a href="#柱状图" class="headerlink" title="柱状图"></a><strong>柱状图</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">from numpy.random import normal</span><br><span class="line">x = normal(size=100)</span><br><span class="line">plt.hist(x, bins=20)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-8be85cb362bba495762eefc392743c14_hd.jpg">
+
+<h5 id="3D-图表"><a href="#3D-图表" class="headerlink" title="3D 图表"></a><strong>3D 图表</strong></h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">from matplotlib import cm</span><br><span class="line">from mpl_toolkits.mplot3d import Axes3D</span><br><span class="line">import matplotlib.pyplot as plt</span><br><span class="line">import numpy as np</span><br><span class="line">fig = plt.figure()</span><br><span class="line">ax = fig.gca(projection=&apos;3d&apos;)</span><br><span class="line">X = np.arange(-10, 10, 0.1)</span><br><span class="line">Y = np.arange(-10, 10, 0.1)</span><br><span class="line">X, Y = np.meshgrid(X, Y)</span><br><span class="line">R = np.sqrt(X**2 + Y**2)</span><br><span class="line">Z = np.sin(R)</span><br><span class="line">surf = ax.plot_surface(X, Y, Z, rstride=1,cstride=1, cmap=cm.coolwarm)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-e8fad6f535045ceebd7e77702bf5b8dd_hd.jpg" title="3d图表">
+
+<p>目前已经介绍了Pandas、NumPy和Matplotlib，那么请查看下面的教程，该教程结合了以上三个库进行讲解：</p>
+<p>《使用NumPy、Matplotlib和Pandas在Python中进行数据探索的终极指南》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2015/04/comprehensive-guide-data-exploration-sas-using-python-numpy-scipy-matplotlib-pandas/</a></p>
+<h4 id="Seaborn"><a href="#Seaborn" class="headerlink" title="Seaborn"></a>Seaborn</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//seaborn.pydata.org/" target="_blank" rel="noopener">https://seaborn.pydata.org/</a></p>
+<p>Seaborn是另一个基于matplotlib的绘图库。它是一个为绘制有吸引力的图像而提供高级接口的python库。matplotlib能实现功能，Seaborn只是以另一种更吸引人的视觉方式来实现。</p>
+<p>Seaborn 的一些特点：</p>
+<p>· 作为一个面向数据集的API，可用于查验多个变量之间的关系</p>
+<p>· 便于查看复杂数据集的整体结构</p>
+<p>· 用于选择显示数据中模式的调色板的工具</p>
+<p>下面一行代码可用于安装Seaborn：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install seaborn</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-e1667f284c4a746e26f74d4649041a8d_hd.jpg">
+
+<p>浏览下面这些很酷的图表，看看seaborn能做些什么：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import seaborn as sns</span><br><span class="line">sns.set()</span><br><span class="line">tips =sns.load_dataset(&quot;tips&quot;)</span><br><span class="line">sns.relplot(x=&quot;total_bill&quot;,y=&quot;tip&quot;, col=&quot;time&quot;,</span><br><span class="line">            hue=&quot;smoker&quot;,style=&quot;smoker&quot;, size=&quot;size&quot;,</span><br><span class="line">            data=tips);</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-468b4e97c33d04d14a5cdf89d8c99593_hd.jpg">
+
+<p>下面是另外一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import seaborn as sns</span><br><span class="line">sns.catplot(x=&quot;day&quot;,y=&quot;total_bill&quot;, hue=&quot;smoker&quot;,</span><br><span class="line">            kind=&quot;violin&quot;,split=True, data=tips);</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-18f69258ccacd9e5f863a0e0b0c98f2b_hd.jpg">
+
+<h4 id="Bokeh"><a href="#Bokeh" class="headerlink" title="Bokeh"></a>Bokeh</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//bokeh.pydata.org/en/latest/" target="_blank" rel="noopener">https://bokeh.pydata.org/en/latest/</a></p>
+<p>Bokeh是一个面向现代网页浏览器的交互式可视化库，为大量数据集提供优美的通用图形结构。</p>
+<p>Bokeh可用于创建交互式绘图、仪表板和数据应用程序。</p>
+<p>安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install bokeh</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-a624d34533ac4f673f34ee45dd0c1fd9_hd.jpg">
+
+<p>了解更多关于Bokeh的知识及其实际应用：</p>
+<p>《使用Bokeh的交互式数据可视化（在Python中）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2015/08/interactive-data-visualization-library-python-bokeh/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2015/08/interactive-data-visualization-library-python-bokeh/</a></p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+<h3 id="用于建模的Python库"><a href="#用于建模的Python库" class="headerlink" title="用于建模的Python库"></a><strong>用于建模的Python库</strong></h3><p>现在到了本文最令人期待的部分——建模！这也是大多数人一开始接触数据科学的原因。</p>
+<p>接下来通过这三个Python库来探索建模。</p>
+<h4 id="Scikit-learn"><a href="#Scikit-learn" class="headerlink" title="Scikit-learn"></a>Scikit-learn</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//scikit-learn.org/stable/" target="_blank" rel="noopener">https://scikit-learn.org/stable/</a></p>
+<p>就像用于数据操作的Pandas和用于可视化的matplotlib一样，scikit-learn是Python构建模型中的佼佼者。没有什么能与之媲美。</p>
+<p>事实上，scikit-learn建立在NumPy，SciPy和matplotlib之上。它是开放源码的，每个人都可以访问，并且可以在各种环境中重用。</p>
+<p>Scikit-learn支持在机器学习中执行的不同操作，如分类、回归、聚类和模型选择等。命名它——那么scikit-learn会有一个模块。</p>
+<p>建议浏览以下链接以了解有关scikit-learn的更多信息：</p>
+<p>《Python中的Scikit-learn——笔者去年学到的最重要的机器学习工具！》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2015/01/scikit-learn-python-machine-learning-tool/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2015/01/scikit-learn-python-machine-learning-tool/</a></p>
+<h4 id="TensorFlow"><a href="#TensorFlow" class="headerlink" title="TensorFlow"></a>TensorFlow</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//www.tensorflow.org/" target="_blank" rel="noopener">https://www.tensorflow.org/</a></p>
+<p>TensorFlow由谷歌开发，是一个流行的深度学习库，可帮助构建、培训不同模型。是一个开放源码的端到端平台。TensorFlow提供简单的模型构建，强大的机器学习生产，以及强大的实验工具和库。</p>
+<p>TensorFlow提供多个抽象级别，可根据需要进行选择。TensorFlow通过使用高级Keras API来构建和训练模型，这使TensorFlow入门和机器学习变得容易。</p>
+<p>安装传送门：<a href="https://link.zhihu.com/?target=https%3A//www.tensorflow.org/install" target="_blank" rel="noopener">https://www.tensorflow.org/install</a></p>
+<p>使用TensorFlow从阅读这些文章开始：</p>
+<p>《TensorFlow 101:理解张量和图像以便开始深入学习》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/03/tensorflow-understanding-tensors-and-graphs/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/03/tensorflow-understanding-tensors-and-graphs/</a></p>
+<p>《开始使用Keras和TensorFlow在R中进行深度学习》传送门：</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/06/getting-started-with-deep-learning-using-keras-in-r/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/06/getting-started-with-deep-learning-using-keras-in-r/</a></p>
+<h4 id="PyTorch"><a href="#PyTorch" class="headerlink" title="PyTorch"></a>PyTorch</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//pytorch.org/" target="_blank" rel="noopener">https://pytorch.org/</a></p>
+<p>什么是PyTorch？其实，这是一个基于Python的科学计算包，其功能如下：</p>
+<p>· NumPy的替代品，可使用GPU的强大功能</p>
+<p>· 深度学习研究型平台，拥有最大灵活性和最快速度</p>
+<p>安装指南传送门：<a href="https://link.zhihu.com/?target=https%3A//pytorch.org/get-started/locally/" target="_blank" rel="noopener">https://pytorch.org/get-started/locally/</a></p>
+<p>PyTorch提供以下功能：</p>
+<p>· 混合前端</p>
+<p>· 工具和库：由研发人员组成的活跃社区已经建立了一个丰富的工具和库的生态系统，用于扩展PyTorch并支持计算机视觉和强化学习等领域的开发</p>
+<p>· 云支持：PyTorch支持在主要的云平台上运行，通过预构建的映像、对GPU的大规模训练、以及在生产规模环境中运行模型的能力等，可提供无摩擦的开发和轻松拓展</p>
+<p>以下是两篇有关PyTorch的十分详细且易于理解的文章：</p>
+<p>《PyTorch简介——一个简单但功能强大的深度学习库》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2018/02/pytorch-tutorial/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2018/02/pytorch-tutorial/</a></p>
+<p>《开始使用PyTorch——学习如何建立快速和准确的神经网络（以4个案例研究为例）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2019/01/guide-pytorch-neural-networks-case-studies/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2019/01/guide-pytorch-neural-networks-case-studies/</a></p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+
+
+<h3 id="用于数据解释性的Python库"><a href="#用于数据解释性的Python库" class="headerlink" title="用于数据解释性的Python库"></a><strong>用于数据解释性的Python库</strong></h3><p>你真的了解模型如何工作吗？能解释模型为什么能够得出结果吗？这些是每个数据科学家都能够回答的问题。构建黑盒模型在业界毫无用处。</p>
+<p>所以，上文中已经提到的两个Python库可以帮助解释模型的性能。</p>
+<h4 id="LIME"><a href="#LIME" class="headerlink" title="LIME"></a>LIME</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//github.com/marcotcr/lime" target="_blank" rel="noopener">https://github.com/marcotcr/lime</a></p>
+<p>LIME是一种算法（库），可以解释任何分类器或回归量的预测。LIME是如何做到的呢？通过可解释的模型在局部不断接近预测值，这个模型解释器可用于生成任何分类算法的解释。</p>
+ <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-488f8b4605c90b73b2a452d354f35d85_hd.jpg">
+
+<p>安装LIME很简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install lime</span><br></pre></td></tr></table></figure>
+
+<p>下文将从总体上帮助开发LIME背后的直觉和模型可解释性：</p>
+<p>《在机器学习模型中建立信任（在Python中使用LIME）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/06/building-trust-in-machine-learning-models/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/06/building-trust-in-machine-learning-models/</a></p>
+<h4 id="H2O"><a href="#H2O" class="headerlink" title="H2O"></a>H2O</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//github.com/h2oai/mli-resources" target="_blank" rel="noopener">https://github.com/h2oai/mli-resources</a></p>
+<p>相信很多人都听说过H2O.ai，自动化机器学习的市场领导者。但是你知道其在Python中也有一个模型可解释性库吗？</p>
+<p>H2O的无人驾驶AI，提供简单的数据可视化技术，用于表示高度特征交互和非线性模型行为，通过可视化提供机器学习可解释性（MLI），说明建模结果和模型中特征的影响。</p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-fb27184cb81531401ca9bbd19e91ed18_hd.jpg">
+
+<p>通过下文，阅读有关H2O的无人驾驶AI执行MLI的更多信息。</p>
+<p>《机器学习可解释性》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.h2o.ai/wp-content/uploads/2018/01/Machine-Learning-Interpretability-MLI_datasheet_v4-1.pdf" target="_blank" rel="noopener">https://www.h2o.ai/wp-content/uploads/2018/01/Machine-Learning-Interpretability-MLI_datasheet_v4-1.pdf</a></p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+<p><strong>用于音频处理的Python库</strong></p>
+<p>音频处理或音频分析是指从音频信号中提取信息和含义以进行分析、分类或任何其他任务。这正在成为深度学习中的一种流行功能，所以要留意这一点。</p>
+<h4 id="LibROSA"><a href="#LibROSA" class="headerlink" title="LibROSA"></a>LibROSA</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//librosa.github.io/librosa/" target="_blank" rel="noopener">https://librosa.github.io/librosa/</a></p>
+<p>LibROSA是一个用于音乐和音频分析的Python库。它提供了创建音乐信息检索系统所需的构建块。</p>
+<p>安装指南传送门：<a href="https://link.zhihu.com/?target=https%3A//librosa.github.io/librosa/install.html" target="_blank" rel="noopener">https://librosa.github.io/librosa/install.html</a></p>
+<p>这是一篇关于音频处理及其工作原理的深度文章：</p>
+<p>《利用深度学习开始音频数据分析（含案例研究）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/08/audio-voice-processing-deep-learning/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/08/audio-voice-processing-deep-learning/</a></p>
+<h4 id="Madmom"><a href="#Madmom" class="headerlink" title="Madmom"></a>Madmom</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//github.com/CPJKU/madmom" target="_blank" rel="noopener">https://github.com/CPJKU/madmom</a></p>
+<p>Madmom是一个用于音频数据分析的很棒的Python库。它是一个用Python编写的音频信号处理库，主要用于音乐信息检索（MIR）任务。</p>
+<p>以下是安装Madmom的必备条件：</p>
+<p>· NumPy</p>
+<p>· SciPy</p>
+<p>· Cython</p>
+<p>· Mido</p>
+<p>以下软件包用于测试安装：</p>
+<p>· PyTest</p>
+<p>· Fyaudio</p>
+<p>· PyFftw</p>
+<p>安装Madmom的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install madmom</span><br></pre></td></tr></table></figure>
+
+<p>下文可用以了解Madmom如何用于音乐信息检索：</p>
+<p>《学习音乐信息检索的音频节拍追踪（使用Python代码）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2018/02/audio-beat-tracking-for-music-information-retrieval/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2018/02/audio-beat-tracking-for-music-information-retrieval/</a></p>
+<h4 id="pyAudioAnalysis"><a href="#pyAudioAnalysis" class="headerlink" title="pyAudioAnalysis"></a>pyAudioAnalysis</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//github.com/tyiannak/pyAudioAnalysis" target="_blank" rel="noopener">https://github.com/tyiannak/pyAudioAnalysis</a></p>
+<p>pyAudioAnalysis是一个用于音频特征提取、分类和分段的Python库，涵盖广泛的音频分析任务，例如：</p>
+<p>· 对未知声音进行分类</p>
+<p>· 检测音频故障并排除长时间录音中的静音时段</p>
+<p>· 进行监督和非监督的分割</p>
+<p>· 提取音频缩略图等等</p>
+<p>可以使用以下代码进行安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pyAudioAnalysis</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5d3e0fb371b5e97f7ff9ca421cc37cab_hd.jpg">
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+<p><strong>用于图像处理的Python库</strong></p>
+<p>如果想要在数据科学行业有一番成就，那么必须学习如何使用图像数据。随着系统能够收集越来越多的数据（主要得益于计算资源的进步），图像处理越来越无处不在。</p>
+<p>因此，请确保熟悉以下三个Python库中的至少一个。</p>
+<h4 id="OpenCV-Python"><a href="#OpenCV-Python" class="headerlink" title="OpenCV-Python"></a>OpenCV-Python</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_setup/py_intro/py_intro.html" target="_blank" rel="noopener">https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_setup/py_intro/py_intro.html</a></p>
+<p>谈到图像处理，OpenCV首先浮现在脑海中。OpenCV-Python是用于图像处理的Python API，结合了OpenCV C ++ API和Python语言的最佳特性。主要用于解决计算机视觉问题。</p>
+<p>OpenCV-Python使用了上文提到的NumPy。所有OpenCV阵列结构都与NumPy数组相互转换。这也使得与使用Numpy的其他库（如SciPy和Matplotlib）集成变得更加容易。</p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-adf54b324a9332145dd2d371bded2361_hd.jpg">
+
+
+
+<p>在系统中安装OpenCV-Python：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install opencv-python</span><br></pre></td></tr></table></figure>
+
+<p>以下是两个关于如何在Python中使用OpenCV的流行教程：</p>
+<p>《基于深度学习的视频人脸检测模型建立（Python实现）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2018/12/introduction-face-detection-video-deep-learning-python/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2018/12/introduction-face-detection-video-deep-learning-python/</a></p>
+<p>《16个OpenCV函数启动计算机视觉之旅（使用Python代码）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2019/03/opencv-functions-computer-vision-python/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2019/03/opencv-functions-computer-vision-python/</a></p>
+<h4 id="Scikit-image"><a href="#Scikit-image" class="headerlink" title="Scikit-image"></a>Scikit-image</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//scikit-image.org/" target="_blank" rel="noopener">https://scikit-image.org/</a></p>
+<p>Scikit-image是另一个用于图像处理的python库，是用于执行多个不同图像处理任务的算法集合。可用于图像分割、几何变换、色彩空间操作、分析、过滤，形态学、特征检测等等。</p>
+<p>在安装scikit-image前，请先安装以下软件包：</p>
+<p>· Python（&gt; = 3.5）</p>
+<p>· NumPy（&gt; = 1.11.0）</p>
+<p>· SciPy（&gt; = 0.17.0）</p>
+<p>· joblib（&gt; = 0.11）</p>
+<p>这就是在机器上安装scikit-image的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -U scikit-learn</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-568f9f9a7d2448c9a32326e2848b8844_hd.jpg">
+
+<h4 id="Pillow"><a href="#Pillow" class="headerlink" title="Pillow"></a>Pillow</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//pillow.readthedocs.io/en/stable/" target="_blank" rel="noopener">https://pillow.readthedocs.io/en/stable/</a></p>
+<p>Pillow是PIL（Python Imaging Library）的新版本。它是从PIL派生出来的，在一些Linux发行版（如Ubuntu）中被用作原始PIL的替代。</p>
+<p>Pillow提供了几种执行图像处理的标准程序：</p>
+<p>· 逐像素操作</p>
+<p>· 掩模和透明处理</p>
+<p>· 图像过滤，例如模糊，轮廓，平滑或边缘监测</p>
+<p>· 图像增强，例如锐化，调整亮度、对比度或颜色</p>
+<p>· 在图像上添加文字等等</p>
+<p>安装Pillow：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install Pillow</span><br></pre></td></tr></table></figure>
+
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-eea04a623442ac96e3fff6030953f5e6_hd.jpg">
+
+
+
+<p>查看以下关于在计算机视觉中使用Pillow的AI漫画：</p>
+<p>《AI漫画：Z.A.I.N —— 第二期：使用计算机视觉进行面部识别》传送门：</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2019/06/ai-comic-zain-issue-2-facial-recognition-computer-vision/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2019/06/ai-comic-zain-issue-2-facial-recognition-computer-vision/</a></p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+
+
+<h3 id="用于数据库的Python库"><a href="#用于数据库的Python库" class="headerlink" title="用于数据库的Python库"></a><strong>用于数据库的Python库</strong></h3><p>学习如何从数据库存储、访问和检索数据是数据科学家必备的技能。但是如何在不首先检索数据的情况下做到建模呢？</p>
+<p>接下来介绍两个与SQL相关的Python库。</p>
+<h4 id="psycopg"><a href="#psycopg" class="headerlink" title="psycopg"></a>psycopg</h4><p>传送门：<a href="https://link.zhihu.com/?target=http%3A//initd.org/psycopg/" target="_blank" rel="noopener">http://initd.org/psycopg/</a></p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-2cc6085ef7138752c087ce0684a57a28_hd.jpg">
+
+<p>Psycopg是Python编程语言中最流行的PostgreSQL（高级开源代码关系数据库）适配器。Psycopg的核心是完全实现Python DB API 2.0规范。</p>
+<p>目前的psycopg2实现支持：</p>
+<p>· Python版本2.7</p>
+<p>· Python 3版本（3.4到3.7）</p>
+<p>· PostgreSQL服务器版本（7.4到11）</p>
+<p>· PostgreSQL客户端库版本（9.1以上）</p>
+<p>以下是安装psycopg2的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install psycopg2</span><br></pre></td></tr></table></figure>
+
+<h4 id="SQLAlchemy"><a href="#SQLAlchemy" class="headerlink" title="SQLAlchemy"></a>SQLAlchemy</h4><p>传送门：<a href="https://link.zhihu.com/?target=https%3A//www.sqlalchemy.org/" target="_blank" rel="noopener">https://www.sqlalchemy.org/</a></p>
+<p>SQL是最流行的数据库语言。SQLAlchemy是pythonSQL工具包和对象关系映射器，它为应用程序开发人员提供了SQL的全部功能，且极具灵活性。</p>
+  <img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-653354f6d76823c3a98280a588b328bf_hd.jpg">
+
+
+
+
+
+<p>SQL旨在实现高效、高性能的数据库访问。SQLAlchemy将数据库视为关系代数引擎，而不仅仅是表的集合。</p>
+<p>要安装SQLAlchemy，可以使用以下代码行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install SQLAlchemy</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+
+
+<h3 id="用于部署的Python库"><a href="#用于部署的Python库" class="headerlink" title="用于部署的Python库"></a><strong>用于部署的Python库</strong></h3><p>你知道哪些模型部署？部署模型意味着将最终模型放入最终应用程序（技术上称为生产环境）。</p>
+<h4 id="Flask"><a href="#Flask" class="headerlink" title="Flask"></a>Flask</h4><p>传送门：<a href="https://link.zhihu.com/?target=http%3A//flask.pocoo.org/docs/1.0/" target="_blank" rel="noopener">http://flask.pocoo.org/docs/1.0/</a></p>
+<p>Flask是一个用Python编写的Web框架，广泛用于部署数据科学模型。Flask由两个部分组成：</p>
+<p>· Werkzeug：Python编程语言的实用程序库</p>
+<p>· Jinja：Python的模板引擎</p>
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-3b51b5ede69ea58e9a68416d1e46dea2_hd.jpg">
+
+
+
+<p>查看下面的示例以打印“Hello world”：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line">@app.route(&quot;/&quot;)</span><br><span class="line">def hello():</span><br><span class="line">    return &quot;HelloWorld!&quot;</span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+
+<p>以下文章是学习Flask的良好开端：</p>
+<p>《在生产中将机器学习模型部署为API的教程（使用Flask）》传送门：<a href="https://link.zhihu.com/?target=https%3A//www.analyticsvidhya.com/blog/2017/09/machine-learning-models-as-apis-using-flask/" target="_blank" rel="noopener">https://www.analyticsvidhya.com/blog/2017/09/machine-learning-models-as-apis-using-flask/</a></p>
+<img src="/2019/08/25/绝不能错过的24个顶级Pytyon库/v2-5ed1f6731b174b5477f8e9497ecd5e12_hd.jpg">
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/08/25/绝不能错过的24个顶级Pytyon库/">http://weiinng.github.io/2019/08/25/绝不能错过的24个顶级Pytyon库/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/第三方库/"># 第三方库</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/01/使用Redisarch实现全文检索功能服务/">使用Redisarch实现全文检索功能服务</a>
+            
+            
+            <a class="next" rel="next" href="/2019/08/23/为什么互联网行业工资高？/">为什么互联网行业工资高？</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

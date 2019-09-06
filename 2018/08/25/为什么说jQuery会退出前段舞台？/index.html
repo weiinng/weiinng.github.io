@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>为什么说jQuery会退出前段舞台？ | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">为什么说jQuery会退出前段舞台？</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 25, 2018&nbsp;&nbsp;12:12:46</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>说这个问题之前，我们要先把关注点放在什么是库，什么是框架，什么是jQuery上。</p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/下载.jfif" title="This is jquery">
+
+<h3 id="1、JS库"><a href="#1、JS库" class="headerlink" title="1、JS库"></a>1、JS库</h3><p>   直白点的话，JS库就是一堆工具函数写好了，放到一个文件里，让你用，有的函数是简化你的DOM操作，有的函数是给你解决逻辑问题，有的是增加对象的属性方法，有的则是给你提供一些特效功能…等等，为的就是你不会写，不想写，没时间写，那么库帮你准备好一些函数接口，让你调用直接完成功能。</p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/v2-bfe8118b8ff6876ce51ca884df20e84d_hd.jpg">
+
+<h3 id="2、JS框架"><a href="#2、JS框架" class="headerlink" title="2、JS框架"></a>2、JS框架</h3><p>   这个概念和库是完全不同的，JS框架的目标更加宏大，它的目标是统一一种JS项目的架构、设计模式，现在主流的框架直接割断了开发者与DOM操作的纽带，直接用虚拟DOM来完成DOM的操作。为了项目架构与程序的设计模式，引入了组件化、模块化的概念，使得项目的开发与上线版本分离，在原本的结构、样式、逻辑分离的基础上，横向的又切了一刀，让多个结构、样式、逻辑块组合成一个完整的项目，这就是通俗的组件化设计。</p>
+<p>组件化</p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/v2-b961296d966dfe1baf2615eb36d1a5f9_hd.jpg">
+
+<h3 id="3、JS函数库"><a href="#3、JS函数库" class="headerlink" title="3、JS函数库"></a>3、JS函数库</h3><p>当然jQuery就是上面说的JS函数库，它的目的只有一个，就是极大的简化JavaScript编程（其实最关键的是简化DOM的操作）</p>
+<p>来看看吧，长啥样？</p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/v2-969bb677dba06433080fae30b556b6fc_hd.jpg">
+
+<p>知道了吧？不仅简化了你获取DOM的方式，而且还给你在里面增加了无数个直接操作DOM的方法，而且还给你增加了针对JS对象的方法和AJAX的相关的简化封装。而且1.0版本是可以兼容到IE8哒<del>~</del></p>
+<p>​        很多人说Vue、React的兴起，使jQuery没了市场，甚至将退出历史的舞台，对吗？答案是对或不对。</p>
+<p>​        对，是在于前端开发模式的创新与转变，特别是框架的驱动模型利用虚拟DOM机制提供了一套完善的数据和视图的绑定方法，这样DOM操作就被替代了，而为啥要替代呢？原因是复杂的DOM操作，增加了浏览器的解析加载和渲染的性能成本（借口，浏览器现在多块，只是喜新厌旧、嫌弃人家DOM操作麻烦而已，玩笑话），其次就是DOM操作会增加程序开发的复杂度，使得开发者无法把精力完全集中在纯业务逻辑上，这一点，框架的数据绑定机制正好解决了这个问题（但是，DOM操作也不是完全能舍弃的，要不人家Vue为啥还要提供$refs啊）,</p>
+<p>​        不对，真正的历史和未来，应该是DOM操作与虚拟DOM带来的数据绑定机制，压根就跟人家jQuery没啥关系。</p>
+<p>​         上述阐述说明了一个事实，jQuery仍然是DOM操作的一颗无比可口的糖果，只要DOM操作还存在，那么jQuery一定继续存在，而DOM操作被前端技术完全摒弃了，那么jQuery的存在也就没有意义了。</p>
+<p>​         那么行业技术的发展会告诉你答案，DOM操作和jQuery什么时候会退出历史舞台。</p>
+<h3 id="4、jq并不是退出前端舞台了，而是变成历史了。"><a href="#4、jq并不是退出前端舞台了，而是变成历史了。" class="headerlink" title="4、jq并不是退出前端舞台了，而是变成历史了。"></a>4、jq并不是退出前端舞台了，而是变成历史了。</h3><p>不久以后jq就会彻底消失，就像IE6一样。或者jq的开发者可能想出又一个划时代的东西再续一命。</p>
+<p>然而前端舞台上永远有他的影子。</p>
+<p>想一想：</p>
+<ul>
+<li>为什么标准里会添加queryselectorall</li>
+<li>为什么增加了domlist，可以foreach</li>
+<li>明明classname可以实现，为什么还要有classList</li>
+<li>为什么classlist除了增加删除，还有个toggle</li>
+<li>为什么css动画有个结束事件</li>
+<li>异步有很多办法实现，js为什么选择了promise</li>
+</ul>
+<p>这些不是标准委员会拍脑袋想出来的，那种东西最终的下场只能像HTML4.x一样。</p>
+<p>这都是从大量实践里总结出来的。曾经用jq、_、backbone用的好的，换新API需要学？</p>
+<p>jq的糟粕逐渐被扔掉，精华变成了标准。</p>
+<h3 id="5、库不能称之为框架"><a href="#5、库不能称之为框架" class="headerlink" title="5、库不能称之为框架"></a>5、库不能称之为框架</h3><p>具体来说， jQuery其实是一个JS库 ，并不是大家常说的框架，库不能称之为框架，框架是解决方案的轮子、架子，库一般来说是一个语言浓缩和优化过后的超集或者工具包，其实ES6更像是ES5的超集和库。</p>
+<p><strong>jQuery设计的宗旨是“write Less，Do More”</strong></p>
+<p>即倡导写更少的代码，做更多的事情。它封装JavaScript常用的功能代码，提供一种简便的JavaScript设计模式，优化HTML文档操作、事件处理、动画设计和Ajax交互。几乎无所不能，而且想要多懒的写法就可以多懒的写法，因为它支持链式写法，而且对CSS样式支持接近完美。</p>
+<p><strong>jQuery的核心特性可以总结为：</strong></p>
+<ul>
+<li>具有独特的链式语法和短小清晰的多功能接口；</li>
+<li>具有高效灵活的css选择器，并且可对CSS选择器进行扩展；</li>
+<li>拥有便捷的插件扩展机制和丰富的插件；</li>
+</ul>
+<p>jQuery兼容各种主流浏览器或者说所有的浏览器，它的其中一大目的就是为了对付鱼龙混杂的兼容问题，所以对各个浏览器都可以轻松应对，而不用管原生js是否支持。</p>
+<p><strong>直观对比 ：获取一个dom节点</strong></p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/v2-6f6226c0cabef9d9ff5828410df15936_hd.jpg">
+
+<p><strong>直观对比 ：操作css样式</strong></p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/v2-e0055160ae2378f0df748817e86dfb0d_hd.jpg">
+
+
+
+<p><strong>直观对比 ：获取一个元素的属性</strong></p>
+<img src="/2018/08/25/为什么说jQuery会退出前段舞台？/v2-6fb89a54309040d620e7fb6dfbfd01fd_hd.jpg">
+
+<p><strong>jQuery过时了吗？jQuery会退出历史舞台吗？</strong>这是个伪命题，但却是个很亲民和讨论意义的话题。过时如果是指被用得少了，或者大部分人已经在讨论是不是过时了，那肯定是过时了。</p>
+<p><strong><em>我的观点是：第一选择已接近过时，但是开发思想永为经典。</em></strong></p>
+<p>虽然jQuery官方不愿承认，而且一直在跟随潮流做很重要的更新，甚至有了mvvm概念的框架用法加入其中还出了jquery mobile 等移动端定制库，不过很遗憾，越来越多的项目抛弃了jquery，因为它的历史使命已经完成了。</p>
+<p>但是jQuery不会完全过时，它的思想是影响整整一代的，现在就算 angularjs、 vuejs、reactjs在实际开发中，还是少不了dom操作，毕竟你怎么可能完全脱离dom呢？</p>
+<p>作为一个库，jQuery能在计算机软件领域存在十余年，绝非偶然。它的选择符、易用的API、跨浏览器兼容、DOM元素批处理、插件提供的代码复用等等，个个特性都有强大的理论支持和实际场景的良好应用。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2018/08/25/为什么说jQuery会退出前段舞台？/">http://weiinng.github.io/2018/08/25/为什么说jQuery会退出前段舞台？/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/前端/"># 前端</a>
+                    
+                        <a href="/tags/Jquery/"># Jquery</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/03/25/理解python中的解析式/">案例详解：理解Python中的“解析式”</a>
+            
+            
+            <a class="next" rel="next" href="/2018/07/21/频繁的安装和卸载app会不会伤害苹果手机？/">频繁的安装和卸载app会不会伤害苹果手机？</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

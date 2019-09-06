@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>使用Redisarch实现全文检索功能服务 | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">使用Redisarch实现全文检索功能服务</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 1, 2019&nbsp;&nbsp;19:08:21</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Docker/">Docker</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <center style="font-size:30px;color:red">使用Redisearch实现的全文检索功能服务</center>
+​    “检索”是很多产品中无法绕开的一个功能模块，当数据量小的时候可以使用模糊查询等操作凑合一下，但是当面临海量数据和高并发的时候，业界常用 elasticsearch 和 lucene 等方案，但是elasticsearch对运行时内存有着最低限额，其运行时大小推荐 2G 以上的内存空间，并且需要额外的磁盘空间做持久化存储。
+
+<p>​    其实mongoDB 内置的正则匹配搜索文本以及自带的 text 索引和 search 关键字也是一套靠谱的解决方案，但是这一次我们带来一种更加高效经济的文本检索方案：Redisearch</p>
+<p>​    下图是elasticsearch和redisearch的性能对比</p>
+<img src="/2019/09/01/使用Redisarch实现全文检索功能服务/20190829025837_90896.png">
+
+<p>​      Redis Modules 是 redis 4.0 引入的一种扩展机制，用户可以通过实现 redis module 提供的 C api 接口为 redis 服务添加定制化功能。 redisLab 也希望籍此来规范 redis 社区的 ecosystem 实现。</p>
+<p>​    redis module 本身的版本独立于redis，并且以编译成动态加载库 .so 文件的方式 release， 不同版本的 redis 可以 load 同一版本 module.so 文件。</p>
+<p>​    redis 提供了两种加载方式。可以通过 在 conf 文件中 加入 loadmodule /path/to/mymodule.so ，也可以在 redis-cli中使用命令 MODULE LOAD /path/to/panda.so 动态加载，MODULE UNLOAD 卸载。  </p>
+<p>使用redis的可视化工具就可以看到，Redisearch 对存进去的内容进行了分词操作。</p>
+<p>​    特性</p>
+<ul>
+<li>基于文档的全文索引。</li>
+<li>高性能增量索引。</li>
+<li>支持文档评分，文档字段(field) 权重机制。</li>
+<li>支持布尔复杂查询。</li>
+<li>支持自动补全。</li>
+<li>基于 snowball 的词干分析，多语言支持。使用 friso 支持中文分词。</li>
+<li>utf-8 字符集支持。</li>
+<li>redis 数据持久化支持。</li>
+<li>自定义评分机制。</li>
+</ul>
+<p>​    其原理是在 redis 的 hashmap 基础上就可以很容易实现倒排索引的结构。redisearch 倒排索引除了实现了基础功能外，还引入了内存管理等优化功能。如果有兴趣可以阅读源码中的 src/inverted_index.c 部分</p>
+<p>​    </p>
+<p>​    首先，安装Rediseach,记住一点你本地的redis服务版本必须在4.0以上，网上一大堆编译安装的攻略，繁琐又浪费时间，所以又到了Docker登场时间了，hub上有编译好的免费镜像供我们下载</p>
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull redislabs/redisearch</span><br></pre></td></tr></table></figure>
+
+<p>​    下载后，直接在后台启动服务</p>
+<p>​    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 6666:6379 redislabs/redisearch:latest</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/09/01/使用Redisarch实现全文检索功能服务/20190829025426_73540.png"> 
+
+<p>​    此时已经有一个docker容器在后台启动了，redis服务映射到了宿主的6666端口，我们来连接一下</p>
+<p>​    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h &lt;Docker容器IP&gt; -p 6666</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/09/01/使用Redisarch实现全文检索功能服务/20190829023916_11652.png">
+
+<p>​    检查 modules 是否成功加载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">localhost:6666&gt; MODULE list</span><br><span class="line">1) 1) &quot;name&quot;</span><br><span class="line">   2) &quot;ft&quot;</span><br><span class="line">   3) &quot;ver&quot;</span><br><span class="line">   4) (integer) 10405</span><br></pre></td></tr></table></figure>
+
+<p>​    如果返回数组中存在 “ft” ， 则表明 redisearch 已经成功加载。</p>
+<p>​    Redisearch 的索引概念 与elasticsearch 的 index 类似，表示某一类文档资源单元。</p>
+<p>​    这里我们定义了一个 SMARTX_VM 索引，其中存储的文档 包含 了 title 和 desc 两个 类型为 TEXT 的field。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FT.CREATE SMARTX_VM SCHEMA title TEXT WEIGHT 5.0 desc TEXT</span><br></pre></td></tr></table></figure>
+
+<p>​    然后向刚刚创建的这条索引加一个文档</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FT.ADD SMARTX_VM vm<span class="number">-2019082911110001</span> <span class="number">1.0</span> LANGUAGE <span class="string">"chinese"</span> FIELDS title <span class="string">"我在学习"</span> desc <span class="string">"我在学习Docker"</span></span><br></pre></td></tr></table></figure>
+
+<p>​    LANGUAGE “chinese” 参数 表示 使用 中文分词器 处理文本。默认为英文</p>
+<p>​    此时我们进行文档检索</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FT.SEARCH SMARTX_VM &quot;我在学习&quot; LANGUAGE &quot;chinese&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>LANGUAGE “chinese”  是指定语言的 现在指定的是 中文</p>
+</blockquote>
+<p>   注意检索的时候也要指定语言，这里我们用中文分词，默认的英文分词是无法检索中文的。</p>
+<img src="/2019/09/01/使用Redisarch实现全文检索功能服务/20190829025024_22484.png">
+
+<p>​    可以看到已经返回了我们想要的结果。</p>
+<p>​    Redisearch 是一个高效，功能完备的内存存储的高性能全文检索组件， 十分适合应用在数据量适中， 内存和存储空间有限的环境。借助数据同步手段，我们可以很方便的将redisearch 结合到现有的数据存储中， 进而向产品提供 全文检索， 自动补全等服务优化功能。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/09/01/使用Redisarch实现全文检索功能服务/">http://weiinng.github.io/2019/09/01/使用Redisarch实现全文检索功能服务/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Redis/"># Redis</a>
+                    
+                        <a href="/tags/Docker/"># Docker</a>
+                    
+                        <a href="/tags/非关系型数据库/"># 非关系型数据库</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/01/python全文检索/">使用python3和高性能全文检索引擎Redisearch进行交互</a>
+            
+            
+            <a class="next" rel="next" href="/2019/08/25/绝不能错过的24个顶级Pytyon库/">绝不能错过的24个顶级Pytyon库</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

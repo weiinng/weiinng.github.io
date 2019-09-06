@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python,告别Pring !  | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python,告别Pring ! </h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">July 2, 2019&nbsp;&nbsp;14:07:29</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/07/02/Python-告别Pring/v2-0db02194357674349e32fecb391040ab_1200x500.jpg">
+
+<p>Print也许是Python中使用频率最高的一个函数**。很多小白都是从Hello World程序开始认识Python，而Python的Hello World程序只有一行，那就是调用内置的Print函数，向控制台输出字符串“Hello World”。</p>
+<p>不仅小白，哪怕是Python开发者，通常也是Print函数的<strong>重度用户</strong>。Print最大的应用场景，便是用于调试Python程序。比如，用Print打印程序的运行步骤，或用Print打印程序运行过程中某个变量的值的变化情况。由于Python是无须编译就能执行的<strong>解释型编程语言</strong>，因此加上Print调试语句后，开发者能够立即执行Python程序，得到调试结果。</p>
+<p>使用Print进行调试的好处是非常直白，易于上手，但是弊端也是明显的：如果要打印的信息比较多，就需要写很多行的Print语句；在调试结束后，往往还需要逐一删除这些语句。这是一个繁琐的过程。<strong>一言以蔽之，使用Print调试的缺点是效率较低</strong>。</p>
+<p>除了Print函数，另一种常用的Python程序调试工具是Python的<strong>日志模块</strong>(logging)。Logging模块根据预定义的格式，将需要的信息写入日志文件。通过跟踪日志文件，也可以实现调试的目的。</p>
+<p>使用logging进行调试，看起来比Print函数更规范一些。并且，当调试结束后，logging语句无须删除，在产品环境中依然可以发挥作用。另外，logging模块还支持我们通过调整log等级(INFO/DEBUG/WARN/ERR)来动态决定打印何种日志。美中不足的是，logging模块在使用之前需要进行比较繁琐的配置(Setup)，因此使用难度稍大，不够方便。</p>
+<p>那么，有没有更好的调试办法呢？最近，Github上出现了一个新的专门用于调试Python程序的第三方库，名叫<strong>PySnooper</strong>。Snooper在英文中是监听器的意思。PySnooper，顾名思义，就是监听Python程序执行过程的工具。<strong>PySnooper一经问世，便引起Python社区的严重关注。仅仅一个月时间便收获了10K+个STAR，着实十分火爆</strong>。</p>
+<p><strong>相比Print调试往往需要写很多行Print语句，使用PySnooper仅仅一行代码就能实现对整个函数的调试，更加高效；相比Logging模块，使用PySnooper无需进行繁琐的配置，更加简单。</strong></p>
+<p>直接看下面这个例子吧。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pysnooper</span><br><span class="line"></span><br><span class="line"><span class="meta">@pysnooper.snoop()</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">number_to_bits</span><span class="params">(number)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> number:</span><br><span class="line"></span><br><span class="line">        bits = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> number:</span><br><span class="line"></span><br><span class="line">            number, remainder = divmod(number, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">            bits.insert(<span class="number">0</span>, remainder)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> bits</span><br><span class="line"></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> [<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">number_to_bits(<span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+<p>执行这段代码，输出结果(节选)如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">Starting var:.. number = <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="number">15</span>:<span class="number">29</span>:<span class="number">11.327032</span> call         <span class="number">4</span> <span class="function"><span class="keyword">def</span> <span class="title">number_to_bits</span><span class="params">(number)</span>:</span></span><br><span class="line"></span><br><span class="line"><span class="number">15</span>:<span class="number">29</span>:<span class="number">11.327032</span> line         <span class="number">5</span>     <span class="keyword">if</span> number:</span><br><span class="line"></span><br><span class="line"><span class="number">15</span>:<span class="number">29</span>:<span class="number">11.327032</span> line         <span class="number">6</span>         bits = []</span><br><span class="line"></span><br><span class="line">New var:....... bits = []</span><br><span class="line"></span><br><span class="line"><span class="number">15</span>:<span class="number">29</span>:<span class="number">11.327032</span> line         <span class="number">7</span>         <span class="keyword">while</span> number:</span><br><span class="line"></span><br><span class="line"><span class="number">15</span>:<span class="number">29</span>:<span class="number">11.327032</span> line         <span class="number">8</span>             number, remainder = divmod(number, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">New var:....... remainder = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">Modified var:.. number = <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">15</span>:<span class="number">29</span>:<span class="number">11.327032</span> line         <span class="number">9</span>             bits.insert(<span class="number">0</span>, remainder)</span><br><span class="line"></span><br><span class="line">Modified var:.. bits = [<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>可见，只需要导入PySnooper模块，并且给函数加上装饰器@pysnooper.snoop()，我们就可以实现对一个Python函数的监听(调试)。</p>
+<p>在上面这个例子中，根据输出结果，我们可以得到：</p>
+<ul>
+<li><strong>程序执行步骤的顺序</strong>，比如执行结果的第2行告诉我们，在15:29:11.327032这一时刻执行了def number_to_bits这一行代码。</li>
+<li><strong>程序中变量的值的变化情况</strong>，比如执行结果的第9行告诉我们，局部变量number此时的值发生了变化，变成了3。</li>
+</ul>
+<p>PySnooper支持灵活多样的程序调试，包括但不限于：</p>
+<ol>
+<li>给函数添加装饰器@pysnooper.snoop()，完成对函数的监听。</li>
+<li>使用with pysnooper.snoop()语句，实现对程序块(block)，即一行或者多行程序进行监听。</li>
+<li>使用@pysnooper.snoop(‘/my/log/file.log’)，将监听结果重定向到文件系统。</li>
+<li>监听非局部变量的值：<br>@pysnooper.snoop(variables=(‘foo.bar’,’self.whatever’))</li>
+<li>监听一个列表或者字典变量的所有元素或者属性：<br>@pysnooper.snoop(watch=(‘foo.bar’,’self.x[“whatever”]’))</li>
+<li>深度监听——监听函数中的行所调用的其他函数：<br>@pysnooper.snoop(depth=2)</li>
+<li>在多线程程序中，指定监听哪些线程：<br>@pysnooper.snoop(thread_info=True)</li>
+</ol>
+<p>PySnooper的更多高级用法参见：<a href="https://link.zhihu.com/?target=https%3A//github.com/cool-RR/PySnooper%23advanced-usage%E3%80%82" target="_blank" rel="noopener">cool-RR/PySnooper</a></p>
+<p>另外，PySnooper的安装十分简单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install pysnooper</span><br></pre></td></tr></table></figure>
+
+<p>总结一下，PySnooper是一个<strong>使用简单，功能强大，效率高的Python调试工具</strong>，聚集各种优点于一身，难怪这么快就受到了社区的热烈欢迎。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/07/02/Python-告别Pring/">http://weiinng.github.io/2019/07/02/Python-告别Pring/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/测试调试/"># 测试调试</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/07/07/VSCode！提高开发效率！/">VSCode！提高开发效率！</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/02/Tornado底层/">关于Tornado:真实的异步和虚假的异步</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
