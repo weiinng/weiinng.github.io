@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>基于Docker-compose搭建Redis高可用集群-哨兵模式（Redis-Sentinel） | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">基于Docker-compose搭建Redis高可用集群-哨兵模式（Redis-Sentinel）</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 9, 2019&nbsp;&nbsp;15:49:48</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/u=3316201855,4222435091&fm=26&gp=0.jpg">
+
+<p>​        我们知道，Redis的集群方案大致有三种：1）redis cluster集群方案；2）master/slave主从方案；3）哨兵模式来进行主从替换以及故障恢复。</p>
+<p>sentinel系统可以监视一个或者多个redis master服务，以及这些master服务的所有从服务；当某个master服务下线时，自动将该master下的某个从服务升级为master服务替代已下线的master服务继续处理请求。</p>
+<img src="/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/20190905023139_18583.png">
+
+<p>​    同样，我们使用docker进行搭建</p>
+<p>​    新建一个mkdir redis-sentinel文件夹</p>
+<p>​    进入项目文件夹 cd redis-sentinel，再建立一个sentinel专门来存放哨兵脚本，然后cd sentinel</p>
+<p>​    建立sentinel.conf配置文件：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sentinel monitor mymaster redis-master <span class="number">6379</span> <span class="number">2</span></span><br><span class="line">sentinel down-after-milliseconds mymaster <span class="number">5000</span></span><br><span class="line">sentinel parallel-syncs mymaster <span class="number">1</span></span><br><span class="line">sentinel failover-timeout mymaster <span class="number">5000</span></span><br></pre></td></tr></table></figure>
+
+<p>该配置的意思是，监控主服务器的6379端口并且起两个实例，如果哨兵5s内没有收到主节点的心跳，哨兵就认为主节点宕机了，默认是30秒，如果5秒以上连接不上主库同步，则在5秒后进行选举，对其他的从服务器进行角色转换</p>
+<p> 随后，建立sentinel-entrypoint.sh脚本文件：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/sh</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">"s/$SENTINEL_QUORUM/$SENTINEL_QUORUM/g"</span> /etc/redis/sentinel.conf</span><br><span class="line">sed -i <span class="string">"s/$SENTINEL_DOWN_AFTER/$SENTINEL_DOWN_AFTER/g"</span> /etc/redis/sentinel.conf</span><br><span class="line">sed -i <span class="string">"s/$SENTINEL_FAILOVER/$SENTINEL_FAILOVER/g"</span> /etc/redis/sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="keyword">exec</span> docker-entrypoint.sh redis-server /etc/redis/sentinel.conf --sentinel</span><br></pre></td></tr></table></figure>
+
+<p>   该脚本文件会对配置文件进行同步，用来启动哨兵</p>
+<p>​    然后我们来建立Dockerfile指定基础镜像，同时拷贝配置文件到镜像内部：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM redis</span><br><span class="line"></span><br><span class="line">EXPOSE <span class="number">26379</span></span><br><span class="line">ADD sentinel.conf /etc/redis/sentinel.conf</span><br><span class="line">RUN chown redis:redis /etc/redis/sentinel.conf</span><br><span class="line">COPY sentinel-entrypoint.sh /usr/local/bin/</span><br><span class="line">RUN chmod +x /usr/local/bin/sentinel-entrypoint.sh</span><br><span class="line">ENTRYPOINT [<span class="string">"sentinel-entrypoint.sh"</span>]</span><br></pre></td></tr></table></figure>
+
+<p>​    最后退到项目根目录 cd ..</p>
+<p>​    建立docker-compose.yml配置文件：</p>
+<p>​    </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">master:</span><br><span class="line">  image: redis</span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">"6379:6379"</span></span><br><span class="line">slave1:</span><br><span class="line">  image: redis</span><br><span class="line">  command: redis-server --slaveof redis-master <span class="number">6379</span></span><br><span class="line">  links:</span><br><span class="line">    - master:redis-master</span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">"6380:6379"</span></span><br><span class="line">slave2:</span><br><span class="line">  image: redis</span><br><span class="line">  command: redis-server --slaveof redis-master <span class="number">6379</span></span><br><span class="line">  links:</span><br><span class="line">    - master:redis-master</span><br><span class="line">  ports:</span><br><span class="line">    - <span class="string">"6381:6379"</span></span><br><span class="line">sentinel1:</span><br><span class="line">  build: sentinel</span><br><span class="line">  environment:</span><br><span class="line">    - SENTINEL_DOWN_AFTER=<span class="number">5000</span></span><br><span class="line">    - SENTINEL_FAILOVER=<span class="number">5000</span>    </span><br><span class="line">  links:</span><br><span class="line">    - master:redis-master</span><br><span class="line">    - slave1</span><br><span class="line">sentinel2:</span><br><span class="line">  build: sentinel</span><br><span class="line">  environment:</span><br><span class="line">    - SENTINEL_DOWN_AFTER=<span class="number">5000</span></span><br><span class="line">    - SENTINEL_FAILOVER=<span class="number">5000</span>    </span><br><span class="line">  links:</span><br><span class="line">    - master:redis-master</span><br><span class="line">    - slave2</span><br></pre></td></tr></table></figure>
+
+<p>意思是，我们起三台redis服务，分别跑在6379,6380,6381 ，一主两从，并且有两个哨兵实例来监控他们，最后项目结构是这样的</p>
+<img src="/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/20190905021327_64637.png">
+
+<p>如果里面携带了6379端口，需要把本机的6379端口停掉</p>
+<p>​    在项目根目录下，启动服务：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up --force-recreate</span><br></pre></td></tr></table></figure>
+
+<p> 如果希望在后台运行可以加-d参数</p>
+<p>此时我们可以测一下同步是否成功，分别开三个窗口登录到redis,redis-cli -p 6379,redis-cli -p 6380,redis-cli -p 6381</p>
+<p>在主库6379中set 123 123，然后分别在从库get 123</p>
+<img src="/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/20190905021922_10091.png">
+
+<p> 我们可以手动停止主库的容器进程，来模拟宕机的情况</p>
+<p>​    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop redissentinel_master_1</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/20190905022218_72948.png">
+
+<p> 此时主库已经连接不上了，我们进入从库，使用info命令来查看从库的角色</p>
+<img src="/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/20190905022336_44202.png">
+
+<p>发现之前6380本来是从库(slave)角色，现在已经变成主库了(master)了</p>
+<p> 其实这就是所谓的高负载高可用架构，在使用集群承担高负载的同时，也能进行高可用的容灾机制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker server redissentinel_master_1</span><br></pre></td></tr></table></figure>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/">http://weiinng.github.io/2019/09/09/2007基于dockercommpose搭建Redis高可用集群/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Redis/"># Redis</a>
+                    
+                        <a href="/tags/Docker/"># Docker</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/09/09/2002在服务器上配置nginx-unsgi-负载均衡配置/">在阿里云Centos上配置nginx+uwsgi+负载均衡配置</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

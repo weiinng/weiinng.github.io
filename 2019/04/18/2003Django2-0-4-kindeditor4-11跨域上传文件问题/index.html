@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Django2.0.4+kindeditor4.11跨域上传文件问题 | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Django2.0.4+kindeditor4.11跨域上传文件问题</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 18, 2019&nbsp;&nbsp;14:34:46</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/04/18/2003Django2-0-4-kindeditor4-11跨域上传文件问题/timg.jfif">
+
+<p>   在之前的一篇文章中介绍了如何将富文本kindeditor结合到django中：<a href="https://v3u.cn/Index_a_id_59" target="_blank" rel="noopener">Django2.0.4结合KindEditor 4.1.11富文本编辑器</a></p>
+<p>​    在同域环境中是没有问题的，换句话说，也就是上传接口如果部署在前端页面同一个域名下是没有问题的，然而美多商城的系统架构是前后端分离，前端页面是vue.js服务，后端接口是Django的服务，分别部署在不同的服务器上，如果在vue.sj页面中想要使用kindeditor中的上传文件功能，跨域请求的Django的接口就会报错。</p>
+<p>​    本文解决在跨域情况下使用kindeditor的上传文件功能，解决思路就是用重定向方法来伪造成同域环境</p>
+<p>​    在前端项目中，建立一个将redirect.html，用来伪造同域获取参数</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt; &lt;head&gt; &lt;meta http-equiv = “Content-Type” content = “text / html; charset = UTF-8” &gt; &lt;title&gt; 跨域重定向&lt;/ title&gt; &lt;script type = “text / javascript “ &gt; 函数的getParameter （VAL ）&#123; VAR URI = decodeURI （窗口。位置。搜索）; var re = new RegExp （“” + val + “=（[^＆</span><br><span class="line"></span><br><span class="line">      </span><br><span class="line">    </span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line">        </span><br><span class="line">             “ig” ）; 返回（（URI 。匹配（重）） ？（ URI 。匹配（重）[ <span class="number">0</span> ] SUBSTR （VAL 。长度+ <span class="number">1</span> ）） ：空）; &#125;</span><br><span class="line">              </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">        var upload_callback = function （）&#123; var error = getParameter （“error” ）; </span><br><span class="line">            error = parseInt （error ）var dataObject ; <span class="keyword">if</span> （error == <span class="number">0</span> ）&#123; var url = getParameter （“url” ）; </span><br><span class="line">                dataObject = &#123; “error” ：error ，“url” ：url &#125;; &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">                  </span><br><span class="line">            </span><br><span class="line">                var message = getParameter （“message” ）; </span><br><span class="line">                dataObject = &#123; “error” ：error ，“message” ：message &#125;; &#125; var data =   JSON 。stringify （dataObject ）</span><br><span class="line">            文档。getElementsByTagName （“body” ）[ 0 ]。innerHTML = '&lt;pre&gt;' + data + '&lt;/ pre&gt;' ; &#125; &lt;/ script&gt;  </span><br><span class="line">            </span><br><span class="line">               </span><br><span class="line">        </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">&lt;body onload = “ upload_callback （）; ” &gt; &lt;/ body&gt; &lt;/ html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>富文本页面并不需要改变什么</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">&lt;！DOCTYPE html&gt; &lt;html lang = “en” &gt; &lt;head&gt; &lt;meta charset = “UTF-8” &gt; &lt;meta name = “viewport” content = “width = device-width，initial-scale = 1.0” &gt; &lt; meta http-equiv = “X-UA-Compatible” content = “ie = edge” &gt; &lt;script src = “./ static / js / jquery-1.12.1.min.js” &gt; &lt;/ script&gt; &lt;script src = ” ./static/js/kindeditor/kindeditor-all-min.js&apos;&gt; &lt;/ script&gt; &lt;title&gt; 美多编辑器&lt;/ title&gt;</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">     </span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line">     </span><br><span class="line">     </span><br><span class="line">    </span><br><span class="line">&lt;/ head&gt; &lt;body&gt;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    &lt;textarea id = &apos;content&apos; &gt; 富文本&lt;/ textarea&gt; &lt;button onclick = “ checkit （）” &gt; 查看&lt;/ button&gt; </span><br><span class="line"> </span><br><span class="line">	  </span><br><span class="line">	</span><br><span class="line">	&lt;SCRIPT&gt;</span><br><span class="line"></span><br><span class="line">        initKindEditor （）;</span><br><span class="line">     </span><br><span class="line">        function initKindEditor （）&#123; var kind = KindEditor 。create （&apos;＃content&apos; ，&#123; </span><br><span class="line">                uploadJson ：&apos;http：// localhost：8000 / md_admin / front_upload&apos; ，</span><br><span class="line">                items ：[ &apos;source&apos; ，&apos;image&apos; ]，</span><br><span class="line">                width ：&apos;100％&apos; ，//文本框宽度（可以百分比或像素）</span><br><span class="line">                身高：&apos;300px&apos; ，//文本框高度（只能像素）</span><br><span class="line">                minWidth ：200 ，//最小宽度（数字） </span><br><span class="line">                                        </span><br><span class="line">                minHeight ：400 //最小高度（数字）&#125;）; &#125;       </span><br><span class="line">            </span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		功能checkit （）&#123; VAR 含量= $ （文件。的getElementsByTagName （“IFRAME” ）[ 0 ]。contentWindow 。文件。体）。html （）</span><br><span class="line">			</span><br><span class="line"></span><br><span class="line">			警报（内容）;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		&#125; &lt;/ script&gt;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">&lt;/ body&gt; &lt;/ html&gt;</span><br></pre></td></tr></table></figure>
+
+<p>重点是后台接口文件，不再需要返回JSON数据，而是直接重定向到之前伪造好的前端页面将redirect.html</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#pan domain上传方法def frontupload （request ）：if request 。method == 'POST' ：</span></span><br><span class="line">        item = &#123;&#125; </span><br><span class="line">        file = request 。文件。得到（<span class="string">'imgFile'</span> ）＃定义跳转网址，就是前端伪造好的页面</span><br><span class="line">        callBackPath = 的<span class="string">'http：//本地主机：8080 /将redirect.html'</span> </span><br><span class="line">        ˚F = 开放（OS ，路径，加入（UPLOAD_ROOT ，<span class="string">''</span> ，文件。</span><br><span class="line"></span><br><span class="line">      </span><br><span class="line">         name ），<span class="string">'wb'</span> ）</span><br><span class="line">        item [ <span class="string">'message'</span> ] = <span class="string">'上传成功'</span> </span><br><span class="line">        item [ <span class="string">'url'</span> ] = <span class="string">'http：// localhost：8000 / upload /'</span> + file 。名称    </span><br><span class="line">        item [ <span class="string">'error'</span> ] = <span class="number">0</span> ＃write文件遍历图片文件流<span class="keyword">for</span> chunk <span class="keyword">in</span> file 。chunks （）：</span><br><span class="line">            f 。write （chunk ）返回HttpResponseRedirect （callBackPath + “？error = <span class="number">0</span>＆url =” + item [ <span class="string">'url'</span> ]）</span><br></pre></td></tr></table></figure>
+
+<p>  到此，问题解决，无论富文本在前端调用还是后端，都可以完美上传文件  </p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/04/18/2003Django2-0-4-kindeditor4-11跨域上传文件问题/">http://weiinng.github.io/2019/04/18/2003Django2-0-4-kindeditor4-11跨域上传文件问题/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/Django/"># Django</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/30/2005利用vue-js双向绑定机制和VUE资源在前端异步上传文件/">利用vue.js双向绑定机制和VUE资源在前端异步上传文件</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/09/2008Python3-7-0-Django2-0-4最细版本支付宝接口/">Python3.7.2 + Django2.0.4项目集成最新版支付宝支付接口</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

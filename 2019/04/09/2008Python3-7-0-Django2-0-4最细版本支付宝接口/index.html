@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python3.7.2 + Django2.0.4项目集成最新版支付宝支付接口 | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python3.7.2 + Django2.0.4项目集成最新版支付宝支付接口</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 9, 2019&nbsp;&nbsp;15:57:23</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p> 最新版支付宝算法的改变就是RSA升级了RSA2，长度推荐2048，其他的逻辑变化不大，关于秘钥的生成在之前的一篇文章已经有所介绍</p>
+<p>  <a href="https://v3u.cn/a_id_61" target="_blank" rel="noopener">在Mac的系统下生成新版支付宝（2019年4月）支付接口私钥和公钥</a></p>
+<p>  在Django的中集成支付接口的前置操作就是需要安装pycryptodome</p>
+<p>  pip3 install -i <a href="https://pypi.douban.com/simple" target="_blank" rel="noopener">https://pypi.douban.com/simple</a> pycryptodome</p>
+<p>  然后将之前生成好的私钥和公钥（注意这里的公钥是指支付宝公钥），放入到项目目录中去</p>
+<img src="/2019/04/09/2008Python3-7-0-Django2-0-4最细版本支付宝接口/20190410090428_54822.png">
+
+<p>文档地址：<a href="https://docs.open.alipay.com/api" target="_blank" rel="noopener">https</a>：<a href="https://docs.open.alipay.com/api" target="_blank" rel="noopener">//docs.open.alipay.com/api</a></p>
+<p>  然后根据支付宝官网文档写一个支付基类pay.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">从日期时间进口日期时间</span><br><span class="line"> 从加密。PublicKey 从Crypto 导入RSA</span><br><span class="line"> 。签名从Crypto 导入PKCS1_v1_5</span><br><span class="line"> 。哈希从urllib 导入SHA256</span><br><span class="line"> 。从urllib 解析<span class="keyword">import</span> quote_plus</span><br><span class="line"> 。解析<span class="keyword">import</span> urlparse ，parse_qs</span><br><span class="line"> 来自base64 <span class="keyword">import</span> decodebytes ，encodebytes</span><br><span class="line"> <span class="keyword">import</span> json      </span><br><span class="line"></span><br><span class="line">类AliPay （对象）：“”“ </span><br><span class="line">    </span><br><span class="line">    支付宝支付接口（PC端支付接口）</span><br><span class="line">    “””</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span> （<span class="title">self</span> ，<span class="title">appid</span> ，<span class="title">app_notify_url</span> ，<span class="title">app_private_key_path</span> ，</span></span><br><span class="line">                 alipay_public_key_path ，return_url ，debug = False ）：</span><br><span class="line">        self 。appid = appid</span><br><span class="line">        自我。app_notify_url = app_notify_url</span><br><span class="line">        自我。app_private_key_path = app_private_key_path</span><br><span class="line">        自我。app_private_key = 无</span><br><span class="line">        自我。return_url = return_url</span><br><span class="line">         与打开（自我。app_private_key_path ）作为FP ：</span><br><span class="line">            自我。app_private_key = RSA 。importKey （fp 。读（））</span><br><span class="line">        自我。alipay_public_key_path = alipay_public_key_path</span><br><span class="line">         与开放（自我。alipay_public_key_path  ）作为fp ：</span><br><span class="line">            self 。alipay_public_key = RSA 。importKey （fp 。读（）） </span><br><span class="line"></span><br><span class="line">        如果debug 为<span class="literal">True</span> ：</span><br><span class="line">            self 。__gateway = “https://openapi.alipaydev.com/gateway.do” 否则：</span><br><span class="line">            自我。__gateway = “https://openapi.alipay.com/gateway.do”  </span><br><span class="line">         </span><br><span class="line"></span><br><span class="line">    def direct_pay （self ，subject ，out_trade_no ，total_amount ，return_url = None ，** kwargs ）：</span><br><span class="line">        biz_content = &#123; “subject” ：subject ，“out_trade_no” ：out_trade_no ，“total_amount” ：total_amount ，“product_code” ：“FAST_INSTANT_TRADE_PAY” ，＃ “qr_pay_mode”：<span class="number">4</span> &#125;  </span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">             </span><br><span class="line">            </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        biz_content 。更新（kwargs ）</span><br><span class="line">        data = self 。build_body （“alipay.trade.page.pay” ，biz_content ，自我。return_url ）回归自我。sign_data （数据）</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    def build_body （self ，method ，biz_content ，return_url = None ）：</span><br><span class="line">        data = &#123; “app_id” ：self 。appid ，“method” ：方法，“charset” ：“utf<span class="number">-8</span>” ，“sign_type” ：“RSA2” ，“timestamp” ：datetime 。现在（）。strftime （“％Y-％m-％d％H：％M：％S” ），“版本” ： </span><br><span class="line">            </span><br><span class="line">            </span><br><span class="line">             </span><br><span class="line">             </span><br><span class="line">            </span><br><span class="line">             </span><br><span class="line">            “biz_content” ：biz_content</span><br><span class="line">         &#125;</span><br><span class="line"></span><br><span class="line">        如果return_url 是不无：</span><br><span class="line">            数据[ “notify_url” ] = 自我。app_notify_url   </span><br><span class="line">            data [ “return_url” ] = self 。return_url </span><br><span class="line"></span><br><span class="line">        返回数据</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sign_data</span> （<span class="title">self</span> ，<span class="title">data</span> ）：</span></span><br><span class="line"><span class="function">        <span class="title">data</span> 。<span class="title">pop</span> （“<span class="title">sign</span>” ，<span class="title">None</span> ）＃排序后的字符串</span></span><br><span class="line">        unsigned_items = self 。ordered_data （data ）</span><br><span class="line">        unsigned_string = “＆” 。加入（“&#123;<span class="number">0</span>&#125; = &#123;<span class="number">1</span>&#125;” 。格式（ķ ，v ）为ķ ，v 在unsigned_items ）</span><br><span class="line">        标志= 自我。 </span><br><span class="line">          符号（unsigned_string 。编码（“UTF<span class="number">-8</span>” ））＃ordered_items = self.ordered_data（数据）</span><br><span class="line">        quoted_string = “＆” 。加入（“&#123;<span class="number">0</span>&#125; = &#123;<span class="number">1</span>&#125;” 。格式（ķ ，quote_plus （v ））为ķ ，v 在unsigned_items ）</span><br><span class="line">          </span><br><span class="line"></span><br><span class="line">        ＃获得最终的订单信息字符串</span><br><span class="line">        signed_string = quoted_string + “＆sign =” + quote_plus （sign ）<span class="keyword">return</span> signed_string  </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    DEF ordered_data （自，数据）：</span><br><span class="line">        complex_keys = [] 为键，值在数据。items （）：<span class="keyword">if</span> isinstance （value ，dict ）：</span><br><span class="line">                complex_keys 。追加（关键） </span><br><span class="line">        </span><br><span class="line">            </span><br><span class="line"></span><br><span class="line">        ＃将字典类型的数据转储出来用于键在complex_keys ：</span><br><span class="line">            数据[ 键] = JSON 。转储（data [ key ]，separators =（<span class="string">'，'</span> ，<span class="string">'：'</span> ））</span><br><span class="line">          </span><br><span class="line"></span><br><span class="line">        返回排序（[（ķ ，v ）为ķ ，v 在数据。项（）]） </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sign</span> （<span class="title">self</span> ，<span class="title">unsigned_string</span> ）：＃开始计算签名</span></span><br><span class="line">        key = self 。app_private_key</span><br><span class="line">        </span><br><span class="line">        签名者= PKCS1_v1_5 。新（关键）</span><br><span class="line">        签名= 签名者。符号（SHA256 。新（unsigned_string ））＃BASE64编码，转换为Unicode的表示并移除回车</span><br><span class="line">        登录= encodebytes （签名）。解码（“utf8” ）。替换（“n” ，“” ）返回标志</span><br><span class="line">         </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_verify</span> （<span class="title">self</span> ，<span class="title">raw_content</span> ，<span class="title">signature</span> ）：＃开始计算签名</span></span><br><span class="line">        key = self 。alipay_public_key</span><br><span class="line">        </span><br><span class="line">        签名者= PKCS1_v1_5 。新（关键）</span><br><span class="line">        摘要= SHA256 。new （）</span><br><span class="line">        摘要。更新（raw_content 。编码（“UTF<span class="number">-8</span>” ））如果签名者。验证（消化，decodebytes （签名。编码（“UTF<span class="number">-8</span>” ）））：返回真正的回报假</span><br><span class="line">        </span><br><span class="line">             </span><br><span class="line">         </span><br><span class="line"></span><br><span class="line">    DEF 验证（自，数据，签名：）如果“sign_type” 在数据：</span><br><span class="line">            sign_type = 数据。pop （“sign_type” ）＃排序后的字符串</span><br><span class="line">        unsigned_items = self 。ordered_data （data ）</span><br><span class="line">        message = “＆” 。加入（u “&#123;&#125; = &#123;&#125;” 。格式（k ，v ）为k ，</span><br><span class="line">          </span><br><span class="line">          v <span class="keyword">in</span> unsigned_items ）返回self 。_verify （消息，签名）</span><br></pre></td></tr></table></figure>
+
+<p>​    最后在视图文件中定义方法就可以了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">＃导入支付基类来自。支付宝进口支付宝</span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">＃initialgeneration化阿里支付对象def get_ali_object （）：＃沙箱环境地址：https：//openhome.alipay.com/platform/appDaily.htm？tab = info </span><br><span class="line">    app_id = “<span class="number">2016092600603658</span>”＃APPID （沙箱应用）</span><br><span class="line"></span><br><span class="line">       </span><br><span class="line"></span><br><span class="line">    ＃支付完成后，支付偷偷向这里地址发送一个帖子请求，识别公网IP，如果是<span class="number">192.168</span><span class="number">.20</span><span class="number">.13</span>局域网IP，支付宝找不到，<span class="function"><span class="keyword">def</span> <span class="title">page2</span>（）接收不到这个请求</span></span><br><span class="line">    notify_url = “http：// localhost ：8000 / md_admin / alipayreturn” </span><br><span class="line"></span><br><span class="line">    ＃支付完成后，跳转的地址</span><br><span class="line">    return_url = “HTTP：//本地主机：<span class="number">8000</span> / md_admin / alipayreturn” </span><br><span class="line"></span><br><span class="line">    merchant_private_key_path = “c：/Users/liuyue/www/md/keys/app_private_2048.txt” ＃应用私是</span><br><span class="line">    号码alipay_public_key_path = “c：/Users/liuyue/www/md/keys/alipay_public_2048.txt” <span class="comment">#support宝公司     </span></span><br><span class="line"></span><br><span class="line">    支付宝= 支付宝（</span><br><span class="line">        appid = app_id ，</span><br><span class="line">        app_notify_url = notify_url ，</span><br><span class="line">        return_url = return_url ，</span><br><span class="line">        app_private_key_path = merchant_private_key_path ，</span><br><span class="line">        alipay_public_key_path = alipay_public_key_path ，＃支付宝的公司，验证支付宝回传消息使用，不是你自己的公子</span><br><span class="line">        调试= <span class="literal">True</span> ，＃默认虚假，）返回支付宝     </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">page1</span> （请求）：</span></span><br><span class="line"><span class="function"></span></span><br><span class="line">    如果要求。method == “POST” ： </span><br><span class="line"></span><br><span class="line">        ＃根据当前用户的配置，生成URL，并跳转。</span><br><span class="line">        钱= 浮动（请求。POST ，得到（<span class="string">'钱'</span> ））</span><br><span class="line"></span><br><span class="line">        支付宝= get_ali_object （）</span><br><span class="line"></span><br><span class="line">        ＃生成支付的url </span><br><span class="line">        query_params = 支付宝。direct_pay （</span><br><span class="line">            主题= “测试” ，＃商品简单描述</span><br><span class="line">            out_trade_no = “myorder” + STR （时间。时间（））， ＃用户购买的商品订单号（每次不一样）<span class="number">20180301073422891</span> </span><br><span class="line">            TOTAL_AMOUNT = 钱，＃交易金额（单位：元保留俩位小数））       </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">        pay_url = “https://openapi.alipaydev.com/gateway.do?&#123;0&#125;” 。格式（query_params ）＃支付宝网关地址（沙箱应用）   </span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> redirect （pay_url ）<span class="keyword">else</span> ：<span class="keyword">return</span> render （request ，<span class="string">'md_admin / page1.html'</span> ）</span><br><span class="line">    </span><br><span class="line">        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">DEF alipay_return （请求）：</span><br><span class="line">    宝= get_ali_object （）</span><br><span class="line">    PARAMS = 请求。GET 。dict （）</span><br><span class="line">    sign = params 。pop （<span class="string">'sign'</span> ，<span class="literal">None</span> ）</span><br><span class="line">    status = 支付宝。验证（params ，sign ）<span class="keyword">print</span> （<span class="string">'==================开始=================='</span> ）<span class="keyword">print</span> （<span class="string">'GET验证'</span> ，状态） </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">print</span> （<span class="string">'==================结束=================='</span> ）返回HttpResponse （<span class="string">'支付成功'</span> ）</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://weiinng.github.io/2019/04/09/2008Python3-7-0-Django2-0-4最细版本支付宝接口/">http://weiinng.github.io/2019/04/09/2008Python3-7-0-Django2-0-4最细版本支付宝接口/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/Django/"># Django</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/18/2003Django2-0-4-kindeditor4-11跨域上传文件问题/">Django2.0.4+kindeditor4.11跨域上传文件问题</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/02/Tornado底层/">关于Tornado:真实的异步和虚假的异步</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
