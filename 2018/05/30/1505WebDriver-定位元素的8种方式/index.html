@@ -198,7 +198,9 @@
         </header>
 
         <div class="post-content">
-            <h1 id="WebDriver–定位元素的8种方式"><a href="#WebDriver–定位元素的8种方式" class="headerlink" title="WebDriver–定位元素的8种方式"></a>WebDriver–定位元素的8种方式</h1><p>在UI层面的自动化测试开发中，元素的定位与操作是基础，也是经常遇到的困难所在。webdriver提供了8种定位：</p>
+            <img src="/2018/05/30/1505WebDriver-定位元素的8种方式/u=2933934959,1210900580&fm=26&gp=0.jpg">
+
+<h1 id="WebDriver–定位元素的8种方式"><a href="#WebDriver–定位元素的8种方式" class="headerlink" title="WebDriver–定位元素的8种方式"></a>WebDriver–定位元素的8种方式</h1><p>在UI层面的自动化测试开发中，元素的定位与操作是基础，也是经常遇到的困难所在。webdriver提供了8种定位：</p>
 <h2 id="id定位："><a href="#id定位：" class="headerlink" title="id定位："></a>id定位：</h2><p>find_element_by_id(“id值”)；id属性是唯一的</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">driver.find_element_by_id(<span class="string">"loginName"</span>).clear()<span class="comment">#用户名输入框的id属性</span></span><br><span class="line">driver.find_element_by_id(<span class="string">"loginName"</span>).send_keys(<span class="string">"admin"</span>)</span><br><span class="line">driver.find_element_by_id(<span class="string">"pwdTip"</span>).send_keys(Keys.TAB)<span class="comment">#密码输入框的id属性</span></span><br><span class="line">driver.find_element_by_id(<span class="string">"pwdTip"</span>).send_keys(<span class="string">"111111"</span>)</span><br></pre></td></tr></table></figure>
 

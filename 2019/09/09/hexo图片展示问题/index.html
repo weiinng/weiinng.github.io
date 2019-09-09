@@ -7,7 +7,7 @@
 
 
 
-<title>思考mysql主从部署 | weining`s Blog</title>
+<title>hexo图片展示问题 | weining`s Blog</title>
 
 
 
@@ -173,7 +173,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">思考mysql主从部署</h1>
+            <h1 class="post-title">hexo图片展示问题</h1>
             
                 <div class="post-meta">
                     
@@ -182,7 +182,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">September 3, 2019&nbsp;&nbsp;14:55:38</a>
+                        Date: <a href="#">September 9, 2019&nbsp;&nbsp;9:54:08</a>
                         </span>
                     
                     
@@ -191,26 +191,34 @@
         </header>
 
         <div class="post-content">
-            <p>今天学习mysql的主从部署，测试机器百度云 + Docker</p>
-<p>mysql的性能是否与计算机的性能有关系？</p>
-<h3 id="摘录CSDN学院-mysql："><a href="#摘录CSDN学院-mysql：" class="headerlink" title="摘录CSDN学院 mysql："></a>摘录CSDN学院 mysql：</h3><ol>
-<li>编写sql脚本</li>
-<li>执行sql脚本</li>
-</ol>
-<h4 id="什么是sql脚本："><a href="#什么是sql脚本：" class="headerlink" title="什么是sql脚本："></a>什么是sql脚本：</h4><ul>
-<li><p>多条sql语句组成SQL脚本。</p>
-<p>sql脚本是一个文本文件里面有多条sql语句，至于多少条取决于需要。</p>
-</li>
-<li><p>游标对象还包含了一个 executescript()  方法，这不是一个标准的API方法，这意味着在其他数据库API模块中可能没有这个方法。</p>
-</li>
-<li><p>executescriot() 方法确实很实用，他可以执行一段sql脚本。</p>
-</li>
+            <img src="/2019/09/09/hexo图片展示问题/20190909095617.png">
+
+<p>​        关于hexo静态博客主题的图片展示问题，大家在写博客的时候肯定会用到图片，图片可以增加，自己博客的美化也可以依靠图片更直观的展示问题，展示结果。但是在编写博客的时候，命名已经把图片弄成了相对路径为什么还是展示不出来，接下来由我给他家提供一些方法。</p>
+<h2 id="方法一：引用网络资源"><a href="#方法一：引用网络资源" class="headerlink" title="方法一：引用网络资源"></a>方法一：引用网络资源</h2><p>这个方法首先需要你将图片上传到网络上。比如：</p>
+<ul>
+<li>QQ空间：上传到QQ空间的个人相册然后直接复制链接。还算是比较麻烦的，有时候也可能会因为图片权限或者加载问题导致图片出不来。依照个人喜好。</li>
+<li>上传到github，这个方法是一个不错的选择，但是比较繁琐，自己在写博客的时候谁知道会用那个图片难不成还一个一个push吗？</li>
+<li>七牛云，这个我没有尝试过肯定是好用的。</li>
+<li>博客园相册。</li>
 </ul>
-<p>sql脚本案例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim a.sql</span><br></pre></td></tr></table></figure>
+<p>如果不是自己亲自上传的图片，如果你粘贴的比人的图片，就会遇到一个问题就是人家帖子删掉了你的也就没了。比如不如引用本地连接，方法二给大家提供了本地连接如何引用。</p>
+<h2 id="方法二：引用本地资源"><a href="#方法二：引用本地资源" class="headerlink" title="方法二：引用本地资源"></a>方法二：引用本地资源</h2><p><strong>hexo不会采用你在md编写相对路径的资源，他有自己的一套方法。请看下面:</strong></p>
+<h3 id="第一步："><a href="#第一步：" class="headerlink" title="第一步："></a>第一步：</h3><p>找到博客项目的文件夹下，找到<code>_config.yml</code>文件，这就是博客的配置文件大家肯定都不陌生，<font color="red">注意：不是主题的<code>_config.yml</code>文件</font>，大概在38行左右的<strong><code>post_asset_folder</code>，把这个选项从<code>false</code>改成<code>true</code>。</strong></p>
+<img src="/2019/09/09/hexo图片展示问题/20190909101201.png">
 
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> info user_tb <span class="keyword">values</span>(<span class="literal">null</span> , <span class="string">"武松"</span> ，”<span class="number">3434</span>“，<span class="number">23</span>)；</span><br><span class="line"><span class="keyword">insert</span> info user_tb <span class="keyword">values</span>(<span class="literal">null</span> , <span class="string">"关羽"</span> ，”<span class="number">3431234</span>“，<span class="number">23</span>)；</span><br><span class="line"><span class="keyword">insert</span> info user_tb <span class="keyword">values</span>(<span class="literal">null</span> , <span class="string">"吕布"</span> ，”<span class="number">343444</span>“，<span class="number">23</span>)；</span><br><span class="line"><span class="keyword">insert</span> info user_tb <span class="keyword">values</span>(<span class="literal">null</span> , <span class="string">"林冲"</span> ，”<span class="number">34314</span>“，<span class="number">23</span>)；</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> test_tb (</span><br><span class="line">	_id <span class="built_in">integer</span> primary <span class="keyword">key</span> autoincrement ,</span><br><span class="line">	<span class="keyword">name</span> <span class="built_in">text</span> ,</span><br><span class="line">	pass <span class="built_in">text</span> ,</span><br><span class="line">	description );</span><br><span class="line">	</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> emp_td (</span><br><span class="line">  _id <span class="built_in">integer</span> primary <span class="keyword">key</span> autoincrement ,</span><br><span class="line">	emp_name ,</span><br><span class="line">	emp_pass ,</span><br><span class="line">	emp_title );</span><br></pre></td></tr></table></figure>
+<h3 id="第二步："><a href="#第二步：" class="headerlink" title="第二步："></a>第二步：</h3><p>在博客项目下，执行一个下载上传图片插件的命令。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
 
+<img src="/2019/09/09/hexo图片展示问题/20190909111041.png">
+
+<p>可能会遇到一个叫做npm报错的问题自行解决。</p>
+<h3 id="第三步："><a href="#第三步：" class="headerlink" title="第三步："></a>第三步：</h3><p>之后你再使用<code>hexo n &lt;博客的文章名称&gt;</code>执行这个命令之后会在,<code>_posts</code>文件内生成一个与<code>&lt;博客文章名称&gt;.md</code>同名的文件夹。</p>
+<p>之后要添加图片的时候只需要将图片存放到这个文件夹内。</p>
+<p>通过<code></code>   或者  <code></code></p>
+<img src="/2019/09/09/hexo图片展示问题/20190909111757.png">
+
+<p>如图，虽然在.md中显示不到了，但是可以通过 <code>hexo s</code>来运行本地资源查看。</p>
+<p>到这里就完成了，hexo专用方法引用图片的操作。</p>
 
         </div>
 
@@ -225,7 +233,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="http://weiinng.github.io/2019/09/03/思考mysql主从部署/">http://weiinng.github.io/2019/09/03/思考mysql主从部署/</a></span>
+                        <span><a href="http://weiinng.github.io/2019/09/09/hexo图片展示问题/">http://weiinng.github.io/2019/09/09/hexo图片展示问题/</a></span>
                     </p>
                 
                 
@@ -249,9 +257,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/Mysql/"># Mysql</a>
-                    
-                        <a href="/tags/Docker/"># Docker</a>
+                        <a href="/tags/Hexo/"># Hexo</a>
                     
                         
                 </span>
@@ -264,10 +270,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/09/06/博客更新问题/">博客的更新和上传问题！</a>
             
-            
-            <a class="next" rel="next" href="/2019/09/03/新手如何使用github/">GitHub的使用方法</a>
+            <a class="next" rel="next" href="/2019/09/06/9102年虚拟货币排行/">9102年虚拟货币排行</a>
             
         </section>
 
