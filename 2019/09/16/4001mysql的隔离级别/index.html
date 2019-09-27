@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Mysql的隔离级别 | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Mysql的隔离级别</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 16, 2019&nbsp;&nbsp;18:53:53</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="一、事物特性"><a href="#一、事物特性" class="headerlink" title="一、事物特性"></a>一、事物特性</h2><h3 id="1-原子性"><a href="#1-原子性" class="headerlink" title="1.原子性"></a>1.原子性</h3><p>事务是一个原子操作单元，事务中包含的所有操作要么都做，要么都不做，没有第三种情况。</p>
+<h3 id="2-一致性"><a href="#2-一致性" class="headerlink" title="2.一致性"></a>2.一致性</h3><p>事务操作前和操作后都必须满足业务规则约束，比如说A向B转账，转账前和转账后AB两个账户的总金额必须是一致的。</p>
+<h3 id="3-隔离性"><a href="#3-隔离性" class="headerlink" title="3.隔离性"></a>3.隔离性</h3><p>隔离性是数据库允许多个并发事务同时对数据进行读写的能力，隔离性可以防止事务并发执行时由于交叉执行导致数据不一致的问题。</p>
+<h3 id="4-持久性"><a href="#4-持久性" class="headerlink" title="4.持久性"></a>4.持久性</h3><p>事务完成后，对数据的修改是永久的，即使出现系统故障也不会丢失。</p>
+<h2 id="二、并发问题"><a href="#二、并发问题" class="headerlink" title="二、并发问题"></a>二、并发问题</h2><h3 id="1-更新丢失"><a href="#1-更新丢失" class="headerlink" title="1.更新丢失"></a>1.更新丢失</h3><p>当两个事务选择同一行，然后更新数据，由于每个事务都不知道其他事务的存在，就会发生丢失更新的问题，（你我同时读取同一行数据，进行修改，你commit之后我也commit，那么我的结果将会覆盖掉你的结果）。</p>
+<h3 id="2-脏读"><a href="#2-脏读" class="headerlink" title="2.脏读"></a>2.脏读</h3><p>一个事务正在对一条记录做修改，在这个事务提交之前，别的事务读取到了这个事务修改之后的数据，也就是说，一个事务读取到了其他事务还没有提交的数据，就叫做脏读。</p>
+<h3 id="3-不可重复读"><a href="#3-不可重复读" class="headerlink" title="3.不可重复读"></a>3.不可重复读</h3><p>一个事务读某条数据读两遍，读到的是不一样的数据，也就是说，一个事务在进行中读取到了其他事务对旧数据的修改结果，（比如说 我开一个事务 修改某条数据 先查后改 执行修改动作的时候发现这条数据已经被别的事务删掉了）</p>
+<h3 id="4-幻读"><a href="#4-幻读" class="headerlink" title="4.幻读"></a>4.幻读</h3><p>一个事务中，读取到了其他事务新增的数据，仿佛出现了幻象。（幻读与不可重复读类似，不可重复读是读到了其他事务update/delete的结果，幻读是读到了其他事务insert的结果）</p>
+<p>回到顶部</p>
+<h2 id="三、隔离级别"><a href="#三、隔离级别" class="headerlink" title="三、隔离级别"></a>三、隔离级别</h2><h3 id="1-未提交读（read-uncommitted）"><a href="#1-未提交读（read-uncommitted）" class="headerlink" title="1.未提交读（read-uncommitted）"></a>1.未提交读（read-uncommitted）</h3><p>在一个事务中，可以读取到其他事务未提交的数据变化，这种读取其他会话还没提交的事务，叫做脏读现象，在生产环境中切勿使用。</p>
+<h3 id="2-已提交读（read-committed）"><a href="#2-已提交读（read-committed）" class="headerlink" title="2.已提交读（read-committed）"></a>2.已提交读（read-committed）</h3><p>在一个事务中，可以读取到其他事务已经提交的数据变化，这种读取也就叫做不可重复读，因为两次同样的查询可能会得到不一样的结果。</p>
+<h3 id="3-可重复读（repetable-read）"><a href="#3-可重复读（repetable-read）" class="headerlink" title="3.可重复读（repetable-read）"></a>3.可重复读（repetable-read）</h3><p>MySQL默认隔离级别，在一个事务中，直到事务结束前，都可以反复读取到事务刚开始时看到的数据，并一直不会发生变化，避免了脏读、不可重复读现象，但是它还是无法解决幻读问题。</p>
+<h3 id="4-可串行化（serializable）"><a href="#4-可串行化（serializable）" class="headerlink" title="4.可串行化（serializable）"></a>4.可串行化（serializable）</h3><p>这是最高的隔离级别，它强制事务串行执行，避免了前面说的幻读现象，简单来说，它会在读取的每一行数据上都加锁，所以可能会导致大量的超时和锁争用问题。</p>
+<h3 id="5-隔离级别一览表"><a href="#5-隔离级别一览表" class="headerlink" title="5.隔离级别一览表"></a>5.隔离级别一览表</h3><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>读数据一致性</th>
+<th>脏读</th>
+<th>不可重复读</th>
+<th>幻读</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>未提交读</td>
+<td>最低级别，只保证不读取物理上损坏的数据</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>已提交读</td>
+<td>语句级</td>
+<td>无</td>
+<td>有</td>
+<td>有</td>
+</tr>
+<tr>
+<td>可重复读</td>
+<td>事务级</td>
+<td>无</td>
+<td>无</td>
+<td>有</td>
+</tr>
+<tr>
+<td>可串行化</td>
+<td>最高级别，事务级</td>
+<td>无</td>
+<td>无</td>
+<td>无</td>
+</tr>
+</tbody></table>
+<p>隔离级别越严格，内部工作机制越复杂，较松散的隔离级别通常可以支持更高的并发。</p>
+<h2 id="四、个人分享"><a href="#四、个人分享" class="headerlink" title="四、个人分享"></a>四、个人分享</h2><p>1.凡是涉及到表结构的语句，皆不受事务控制，严格的说，凡是DDL语句，都是自带commit。比如create table 、alter table、truncate 等等</p>
+<p>2.如果要确定出现了哪种并发问题，先查一下当前数据库的隔离级别是什么，再进行判断。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-- 查看当前数据库的隔离级别</span><br><span class="line">SHOW VARIABLES LIKE <span class="string">"%tx_isolation%"</span></span><br></pre></td></tr></table></figure>
+
+<p>​    </p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Mysql/"># Mysql</a>
+                    
+                        <a href="/tags/非关系型数据库/"># 非关系型数据库</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/16/2009python魔法方法详解/">Python魔法方法详解</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/16/3002十大排序算法/">十大经典排序</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

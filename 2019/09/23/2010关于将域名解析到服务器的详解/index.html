@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>关于将域名解析到服务器的详解(Nginx) | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">关于将域名解析到服务器的详解(Nginx)</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 23, 2019&nbsp;&nbsp;14:56:49</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><strong>关于如何将域名解析到服务器。</strong></p>
+<h2 id="准备工具："><a href="#准备工具：" class="headerlink" title="准备工具："></a>准备工具：</h2><ul>
+<li><p>服务器已经安装nginx，通过<code>nginx -v</code>可以显示版本号。</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923150256.png">
+</li>
+<li><p>已经完成备案的域名。</p>
+<p>通过终审可以直接进行解析。</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923150538.png">
+</li>
+<li><p>一个可以访问的项目。</p>
+<p>比如：博客、gitbook、vue</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923150737.png">
+
+<p>上面这个是gitbook的，因为本人的博客已经完成操作，直接访问会跳转。</p>
+<p>概念相同。</p>
+</li>
+<li><p>一个ssl证书。</p>
+<p>由于我在百度的ssl证书存在问题，我选择的是腾讯的证书。</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923151023.png">
+
+<p>放在自己能找到的目录就行。</p>
+</li>
+</ul>
+<h2 id="认识Nginx命令。"><a href="#认识Nginx命令。" class="headerlink" title="认识Nginx命令。"></a>认识Nginx命令。</h2><p><strong>方便接下来的操作，我在下面贴出一会部署会用到的nginx命令。</strong></p>
+<p>重载nginx配置文件，成功不报错。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl reload nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>停止nginx。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>启动nginx。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>查看nginx服务状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>重新启动nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用http协议部署"><a href="#使用http协议部署" class="headerlink" title="使用http协议部署"></a>使用http协议部署</h2><p><strong>这里提到http协议，大家都知道http协议的速度快，但是缺乏一定的安全性，这里先做一个基本的操作实现，之后我再会教大家升级到https。</strong></p>
+<p>如果你已经完成域名的备案并通过终审，</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923152317.png">
+
+<p>通过这里接入解析页面，编辑以下内容。</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923151921.png">
+
+<p>配置完网页之后回到服务器。</p>
+<p>使用 vim编辑器修改nginx配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/conf.d/default.conf</span><br></pre></td></tr></table></figure>
+
+<p>监听80端口，并且项目目录指定/root/public</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       <span class="number">80</span>;</span><br><span class="line">    server_name  weiinng.cn;       #这里填写域名</span><br><span class="line">    client_max_body_size <span class="number">75</span>M;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line"></span><br><span class="line">        root /root/weiinng.github.io;   #这里是你项目的静态资源位置</span><br><span class="line">        index index.html;   #入口文件</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后重新载入配置文件。</p>
+<p>之后使用 http 访问地址，就可以跳过去了，https过不去，因为需要ssl证书。具体看下面。</p>
+<h2 id="获取ssl证书"><a href="#获取ssl证书" class="headerlink" title="获取ssl证书"></a>获取ssl证书</h2><p><strong>作为一个程序员收费的东西我是不用的，除非迫不得已。</strong></p>
+<p>接下来给大家说一下ssl证书的获取方法。</p>
+<h3 id="百度云ssl证书"><a href="#百度云ssl证书" class="headerlink" title="百度云ssl证书"></a>百度云ssl证书</h3><p>百度云的ssl证书地址</p>
+<p><a href="https://console.bce.baidu.com/cas/#/cas/apply/create~brand=SYMANTEC&amp;certType=DV" target="_blank" rel="noopener">https://console.bce.baidu.com/cas/#/cas/apply/create~brand=SYMANTEC&amp;certType=DV</a></p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923155755.png">
+
+<p>选择上面的三个选项获取到的证书是免费的。</p>
+<h3 id="腾讯云ssl证书"><a href="#腾讯云ssl证书" class="headerlink" title="腾讯云ssl证书"></a>腾讯云ssl证书</h3><p><strong>刚开始注册百度云的时候证书不免费，但是通过腾讯可以免费使用，上面那个没有测试过但是结果肯定都是一样的。</strong></p>
+<p><strong>腾讯的证书操作参考如下：</strong></p>
+<p>证书地址</p>
+<p><a href="https://buy.cloud.tencent.com/ssl?fromSource=ssl" target="_blank" rel="noopener">https://buy.cloud.tencent.com/ssl?fromSource=ssl</a></p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923160211.png">
+
+<p>同样选择免费的证书</p>
+<p>进入申请页面</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923160414.png">
+
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923160717.png">
+
+<p>一路next</p>
+<p>接下来按照给你提供的域名记录值等内容回到域名解析的网页再次添加一条解析</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923160740.png">
+
+<p>配置如下：</p>
+
+
+<p>回到腾讯云的证书管理页面</p>
+
+
+<p>压缩包解压之后就看到证书是这个样子的</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923161302.png">
+
+<p>我们现在使用nginx部署的 所以进入nginx文件内看到下面这两个文件</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923161400.png">
+
+<p>把这两个文件通过自己喜欢的方式存入服务器的root文件夹。（自己能找到的位置）</p>
+<p><strong>然后就完成了证书的获取</strong></p>
+<h2 id="使用https协议部署"><a href="#使用https协议部署" class="headerlink" title="使用https协议部署"></a>使用https协议部署</h2><p><strong>加上ssl的http就是https协议了，在速度上可能会慢一点点，应该也看不出来。</strong></p>
+<p>之前写过一篇文章是在阿里云服务器上用Apache切换https协议：<a href="https://v3u.cn/Index_a_id_37" target="_blank" rel="noopener">将博客迁移阿里云并且切换成https解析的过程</a></p>
+<p>​    这一次，换成使用Nginx来部署，相比之下，比Apache的配置要简单一些</p>
+<p>​    如何申请SSL证书就按下不表了，非常简单，目前阿里云和腾讯云都免费提供一年的证书服务，区别就是腾讯云不需要域名在腾讯，而阿里云只有域名在阿里旗下才提供。</p>
+<p>​    申请域名证书成功后，下载压缩包，一定要选择Nginx的证书类型，解压后得到一个key文件一个pem文件，将这两个文件上传到服务器的root目录。</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190521104402_75730.png">
+
+<p>然后打开nginx配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/nginx/conf.d/default.conf</span><br></pre></td></tr></table></figure>
+
+<p>同时添加http和https的协议配置，需要注意的是，http需要阿里云安全协议暴露80端口,https需要阿里云安全协议暴露443端口</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       <span class="number">80</span>;</span><br><span class="line">    server_name  m9u.cn;   #你解析的域名地址</span><br><span class="line">    #这一步是http重定向到https，也可以不写</span><br><span class="line">    rewrite ^(.*)$ https:<span class="comment">//$&#123;server_name&#125;$1 permanent;</span></span><br><span class="line">    access_log      /root/md_vue_access.log;</span><br><span class="line">    error_log       /root/md_vue_error.log;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    client_max_body_size <span class="number">75</span>M;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line"></span><br><span class="line">        root /root/fast_vue;   #静态资源所在的文件地址</span><br><span class="line">        index index.html;</span><br><span class="line">        try_files $uri $uri/ <span class="regexp">/index.html;</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    error_log    /</span>root/fast_vue/error.log    error;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line"></span><br><span class="line">        listen <span class="number">443</span>;</span><br><span class="line">        server_name m9u.cn;   #解析的域名地址</span><br><span class="line">        ssl on;</span><br><span class="line">        ssl_certificate      /root/2238250_m9u.cn.pem;    #证书所在的地址</span><br><span class="line">        ssl_certificate_key  /root/2238250_m9u.cn.key;    #证书key所在的地址</span><br><span class="line">        ssl_session_timeout <span class="number">5</span>m;</span><br><span class="line">        ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</span><br><span class="line">        ssl_protocols TLSv1 TLSv1<span class="number">.1</span> TLSv1<span class="number">.2</span>;</span><br><span class="line">        ssl_prefer_server_ciphers on;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line"></span><br><span class="line">        root /root/fast_vue;    #静态资源梭子的地址</span><br><span class="line">        index index.html;    </span><br><span class="line">        try_files $uri $uri/ <span class="regexp">/index.html;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">        &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>重启nginx</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart nginx.service</span><br></pre></td></tr></table></figure>
+
+<p>接下来使用https:// 进行访问。</p>
+<p>如果你配置了重定向，使用http访问后会自动跳到https增加了容错。</p>
+<img src="/2019/09/23/2010关于将域名解析到服务器的详解/20190923162624.png">
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/24/2011vim详解从入门到入坟/">【史上最全】vim编辑器从入门到入坟，从惊叹到精通（不断完善中）</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/17/3003十大经典排序算法动图演示/">十大经典排序算法（动图演示）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
