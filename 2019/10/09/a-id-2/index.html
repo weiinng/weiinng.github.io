@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python内存管理机制 | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python内存管理机制</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 9, 2019&nbsp;&nbsp;10:14:28</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Python的内存管理机制"><a href="#Python的内存管理机制" class="headerlink" title="Python的内存管理机制?"></a>Python的内存管理机制?</h1><p>Python和其他语言不同的是python有<strong>自动垃圾回收机制</strong>。</p>
+<p>比如java,c,c++等语言需要手动垃圾回收，</p>
+<p>自动垃圾回收主要是以引用计数为主，标记清除、分代回收为辅的方式进行内存管理。</p>
+<p><strong>引用计数</strong>当一个对象的引用被创建或者复制时，对象的引用计数+1；当一个对象的引用被销毁是，对象的引用计数-1,；当对象的引用计数减少到为0的时候，就意味着没有人再去使用它，可以将其释放了。</p>
+<p><strong>引用计数机制也有他的缺点和优点：</strong></p>
+<p>优点：</p>
+<p>实时性，引用为零时自动回收，并将回收的时间分摊到平时。</p>
+<p>不像其他语言要特定的时间和时机进行回收。</p>
+<p>缺点：</p>
+<p>自动回收占用额外的内存。</p>
+<p>循环引用问题，内存占满造成宕机。、</p>
+<p><strong>循环引用是什么？</strong></p>
+<p>循环引用时对象A和对象B互相调用形成循环引用。</p>
+<p>这个会导致内存不断被占用，可能会导致宕机。</p>
+<p><strong>可能造成循环引用对象的容器？</strong></p>
+<p>list  set  dict  class  instance</p>
+<p><strong>如何解决循环引用问题？</strong></p>
+<p>解决循环引用的方法就是Python的标记清除机制和隔代（分代）回收机制。</p>
+<p><strong>标记清除：</strong></p>
+<p>如果两个对象引用计数都为1，但是仅仅存在他们之间的循环引用，那么这两个对象都会被回收，也就是说，他们的引用计数并非为0，但实际上有效的引用计数为0，所通过标记清除将循环引用摘掉，就会得出这两个有效的计数了。</p>
+<p><strong>如果进行标记删除？</strong></p>
+<p>通过两个容器来完成：死亡容器、存活容器</p>
+<p>标记删除第一步：</p>
+<p>对执行删除操作后的每个引用-1，此时c的引用为0,d的引用为0，把它们都放在死亡容器内。把那些引用仍然大于0的放到存活容器内。</p>
+<p>标记删除第二步：</p>
+<p>遍历存活容器，查看是否有存活的容器引用了死亡容器内的对象，如果有就把该对象（注意是对象，比如0x7f94bb602f80，不是对象的引用）从死亡容器内取出放到存活容器内。由于c,b没有对象引用他们经过这一个步骤他们还在死亡组（取出来了只是，有被存活容器内引用过的对象，没有被引用过的独享还在死亡容器内）。</p>
+<p>标记清除第三步：</p>
+<p>将死亡组所有对象删除，这样就完成对c,d的删除。</p>
+<p><strong>分代回收：</strong></p>
+<p>刚才提到自动垃圾回收的缺点就是会占用额外的内存，如果出现循环引用的问题，python不断的去自动回收（占用内存）最后可能导致宕机，引出了分代回收。</p>
+<p>【比如当某个内存块在经过三次垃圾收集的清洗之后还在存活我们就将内存块M划到一个集合A中去，而新分配的内存都划分到集合B中去，当垃圾收集开始工作的时候，大多数情况只对集合B进行垃圾回收，而对集合A垃圾回收要隔上一段时间去进行，也就减少垃圾回收时候所占用的内存消耗，效率自然就提高了。这个过程中集合B的某些内存块由于存活时间长而会被转移到集合A中，当然，集合A中实际上也存在一些垃圾，这些垃圾的回收因为分代回收而被延迟。】</p>
+<p><strong>调优方法：</strong></p>
+<ol>
+<li><p><strong>手动垃圾回收</strong></p>
+<ul>
+<li><p>程序启动时候通过代码进行手动垃圾回收，而减轻自动回收的压力。</p>
+</li>
+<li><p>del语句，这个语句操作某个对象时候，并不是直接将对象的在内存中删除，而是将该对象的引用计数-1.</p>
+</li>
+<li><p>当存在村换引用的时候，执行del函数，对应的del方法将不会执行。</p>
+<p>Python的自动垃圾回收机制也是引用计数-1，del也是-1，所以del并不会起到有效的作用。</p>
+<p>这时候使用垃圾回收接口-GC，来回收和显示这些不能删除的对象。</p>
+</li>
+</ul>
+<p>对Python的垃圾回收进行调优的一个最简单的手段便是关闭自动回收，根据情况手动触发，例如在用Python开发游戏的时候，可以再一局游戏的开始关闭GC，然后在该局游戏结束后手动调用一次GC清理内存。这样就能避免游戏过程中GC造成的卡顿，但是缺点是在游戏过程中，可能因为内存溢出造成的游戏崩溃。</p>
+</li>
+<li><p><strong>调高垃圾回收的阈值</strong></p>
+<p>相比完全手动的垃圾回收，一个更温和的方法是调高垃圾回收的阈值。例如一个游戏可能在某一个时刻产生大量的子弹对象（假如2000个）。而此时Python的垃圾回收的threshold0为1000,。则不会触发垃圾回收，若干秒后，这些子弹命中目标被删除，内存引用计数机制自动释放，一次（可能很耗时的）垃圾回收被完全避免了。</p>
+<p>调高阈值的方法还能在一定程度上避免内存溢出的问题（但不能完全避免），同时可能减少客观的垃圾回收开销，根据具体项目的不同，甚至是程序输入的不同，合适的阈值也不同，因此需要反复调试找到一个合适的阈值，这也是一个调高阈值这种手段的一个缺点。</p>
+</li>
+<li><p><strong>避免循环引用</strong></p>
+<ul>
+<li>从代码的角度出发避免循环引用的问题。</li>
+</ul>
+<p>一个可能更好的方法使用良好的编程习惯尽可能的避免循环引用，两种常见的方法包括：</p>
+<ol>
+<li><p>手动解循环引用使用弱引用。</p>
+<ul>
+<li><p><strong>手动解循环引用</strong></p>
+<p>手动解循环引用指在编写代码时写好解开循环引用的diamante，在一个对象使用结束不需要调用时。</p>
+</li>
+<li><p><strong>使用弱引用</strong></p>
+<p>弱引用值当引用一个对象时，不增加该对象的引用计数，当需要用到该对象的时候，需要首先检查该对象是否存在，弱引用的实现方式有很多种，Python自带一个弱引用库weakref。</p>
+<p>除了使用Python自带的weakref库以外，通常我们可以根据自己项目的业务逻辑实现弱引用，例如在游戏里开发的时候，通常很多UI想都是有其唯一的ID的，在引用一个对象时我们可以保存其ID而不是直接引用该独享，在需要使用该对象的时候根据ID去检查对象是否存在。</p>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<p><strong>内存管理机制</strong></p>
+<p>Python的内存管理内存分为四层：</p>
+<img src="/2019/10/09/a-id-2/1336476307_4497.jpg">
+
+<p>其中layer2为内存池，layer3为对象缓冲池。Python的对象缓冲池layer3是建立在layer2基础上的。</p>
+<p><strong>内存池：</strong></p>
+<img src="/2019/10/09/a-id-2/12876717-bd79288a23142d3c.webp">
+
+<p>Python的内存机制呈现金字塔形状：</p>
+<ol>
+<li>-1，-2层主要有操作系统进行操作；</li>
+<li>第0层是C中的malloc，free等内存分配和释放函数进行操作；</li>
+<li>第1层和第2层是内存池，有Python的接口函数PyMem_Malloc函数实现，当对象小于256K时有该层直接分配内存；</li>
+<li>第3层是最上层，也就是我们对Python对象的直接操作；</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/10/09/a-id-1/">Python3的自省机制</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
