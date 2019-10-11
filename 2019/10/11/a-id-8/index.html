@@ -7,7 +7,7 @@
 
 
 
-<title>Redis的五大难题解决方案 | weining`s Blog</title>
+<title>Redis并发竞争key的解决方案详解 | weining`s Blog</title>
 
 
 
@@ -177,7 +177,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Redis的五大难题解决方案</h1>
+            <h1 class="post-title">Redis并发竞争key的解决方案详解</h1>
             
                 <div class="post-meta">
                     
@@ -186,7 +186,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">October 11, 2019&nbsp;&nbsp;15:59:44</a>
+                        Date: <a href="#">October 11, 2019&nbsp;&nbsp;18:08:47</a>
                         </span>
                     
                     
@@ -202,48 +202,49 @@
         </header>
 
         <div class="post-content">
-            <img src="/2019/10/11/a-id-6/v2-03aa6c1b8000f545c209b31c32a6261e_1200x500.jpg">
+            <img src="/2019/10/11/a-id-8/v2-f5a4c1632d00da9ea09e89fa264887c6_1200x500.jpg">
 
-<h1 id="如何解决Redis雪崩、穿透、并发等5大难题"><a href="#如何解决Redis雪崩、穿透、并发等5大难题" class="headerlink" title="如何解决Redis雪崩、穿透、并发等5大难题"></a>如何解决Redis雪崩、穿透、并发等5大难题</h1><h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a><strong>缓存雪崩</strong></h2><p>数据未加载到缓存中，或者缓存同一时间大面积的失效，从而导致所有请求都去查数据库，导致数据库CPU和内存负载过高，甚至宕机。</p>
-<p><strong>比如一个雪崩的简单过程：</strong></p>
-<p>1、redis集群大面积故障</p>
-<p>2、缓存失效，但依然大量请求访问缓存服务redis</p>
-<p>3、redis大量失效后，大量请求转向到mysql数据库</p>
-<p>4、mysql的调用量暴增，很快就扛不住了，甚至直接宕机</p>
-<p>5、由于大量的应用服务依赖mysql和redis的服务，这个时候很快会演变成各服务器集群的雪崩，最后网站彻底崩溃。</p>
-<img src="/2019/10/11/a-id-6/v2-cf0176503a1b5c51ff56d466de94060d_hd.jpg">
+<h1 id="高并发架构系列：Redis并发竞争key的解决方案详解"><a href="#高并发架构系列：Redis并发竞争key的解决方案详解" class="headerlink" title="高并发架构系列：Redis并发竞争key的解决方案详解"></a>高并发架构系列：Redis并发竞争key的解决方案详解</h1><h2 id="需求由来"><a href="#需求由来" class="headerlink" title="需求由来"></a>需求由来</h2><p><strong>1.Redis高并发的问题</strong></p>
+<p>Redis缓存的高性能有目共睹，应用的场景也是非常广泛，但是在高并发的场景下，也会出现问题：缓存击穿、缓存雪崩、缓存和数据一致性，以及今天要谈到的缓存并发竞争。</p>
+<p>这里的并发指的是多个redis的client同时set key引起的并发问题。</p>
+<p><strong>2.出现并发设置Key的原因</strong></p>
+<p>Redis是一种单线程机制的nosql数据库，基于key-value，数据可持久化落盘。由于单线程所以Redis本身并没有锁的概念，多个客户端连接并不存在竞争关系，但是利用jedis等客户端对Redis进行并发访问时会出现问题。</p>
+<p>比如：同时有多个子系统去set一个key。这个时候要注意什么呢？</p>
+<p><strong>3.举一个例子</strong></p>
+<p>多客户端同时并发写一个key，一个key的值是1，本来按顺序修改为2,3,4，最后是4，但是顺序变成了4,3,2，最后变成了2。</p>
+<img src="/2019/10/11/a-id-8/v2-47e301cbaa45a2dd201e7b4026f55056_hd.jpg">
 
-<h2 id="如何预防缓存雪崩："><a href="#如何预防缓存雪崩：" class="headerlink" title="如何预防缓存雪崩："></a><strong>如何预防缓存雪崩：</strong></h2><img src="/2019/10/11/a-id-6/v2-38801b551891fb0b0dc4e6414b41c52b_hd.jpg">
 
-<p><strong>1.缓存的高可用性</strong></p>
-<p>缓存层设计成高可用，防止缓存大面积故障。即使个别节点、个别机器、甚至是机房宕掉，依然可以提供服务，例如 Redis Sentinel 和 Redis Cluster 都实现了高可用。</p>
-<p><strong>2.缓存降级</strong></p>
-<p>可以利用ehcache等本地缓存(暂时支持)，但主要还是对源服务访问进行限流、资源隔离（熔断）、降级等。</p>
-<p>当访问量剧增、服务出现问题仍然需要保证服务还是可用的。系统可以根据一些关键数据进行<strong>自动降级</strong>，也可以配置开关实现<strong>人工降级，</strong>这里会涉及到运维的配合。</p>
-<p><strong>降级的最终目的是保证核心服务可用，即使是有损的。</strong></p>
-<p>比如推荐服务中，很多都是个性化的需求，假如个性化需求不能提供服务了，可以降级补充热点数据，不至于造成前端页面是个大空白。</p>
-<p>在进行降级之前要对系统进行梳理，比如：哪些业务是核心(必须保证)，哪些业务可以容许暂时不提供服务(利用静态页面替换)等，以及配合服务器核心指标，来后设置整体预案，比如：</p>
-<p>（1）一般：比如有些服务偶尔因为网络抖动或者服务正在上线而超时，可以自动降级；</p>
-<p>（2）警告：有些服务在一段时间内成功率有波动（如在95~100%之间），可以自动降级或人工降级，并发送告警；</p>
-<p>（3）错误：比如可用率低于90%，或者数据库连接池被打爆了，或者访问量突然猛增到系统能承受的最大阀值，此时可以根据情况自动降级或者人工降级；</p>
-<p>（4）严重错误：比如因为特殊原因数据错误了，此时需要紧急人工降级。</p>
-<p><strong>3.Redis备份和快速预热</strong></p>
-<p>1)Redis数据备份和恢复</p>
-<p>2)快速缓存预热</p>
-<p><strong>4.提前演练</strong></p>
-<p>最后，建议还是在项目上线前，演练缓存层宕掉后，应用以及后端的负载情况以及可能出现的问题，对高可用提前预演，提前发现问题。</p>
-<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a><strong>缓存穿透</strong></h2><p>缓存穿透是指查询一个一不存在的数据。例如：从缓存redis没有命中，需要从mysql数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
-<p>解决思路：</p>
-<p>如果查询数据库也为空，直接设置一个默认值存放到缓存，这样第二次到缓冲中获取就有值了，而不会继续访问数据库。设置一个过期时间或者当有值的时候将缓存中的值替换掉即可。</p>
-<p>可以给key设置一些格式规则，然后查询之前先过滤掉不符合规则的Key。</p>
-<h2 id="缓存并发"><a href="#缓存并发" class="headerlink" title="缓存并发"></a><strong>缓存并发</strong></h2><p>这里的并发指的是多个redis的client同时set key引起的并发问题。其实redis自身就是单线程操作，多个client并发操作，按照先到先执行的原则，先到的先执行，其余的阻塞。当然，另外的解决方案是把redis.set操作放在队列中使其串行化，必须的一个一个执行。</p>
-<h2 id="缓存预热"><a href="#缓存预热" class="headerlink" title="缓存预热"></a><strong>缓存预热</strong></h2><p>缓存预热就是系统上线后，将相关的缓存数据直接加载到缓存系统。</p>
-<p>这样就可以避免在用户请求的时候，先查询数据库，然后再将数据缓存的问题！用户直接查询事先被预热的缓存数据！</p>
-<p>解决思路：</p>
-<p>1、直接写个缓存刷新页面，上线时手工操作下；</p>
-<p>2、数据量不大，可以在项目启动的时候自动进行加载；</p>
-<p>目的就是在系统上线前，将数据加载到缓存中。</p>
-<p>以上就是缓存雪崩、预热、降级等的介绍。</p>
+
+<p>如何解决redis的并发竞争key问题呢？下面给到<strong>2个Redis并发竞争的解决方案。</strong></p>
+<img src="/2019/10/11/a-id-8/v2-bc6a5642bb88b629b2111c785e44d01a_hd.jpg">
+
+
+
+<h2 id="第一种方案：分布式锁-时间戳"><a href="#第一种方案：分布式锁-时间戳" class="headerlink" title="第一种方案：分布式锁+时间戳"></a><strong>第一种方案：分布式锁+时间戳</strong></h2><p><strong>1.整体技术方案</strong></p>
+<p>这种情况，主要是准备一个分布式锁，大家去抢锁，抢到锁就做set操作。</p>
+<p>加锁的目的实际上就是把并行读写改成串行读写的方式，从而来避免资源竞争。</p>
+<p><strong>2.Redis分布式锁的实现</strong></p>
+<p>主要用到的redis函数是setnx()</p>
+<p><strong>用SETNX实现分布式锁</strong></p>
+<p>利用SETNX非常简单地实现分布式锁。例如：某客户端要获得一个名字youzhi的锁，客户端使用下面的命令进行获取：</p>
+<p>SETNX lock.youzhi&lt;current Unix time + lock timeout + 1&gt;</p>
+<ul>
+<li>如返回1，则该客户端获得锁，把lock.youzhi的键值设置为时间值表示该键已被锁定，该客户端最后可以通过DEL lock.foo来释放该锁。</li>
+<li>如返回0，表明该锁已被其他客户端取得，这时我们可以先返回或进行重试等对方完成或等待锁超时。</li>
+</ul>
+<p><strong>2.时间戳</strong></p>
+<p>由于上面举的例子，要求key的操作需要顺序执行，所以需要保存一个时间戳判断set顺序。</p>
+<blockquote>
+<p>系统A key 1 {ValueA 7:00}<br>系统B key 1 { ValueB 7:05}</p>
+</blockquote>
+<p>假设系统B先抢到锁，将key1设置为{ValueB 7:05}。接下来系统A抢到锁，发现自己的key1的时间戳早于缓存中的时间戳（7:00&lt;7:05），那就不做set操作了。</p>
+<p><strong>3.什么是分布式锁</strong></p>
+<p>因为传统的加锁的做法（如java的synchronized和Lock）这里没用，只适合单点。因为这是分布式环境，需要的是分布式锁。</p>
+<p>当然，分布式锁可以基于很多种方式实现，比如zookeeper、redis等，不管哪种方式实现，基本原理是不变的：用一个状态值表示锁，对锁的占用和释放通过状态值来标识。</p>
+<h2 id="第二种方案：利用消息队列"><a href="#第二种方案：利用消息队列" class="headerlink" title="第二种方案：利用消息队列"></a><strong>第二种方案：利用消息队列</strong></h2><p>在并发量过大的情况下,可以通过消息中间件进行处理,把并行读写进行串行化。</p>
+<p>把Redis.set操作放在队列中使其串行化,必须的一个一个执行。</p>
+<p>这种方式在一些高并发的场景中算是一种通用的解决方案。</p>
 <p><a href="http://weiinng.cn/2019/10/11/a-id-9/"><strong>Redis为什么是单线程，高并发快的3大原因详解</strong></a></p>
 <p><a href="http://weiinng.cn/2019/10/11/a-id-8/"><strong>Redis并发竞争key的解决方案详解</strong></a></p>
 <p><a href="http://weiinng.cn/2019/10/11/a-id-7/"><strong>Redis缓存和Mysql数据一致性方案详解</strong></a></p>
@@ -289,10 +290,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/10/11/a-id-7/">Redis缓存和Mysql数据一致性方案详解</a>
+                <a class="prev" rel="prev" href="/2019/10/11/a-id-9/">Redis为什么是单线程，高并发快的3大原因详解</a>
             
             
-            <a class="next" rel="next" href="/2019/10/11/a-id-5/">Docker</a>
+            <a class="next" rel="next" href="/2019/10/11/a-id-7/">Redis缓存和Mysql数据一致性方案详解</a>
             
         </section>
 
