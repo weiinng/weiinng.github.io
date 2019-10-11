@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Docker | weining`s Blog</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Docker</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 11, 2019&nbsp;&nbsp;9:26:28</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><strong>都知道docker但是对打的说辞顺序还是梳理不清楚，接下来只是我的个人意见。</strong></p>
+<p>docker作为一个软件集装箱化平台，可以让开发者构建应用程序的时候，可以将它与其依赖环境一起打包到容器里面，然后就可以发布到任意平台。</p>
+<p>docker是一种linux容器技术，是基于go语言实现的开源项目，它本身就是一个容器运行载体可以被称为容器管理引擎，知道docker的必然知道他的三大核心概念，镜像（images）,容器（container），容器（Storage）.</p>
+<p>docker我了解的还是比较多的，首先先从他的三大核心说起吧。</p>
+<p>镜像是一个只读的image文件，可以看做是一个docker容器的模板，相当于面向对象里面的类。</p>
+<p>docker是根据image文件生成容器实例，同一个image文件，可以生成多个同时运行的容器实例。</p>
+<p>一个容器运行一种服务，当我们需要的时候可以通过docker客户端创建一个对应的运行实例，也就是我们的容器了，容器就好比面向对象的实例，一个容器他可以被启动、开始、停止、删除每个容器都是相互隔离的以此来保证平台的安全。</p>
+<p>也可以把容器看做一个简易版的linux环境，它包括root用户权限，进程空间，用户空间和网络空间等.</p>
+<p>基本上容器的定义和镜像是一模一样的，也就是一堆层的统一视角，唯一的区别就是容器最上面一层是可读可写的。</p>
+<p>至于仓库，就是存放一堆镜像的地方，我们可以把镜像发布到仓库中，需要的时候可以从仓库拉下来就可以了，仓库分为共有仓库和私有仓库，最大的共有仓库是docker.hub存放了数量庞大的镜像提供用户下载，但是呢从官方下载镜像的速度可能会慢一点，咱们国内的大厂也有开源的仓库比如阿里云、网易云等.</p>
+<p>当然用户可以本地创建一个私有仓库，docker的仓库理念和git差不多，注册服务可以理解为github这样的托管服务。</p>
+<p>另外docker还提供了dockerfile和tar的压缩文件来辅助docker的使用.</p>
+<p>dockerfile是一个文本格式的配置文件，我们可以通过dockerfile来快速创建自定义的镜像，他是有一行行的命令语句组成的，他也支持#开头的注释行。</p>
+<p>一般的dockerfile文件分为四个部分，基础镜像的信息，维护者的信息，镜像操作指令和容器启动时的指令,可以通过docker build 命令来启动。</p>
+<p>另外一个就是tar拓展名文件，这个大家都知道这是压缩包的意思，我们开发者可以通过docker save 命令将镜像做成拓展名为tar的压缩文件，然后就可以通过存储媒介进行携带，相反呢然后就可以通过docker load命令将，镜像的tar文件重新解压为镜像。来满足不同场景的使用需求。</p>
+<p>比如就拿开发和运维的交接来举例子，开发的把本地运行没有问题的代码交给运维之后运维那边跑不起来，这就可能存在环境的问题，如果开发者通过docker将代码和环境打包一起交给运维，运维直接拿去运行，开发那边能跑运维这边肯定也可以。</p>
+<p>上面就是我对docker和他三大核心的个人理解，接下来我针对docker的特点和缺点，以及docker与传统的vm对比，传统虚拟机技术是虚拟出一套硬件后，在其上运行一个完整的操作系统，在该系统上运行所需要的应用进程，而容器内应用程序直接运行在宿主的内核，容器内没有自己的内核，<strong>而且也没有进行硬件虚拟。</strong>因此容器要比传统的虚拟机更轻便。每个容器之前都是相互隔离的，每个容器都有自己的文件系统，容器之间进程不相互影响，能区分计算资源。</p>
+<p>docker其实就是一个缩小版的，高度浓缩的linux系统，相比虚拟机分钟级别的启动速度docker容器的启动速度绝对是快到没边了。</p>
+<p>这就是我对docker的简单理解了。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Docker/"># Docker</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/11/a-id-6/">微服务架构</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/10/a-id-4/">缓存穿透、缓存击穿、缓存雪崩区别和解决方案</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
