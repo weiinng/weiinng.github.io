@@ -7,7 +7,7 @@
 
 
 
-<title>微服务架构 | weining`s Blog</title>
+<title>Redis的五大难题解决方案 | weining`s Blog</title>
 
 
 
@@ -111,11 +111,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">微服务架构</h1>
+            <h1 class="post-title">Redis的五大难题解决方案</h1>
             
                 <div class="post-meta">
                     
@@ -133,7 +195,49 @@
         </header>
 
         <div class="post-content">
-            <p><strong>这个微服务架构我决定写三篇以微服务架构、RPC框架和Thirft框架</strong></p>
+            <img src="/2019/10/11/a-id-6/v2-03aa6c1b8000f545c209b31c32a6261e_1200x500.jpg">
+
+<h1 id="如何解决Redis雪崩、穿透、并发等5大难题"><a href="#如何解决Redis雪崩、穿透、并发等5大难题" class="headerlink" title="如何解决Redis雪崩、穿透、并发等5大难题"></a>如何解决Redis雪崩、穿透、并发等5大难题</h1><h2 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a><strong>缓存雪崩</strong></h2><p>数据未加载到缓存中，或者缓存同一时间大面积的失效，从而导致所有请求都去查数据库，导致数据库CPU和内存负载过高，甚至宕机。</p>
+<p><strong>比如一个雪崩的简单过程：</strong></p>
+<p>1、redis集群大面积故障</p>
+<p>2、缓存失效，但依然大量请求访问缓存服务redis</p>
+<p>3、redis大量失效后，大量请求转向到mysql数据库</p>
+<p>4、mysql的调用量暴增，很快就扛不住了，甚至直接宕机</p>
+<p>5、由于大量的应用服务依赖mysql和redis的服务，这个时候很快会演变成各服务器集群的雪崩，最后网站彻底崩溃。</p>
+<img src="/2019/10/11/a-id-6/v2-cf0176503a1b5c51ff56d466de94060d_hd.jpg">
+
+<h2 id="如何预防缓存雪崩："><a href="#如何预防缓存雪崩：" class="headerlink" title="如何预防缓存雪崩："></a><strong>如何预防缓存雪崩：</strong></h2><img src="/2019/10/11/a-id-6/v2-38801b551891fb0b0dc4e6414b41c52b_hd.jpg">
+
+<p><strong>1.缓存的高可用性</strong></p>
+<p>缓存层设计成高可用，防止缓存大面积故障。即使个别节点、个别机器、甚至是机房宕掉，依然可以提供服务，例如 Redis Sentinel 和 Redis Cluster 都实现了高可用。</p>
+<p><strong>2.缓存降级</strong></p>
+<p>可以利用ehcache等本地缓存(暂时支持)，但主要还是对源服务访问进行限流、资源隔离（熔断）、降级等。</p>
+<p>当访问量剧增、服务出现问题仍然需要保证服务还是可用的。系统可以根据一些关键数据进行<strong>自动降级</strong>，也可以配置开关实现<strong>人工降级，</strong>这里会涉及到运维的配合。</p>
+<p><strong>降级的最终目的是保证核心服务可用，即使是有损的。</strong></p>
+<p>比如推荐服务中，很多都是个性化的需求，假如个性化需求不能提供服务了，可以降级补充热点数据，不至于造成前端页面是个大空白。</p>
+<p>在进行降级之前要对系统进行梳理，比如：哪些业务是核心(必须保证)，哪些业务可以容许暂时不提供服务(利用静态页面替换)等，以及配合服务器核心指标，来后设置整体预案，比如：</p>
+<p>（1）一般：比如有些服务偶尔因为网络抖动或者服务正在上线而超时，可以自动降级；</p>
+<p>（2）警告：有些服务在一段时间内成功率有波动（如在95~100%之间），可以自动降级或人工降级，并发送告警；</p>
+<p>（3）错误：比如可用率低于90%，或者数据库连接池被打爆了，或者访问量突然猛增到系统能承受的最大阀值，此时可以根据情况自动降级或者人工降级；</p>
+<p>（4）严重错误：比如因为特殊原因数据错误了，此时需要紧急人工降级。</p>
+<p><strong>3.Redis备份和快速预热</strong></p>
+<p>1)Redis数据备份和恢复</p>
+<p>2)快速缓存预热</p>
+<p><strong>4.提前演练</strong></p>
+<p>最后，建议还是在项目上线前，演练缓存层宕掉后，应用以及后端的负载情况以及可能出现的问题，对高可用提前预演，提前发现问题。</p>
+<h2 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a><strong>缓存穿透</strong></h2><p>缓存穿透是指查询一个一不存在的数据。例如：从缓存redis没有命中，需要从mysql数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
+<p>解决思路：</p>
+<p>如果查询数据库也为空，直接设置一个默认值存放到缓存，这样第二次到缓冲中获取就有值了，而不会继续访问数据库。设置一个过期时间或者当有值的时候将缓存中的值替换掉即可。</p>
+<p>可以给key设置一些格式规则，然后查询之前先过滤掉不符合规则的Key。</p>
+<h2 id="缓存并发"><a href="#缓存并发" class="headerlink" title="缓存并发"></a><strong>缓存并发</strong></h2><p>这里的并发指的是多个redis的client同时set key引起的并发问题。其实redis自身就是单线程操作，多个client并发操作，按照先到先执行的原则，先到的先执行，其余的阻塞。当然，另外的解决方案是把redis.set操作放在队列中使其串行化，必须的一个一个执行。</p>
+<h2 id="缓存预热"><a href="#缓存预热" class="headerlink" title="缓存预热"></a><strong>缓存预热</strong></h2><p>缓存预热就是系统上线后，将相关的缓存数据直接加载到缓存系统。</p>
+<p>这样就可以避免在用户请求的时候，先查询数据库，然后再将数据缓存的问题！用户直接查询事先被预热的缓存数据！</p>
+<p>解决思路：</p>
+<p>1、直接写个缓存刷新页面，上线时手工操作下；</p>
+<p>2、数据量不大，可以在项目启动的时候自动进行加载；</p>
+<p>目的就是在系统上线前，将数据加载到缓存中。</p>
+<p>以上就是缓存雪崩、预热、降级等的介绍。</p>
+<p><strong>如果觉得不错请点赞支持下。</strong>关注优知学院专栏<strong>【直通BAT】进阶Java架构师</strong>，实战架构技术干货第一时间送达。</p>
 
         </div>
 
