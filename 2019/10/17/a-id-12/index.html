@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>三次握手/四次挥手 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">三次握手/四次挥手</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 17, 2019&nbsp;&nbsp;11:27:01</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP/三次握手"></a>TCP/三次握手</h1><img src="/2019/10/17/a-id-12/v2-bffe744ca32db10470a10c81f4e2225f_hd.jpg">
+
+<p>第一次握手：建立连接时，客户端给服务端发送一个SYN（同步序列号）报文并指定客户端的初始化序列号ISN(c)，并进入SYN_SENT（同步序列号发送）状态，等待服务器确认。<br>第二次握手：服务器收到SYN包，必须确认客户的SYN包，同时自己也发送一个SYN包，即SYN+ACK（确认）包，此时服务器进入SYN_RECV（同步序列号接收）状态<br>第三次握手：客户端收到服务器的<code>SYN+ACK</code>包，向服务器发送确认包<code>ACK(ack=k+1）</code>，此包发送完毕，客户端和服务器进入，<code>ESTABLISHED</code>（TCP连接成功）状态，完成三次握手。</p>
+<p><strong>关于伯利克套接字的说明</strong></p>
+<p> 我们在Linux类操作系统环境下实现网络通信通常会使用伯克利套接字。伯克利套接字<strong>（</strong>Berkeley sockets<strong>），也称为</strong>BSD Socket。伯克利套接字的<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/%E6%87%89%E7%94%A8%E7%B7%A8%E7%A8%8B%E6%8E%A5%E5%8F%A3" target="_blank" rel="noopener">应用编程接口</a>（<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/API" target="_blank" rel="noopener">API</a>）是采用<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/C%E8%AF%AD%E8%A8%80" target="_blank" rel="noopener">C语言</a>的<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1" target="_blank" rel="noopener">进程间通信</a>的<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/%E5%BA%93" target="_blank" rel="noopener">库</a>，经常用在<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C" target="_blank" rel="noopener">计算机网络</a>间的通信。 BSD Socket的应用编程接口已经是网络套接字的事实上的抽象标准。大多数其他程序语言使用一种相似的编程接口。BSD Socket作为一种API，允许不同主机或者同一个计算机上的不同进程之间的通信。它支持多种I/O设备和<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F" target="_blank" rel="noopener">驱动</a>，但是具体的实现是依赖<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F" target="_blank" rel="noopener">操作系统</a>的。这种接口对于<a href="https://link.zhihu.com/?target=https%3A//blog.csdn.net/wiki/TCP/IP" target="_blank" rel="noopener">TCP/IP</a>是必不可少的，所以是互联网的基础技术之一。它最初是由加州伯克利大学为Unix系统开发出来的。所有现代的操作系统都都实现了伯克利套接字接口，因为它已经是连接互联网的标准接口了。 </p>
+<p> 和连接建立相关的API有：connect, listen, accept3个，connect用在客户端，另外2个用在服务端。对于TCP/IP protocol stack来说，我们这里只讨论这3个应用层的API干了什么事情。 </p>
+<p>connect:</p>
+<p>发送了一个SYN，收到Server的SYN+ACK后，代表连接完成。发送最后一个ACK是protocol stack,tcp_out完成的。</p>
+<p>listen</p>
+<p>在Server这端，准备了一个未完成的连接队列，保存只收到SYN_C的socket结构；还准备了已完成的连接队列，保存了收到了最后一个ACK的socket结构。</p>
+<p>accept</p>
+<p>应用进程调用accept的时候，就是去检查上面说的已完成的连接队列，如果队列里有连接，就返回这个连接；空的，blocking方试调用，就睡眠等待，nonblocking方式调用，就直接返回，一般一”EWOULDBLOCK“ errno告诉调用者，连接队列是空的。</p>
+<h4 id="为啥只有三次握手才能建立通信，两次为什么不行？"><a href="#为啥只有三次握手才能建立通信，两次为什么不行？" class="headerlink" title="为啥只有三次握手才能建立通信，两次为什么不行？"></a>为啥只有三次握手才能建立通信，两次为什么不行？</h4><p><strong>第一次握手：</strong>客户端发送网络包，服务端收到了。</p>
+<p>这样服务端就能得出结论：客户端的发送能力、服务端的接受能力是正常的。</p>
+<p><strong>第二次握手：</strong>服务端发包，客户端收到了。</p>
+<p>这样客户端就能得出结论：服务端的接收、发送能力，客户端的接收、发送能力是正常的。不过此时服务器并不能确认客户端的接收能力是否正常。</p>
+<p><strong>第三次握手：</strong>客户端发包，服务端收到了。</p>
+<p>这样服务端就得出结论：客户端的接收、发送能力正常，服务器自己的发送、接受能力也正常。</p>
+<p><strong>因此，需要三次握手才能确认双方的接收与发送能力是否正常，主要是防止已经失效的连接请求报文突然又传到服务器，而产生错误。</strong></p>
+<p><strong>如果使用的是两次握手建立连接</strong>，假设有这样一种场景，客户端发送了第一个请求连接并且没有丢失，只是因为在网络结点中滞留的时间太长了，由于TCP的客户端迟迟没有收到确认报文，以为服务器没有收到，此时重新向服务器发送这条报文，此后客户端和服务器经过两次握手完成连接，传输数据，然后关闭连接。此时此前滞留的那一次请求连接，网络通畅了到达了服务器，这个报文本该是失效的，但是，两次握手的机制将会让客户端和服务器再次建立连接，这将导致不必要的错误和资源的浪费。</p>
+<p><strong>如果采用的是三次握手</strong>，就算是那一次失效的报文传送过来了，服务端接受到了那条失效报文并且回复了确认报文，但是客户端不会再次发出确认。由于服务器收不到确认，就知道客户端并没有请求连接。</p>
+<h4 id="三次握手的作用"><a href="#三次握手的作用" class="headerlink" title="三次握手的作用"></a>三次握手的作用</h4><p>三次握手的作用也有好多个，多记住几个，保证不亏。例如：</p>
+<ul>
+<li>确认双方的接收能力、发送能力是否正常。</li>
+<li>指定自己的初始化序列号，为后面的可靠传送做准备。</li>
+<li>如果是HTTPS协议的话，三次捂手这个过程，还会进行数字证书的验证以及加密秘钥的生成。</li>
+</ul>
+<p>单单这样还不足以应付三次握手，面试官可能还会问一些问题，例如：</p>
+<h4 id="ISN是固定的吗？"><a href="#ISN是固定的吗？" class="headerlink" title="ISN是固定的吗？"></a>ISN是固定的吗？</h4><p>三次握手的一个重要功能是客户端和服务端交换Initial Sequence Number（ INS ），以便让对方知道接下来接收数据的时候如何按序列号组装数据。</p>
+<p>如果Initial Sequence Number（ INS ）是固定的，攻击者很容易猜出后续的序列号，因此这个Initial Sequence Number（ INS ）是动态生成的。</p>
+<h4 id="什么是半连接队列"><a href="#什么是半连接队列" class="headerlink" title="什么是半连接队列"></a>什么是半连接队列</h4><p>服务器第一次收到客户端的SYN（同步序列编号）之后，就会处于SYN_RCVD（同步序列编号收到）状态，此时双方还没有完全建立其连接，服务器会把此种状态下请求连接放到一个队列中，我们把这种队列成为半连接队列。</p>
+<p>当然还有一个全连接队列，就是已经完成三次握手，建立起连接的就会放在全连接队列。如果队列满了就有可能会出现丢包现象。</p>
+<p>这里在补充一点关于SYN-ACK重传次数的问题：</p>
+<ul>
+<li>服务器发送SYN-ACK包，如果未收到客户确认包，服务器进行首次重传，等待一段时间仍未收到客户确认包，进行第二次重传。</li>
+<li>如果重传次数超过系统规定的最大重传次数，系统将该连接信息从半连接队列中删除。</li>
+</ul>
+<p>注意，每次重传等待时间不一定相同，一般会指数增长，例如间隔时间为1s，2s，4s，8s….</p>
+<h4 id="三次握手过程中可以携带数据吗"><a href="#三次握手过程中可以携带数据吗" class="headerlink" title="三次握手过程中可以携带数据吗"></a>三次握手过程中可以携带数据吗</h4><p>很多人可能会认为三次握手都不能携带数据，其实第三次握手的时候，是可以携带数据的。</p>
+<p>也就是说，第一次，第二次握手不可以携带数据，而第三次握手是可以携带数据的。</p>
+<p>为什么这样呢？大家可以想一个问题，加入第一次握手可以携带数据的话，如果有人要恶意攻击服务器，那他每次都在第一次握手中SYN报文中放如大量的数据。</p>
+<p>因为攻击者根本就不理服务器的接收、发送能力是否正常，然后疯狂重复发SYN报文的话，这会让服务器花费很多时间、内存空间来接收这些报文。</p>
+<p>这就是说，第一次握手可以放数据的话，其中一个简单的原因就是会让服务器更容易受到攻击了。</p>
+<p>而对于第三次的话，此时客户端已经处于established状态，也就是说，对于客户端来说，他已经建立起连接了，并且也知道服务器的接收、发送能力是正常的了，所以能携带数据页也没有什么毛病。</p>
+<p>关于三次握手的，HTTPS的认证过程能知道一下更好。</p>
+<h4 id="SYN攻击是什么？"><a href="#SYN攻击是什么？" class="headerlink" title="SYN攻击是什么？"></a>SYN攻击是什么？</h4><p>服务器端的资源分配是在二次握手时分配的，而客户端的资源是在完成三次握手时分配的，所以服务器容易受到SYN洪泛攻击。SYN攻击就是Client在短时间内伪造大量不存在的IP地址，并向Server不断地发送SYN包，Server则回复确认包，并等待Client确认，由于源地址不存在，因此Server需要不断重发直至超时，这些伪造的SYN包将长时间占用未连接队列，导致正常的SYN请求因为队列满而被丢弃，从而引起网络拥塞甚至系统瘫痪。SYN 攻击是一种典型的 DoS/DDoS 攻击。</p>
+<p>检测 SYN 攻击非常的方便，当你在服务器上看到大量的半连接状态时，特别是源IP地址是随机的，基本上可以断定这是一次SYN攻击。在 Linux/Unix 上可以使用系统自带的 netstats 命令来检测 SYN 攻击。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -n -p TCP | grep SYN_RECV</span><br></pre></td></tr></table></figure>
+
+<p>常见的防御 SYN 攻击的方法有如下几种：</p>
+<ul>
+<li>缩短超时（SYN Timeout）时间</li>
+<li>增加最大半连接数</li>
+<li>过滤网关防护</li>
+<li>SYN cookies技术</li>
+</ul>
+<h4 id="为什么要三次握手"><a href="#为什么要三次握手" class="headerlink" title="为什么要三次握手?"></a>为什么要三次握手?</h4><p>我们要知道网络传输是有延迟的，可能丢失的，不是说A发一个包给B，B保证能立刻收到，甚至B可能一直收不到。</p>
+<p> 第一次。A跟B说，我要建立连接了。</p>
+<p> 第二次。B跟A说，OK，那我也建立连接。</p>
+<p> 第三次。A跟B说，嗯，我知道了。</p>
+<p>第二次和第三次都是为了保证连接是可靠的。</p>
+<p> 假设只有一次握手，而A的包无法发到B那里去，那A就是自顾自的建立了连接，傻傻的发信息，却不知道对方其实根本收不到。所以第二次握手是为了告诉A，B收到了你的信息。假设只有两次握手，那么对B来说，B是不知道A是否收到了自己的信息的，第三次握手是为了告诉B，A收到了B的信息了，并且可以互发信息了。 B真的需要知道 A是否收到了自己发出的第二次握手的信息吗？是的，如果A的第一次握手因为某些原因延迟很久才到B，而其实现在A和B已经聊完天，关闭连接了，这时B发出第二次握手，而A已经没什么想跟B说的，就不会发出第三次握手，这样B就不会建立连接消耗资源。若是只有二次握手的这种情况，B会直接建立连接消耗资源。</p>
+<hr>
+<h1 id="TCP-四次挥手"><a href="#TCP-四次挥手" class="headerlink" title="TCP/四次挥手"></a>TCP/四次挥手</h1><img src="/2019/10/17/a-id-12/v2-659537da84eef6c639ee9568510b1942_hd.jpg">
+
+<p>刚开始双方都处于establised状态，假如是客户端先发起的关闭请求则：</p>
+<p><strong>第一次挥手</strong>：客户端发送一个FIN报文，报文中会指定一个序列号。此时客户端处于FIN_WAIT1状态。</p>
+<p><strong>第二次握手</strong>：服务端收到 FIN 之后，会发送 ACK 报文，且把客户端的序列号值 +1 作为 ACK 报文的序列号值，表明已经收到客户端的报文了，此时服务端处于 CLOSE_WAIT 状态。</p>
+<p><strong>第三次挥手</strong>：如果服务端也想断开连接了，和客户端的第一次挥手一样，发给 FIN 报文，且指定一个序列号。此时服务端处于 LAST_ACK 的状态。</p>
+<p><strong>第四次挥手</strong>：客户端收到 FIN 之后，一样发送一个 ACK 报文作为应答，且把服务端的序列号值 +1 作为自己 ACK 报文的序列号值，此时客户端处于 TIME_WAIT 状态。</p>
+<blockquote>
+<ul>
+<li>1）客户端进程发出连接释放报文，并且停止发送数据。释放数据报文首部，FIN=1，其序列号为seq=u（等于前面已经传送过来的数据的最后一个字节的序号加1），此时，客户端进入FIN-WAIT-1（终止等待1）状态。 TCP规定，FIN报文段即使不携带数据，也要消耗一个序号。</li>
+<li>2）服务器收到连接释放报文，发出确认报文，ACK=1，ack=u+1，并且带上自己的序列号seq=v，此时，服务端就进入了CLOSE-WAIT（关闭等待）状态。TCP服务器通知高层的应用进程，客户端向服务器的方向就释放了，这时候处于半关闭状态，即客户端已经没有数据要发送了，但是服务器若发送数据，客户端依然要接受。这个状态还要持续一段时间，也就是整个CLOSE-WAIT状态持续的时间。</li>
+<li>3）客户端收到服务器的确认请求后，此时，客户端就进入FIN-WAIT-2（终止等待2）状态，等待服务器发送连接释放报文（在这之前还需要接受服务器发送的最后的数据）。</li>
+<li>4）服务器将最后的数据发送完毕后，就向客户端发送连接释放报文，FIN=1，ack=u+1，由于在半关闭状态，服务器很可能又发送了一些数据，假定此时的序列号为seq=w，此时，服务器就进入了LAST-ACK（最后确认）状态，等待客户端的确认。</li>
+<li>5）客户端收到服务器的连接释放报文后，必须发出确认，ACK=1，ack=w+1，而自己的序列号是seq=u+1，此时，客户端就进入了TIME-WAIT（时间等待）状态。注意此时TCP连接还没有释放，必须经过2∗∗MSL（最长报文段寿命）的时间后，当客户端撤销相应的TCB后，才进入CLOSED状态。</li>
+<li>6）服务器只要收到了客户端发出的确认，立即进入CLOSED状态。同样，撤销TCB后，就结束了这次的TCP连接。可以看到，服务器结束TCP连接的时间要比客户端早一些。</li>
+</ul>
+</blockquote>
+<p>而四次挥手对应的socket api为：</p>
+<p>主要为close(fd),剩下的确认等待等操作会交给内核。</p>
+<img src="/2019/10/17/a-id-12/v2-dde5afee1b293c59ab2d81fea6177533_hd.jpg">
+
+<p><strong>需要过一阵子以确保服务器收到自己的ACK报文之后才会进入CLOSED状态。</strong></p>
+<blockquote>
+<p>服务器收到ACK报文之后，就处于关闭连接了，处于CLOSED状态。</p>
+</blockquote>
+<p>这里特别需要注意的就是TIME_WAIT这个状态了，这个是面试的高频考点，就是要理解，为什么客户端发送ACK之后不直接关闭，而是要等一阵子才关闭。</p>
+<p>这其中的原因就是，要确保服务器是否已经收到了我们的ACK报文，如果没有收到的话，服务器就会重新发FIN报文给客户端，客户端再次收到ACK报文之后，就知道之前的ACK报文丢失了，然后再次发送ACK报文。</p>
+<p>至于TIME_WAIT持续的时间至少是一个报文的来回时间。一般会设置一个计时，如果过了这个计时没有再次收到FIN报文，则代表对方成功，就是ACK报文，此时处于CLOSED状态。</p>
+<p>这里我给出每个状态包含的含义，有兴趣的可以看看：</p>
+<ul>
+<li>LISTEN：侦听来自远方 TCP 端口的连接请求。</li>
+<li>SYN-SENT：在发送连接请求后等待匹配的连接请求。</li>
+<li>SYN-RECEIVED：在收到和发送一个连接请求后等待对连接请求的确认。</li>
+<li>ESTABLISHED：代表一个打开的连接，数据可以传送给用户。</li>
+<li>FIN-WAIT-1：等待远程 TCP 的连接中断请求，或先前的连接中断请求的确认。</li>
+<li>FIN-WAIT-2：从远程 TCP 等待连接中断请求。</li>
+<li>CLOSE-WAIT：等待从本地用户发来的连接中断请求。</li>
+<li>CLOSING：等待远程 TCP 对连接中断的确认。</li>
+<li>LAST-ACK：等待原来发向远程 TCP 的连接中断请求的确认。</li>
+<li>TIME-WAIT：等待足够的时间以确保远程 TCP 接收到连接中断请求的确认。</li>
+<li>CLOSED：没有任何连接状态。</li>
+</ul>
+<h4 id="挥手为什么需要四次？"><a href="#挥手为什么需要四次？" class="headerlink" title="挥手为什么需要四次？"></a>挥手为什么需要四次？</h4><p> 因为当服务端收到客户端的SYN连接请求报文后，可以直接发送SYN+ACK报文。其中ACK报文是用来应答的，SYN报文是用来同步的。但是关闭连接时，当服务端收到FIN报文时，很可能并不会立即关闭SOCKET，所以只能先回复一个ACK报文，告诉客户端，“你发的FIN报文我收到了”。只有等到我服务端所有的报文都发送完了，我才能发送FIN报文，因此不能一起发送。故需要四次挥手。 </p>
+<h4 id="2MSL等待状态"><a href="#2MSL等待状态" class="headerlink" title="2MSL等待状态"></a><strong>2MSL等待状态</strong></h4><p>TIME_WAIT状态也成为2MSL等待状态。每个具体TCP实现必须选择一个报文段最大生存时间MSL（Maximum Segment Lifetime），它是任何报文段被丢弃前在网络内的最长时间。这个时间是有限的，因为TCP报文段以IP数据报在网络内传输，而IP数据报则有限制其生存时间的TTL字段。</p>
+<p>对一个具体实现所给定的MSL值，处理的原则是：当TCP执行一个主动关闭，并发回最后一个ACK，该连接必须在TIME_WAIT状态停留的时间为2倍的MSL。这样可让TCP再次发送最后的ACK以防这个ACK丢失（另一端超时并重发最后的FIN）。</p>
+<p>这种2MSL等待的另一个结果是这个TCP连接在2MSL等待期间，定义这个连接的插口（客户的IP地址和端口号，服务器的IP地址和端口号）不能再被使用。这个连接只能在2MSL结束后才能再被使用。</p>
+<h4 id="四次挥手释放连接时，等待2MSL的意义"><a href="#四次挥手释放连接时，等待2MSL的意义" class="headerlink" title="四次挥手释放连接时，等待2MSL的意义?"></a><strong>四次挥手释放连接时，等待2MSL的意义?</strong></h4><p>MSL是Maximum Segment Lifetime的英文缩写，可译为“最长报文段寿命”，它是任何报文在网络上存在的最长时间，超过这个时间报文将被丢弃。</p>
+<p>为了保证客户端发送的最后一个ACK报文段能够到达服务器。因为这个ACK有可能丢失，从而导致处在LAST-ACK状态的服务器收不到对FIN-ACK的确认报文。服务器会超时重传这个FIN-ACK，接着客户端再重传一次确认，重新启动时间等待计时器。最后客户端和服务器都能正常的关闭。假设客户端不等待2MSL，而是在发送完ACK之后直接释放关闭，一但这个ACK丢失的话，服务器就无法正常的进入关闭连接状态。</p>
+<p>两个理由：</p>
+<ul>
+<li>保证客户端发送的最后一个ACK报文段能够到达服务端。</li>
+</ul>
+<p>这个ACK报文段有可能丢失，使得处于LAST-ACK状态的B收不到对已发送的FIN+ACK报文段的确认，服务端超时重传FIN+ACK报文段，而客户端能在2MSL时间内收到这个重传的FIN+ACK报文段，接着客户端重传一次确认，重新启动2MSL计时器，最后客户端和服务端都进入到CLOSED状态，若客户端在TIME-WAIT状态不等待一段时间，而是发送完ACK报文段后立即释放连接，则无法收到服务端重传的FIN+ACK报文段，所以不会再发送一次确认报文段，则服务端无法正常进入到CLOSED状态。</p>
+<ul>
+<li>防止“已失效的连接请求报文段”出现在本连接中。</li>
+</ul>
+<p>客户端在发送完最后一个ACK报文段后，再经过2MSL，就可以使本连接持续的时间内所产生的所有报文段都从网络中消失，使下一个新的连接中不会出现这种旧的连接请求报文段。</p>
+<h4 id="为什么TIME-WAIT状态需要经过2MSL才能返回到CLOSE状态？"><a href="#为什么TIME-WAIT状态需要经过2MSL才能返回到CLOSE状态？" class="headerlink" title="为什么TIME_WAIT状态需要经过2MSL才能返回到CLOSE状态？"></a><strong>为什么TIME_WAIT状态需要经过2MSL才能返回到CLOSE状态？</strong></h4><p>理论上，四个报文都发送完毕，就可以直接进入CLOSE状态了，但是可能网络是不可靠的，有可能最后一个ACK丢失。所以TIME_WAIT状态就是用来重发可能丢失的ACK报文。</p>
+<h4 id="为什么要四次挥手？"><a href="#为什么要四次挥手？" class="headerlink" title="为什么要四次挥手？"></a>为什么要四次挥手？</h4><p>第一次。A跟B说，我要断开连接了。</p>
+<p>第二次。B跟A说，好的，我知道了，我不再接收你的信息了。</p>
+<p>第三次。B跟A说，我传给你的信息传完了，你可以关闭连接了。</p>
+<p>第四次。A跟B说，好的，我关闭连接了。</p>
+<p>第二次挥手是为了告诉A，B知道你不再发送信息了，且B不再接收信息。但B仍可以向A发送信息。因为A是主动关闭的一方，但B可能仍然有信息未发送完。第三次挥手是为了告诉A，B的信息发完了，A你可以关闭连接了。 第四次挥手是为了告诉B，A我知道可以关闭连接了，你也可以关闭了。对B来说，第四次挥手B才知道A成功关闭连接了，不关闭很耗费资源，所以要保证关闭了。若B接收不到第四次挥手信息，将会继续第三次挥手，直到收到确认信息为止。注意：对A来说，第四次挥手后2MSL内未接收到B的第三次挥手信息才会关闭连接，否则会继续第四次挥手。防止B接收不到第四次挥手信息。（若B接收不到第四次挥手信息，将重复发送第三次挥手信息，这个2MSL就是如果真的有重复发送的第三次挥手信息，在这个时间内肯定到达A了（路由不出问题的话），就是为了保证B收到第四次挥手信息）。</p>
+<h1 id="三次握手与四次挥手（图）"><a href="#三次握手与四次挥手（图）" class="headerlink" title="三次握手与四次挥手（图）"></a>三次握手与四次挥手（图）</h1><h4 id="状态图："><a href="#状态图：" class="headerlink" title="状态图："></a>状态图：</h4><p> 《TCP/IP详解 卷1:协议》有一张TCP状态变迁图，很具有代表性，有助于大家理解三次握手和四次挥手的状态变化。如下图所示，粗的实线箭头表示正常的客户端状态变迁，粗的虚线箭头表示正常的服务器状态变迁。 </p>
+<img src="/2019/10/17/a-id-12/v2-70dd97493372bb1f381c8b182810ec26_hd.jpg">
+
+<p>客户端的状态变迁：CLOSED–&gt;SYN_SENT–&gt;ESTABLISHED–&gt;FIN_WAIT_1–&gt;FIN_WAIT_2–&gt;TIME_WAIT–&gt;CLOSED</p>
+<p>服务器的状态变迁：CLOSED–&gt;LISTEN–&gt;SYN_RCVD–&gt;ESTABLISHED–&gt;CLOSE_WAIT–&gt;LAST_ACK—&gt;CLOSED</p>
+<p>CLOSED：这个状态不是一个真正的状态，是图中假想的一个起点或者是终点</p>
+<p>LISTEN: 服务器等待连接过来的状态</p>
+<p>SYN_SENT: 客户端发起连接（主动打开），变成此状态，如果SYN超时，或者服务器不存在直接CLOSED</p>
+<p>SYN_RCVD:服务器收到SYN包的时候，就变成此状态，</p>
+<p>ESTABLISHED：完成三次握手，进入连接建立状态，说明此时可以进行数据传输了</p>
+<p>FIN_WAIT_1:客户端执行主动关闭，发送完FIN包之后便进入FIN_WAIT_1状态</p>
+<p>FIN_WAIT_2:客户端发送FIN包之后，收到ACK，即进入此状态，其实就是半关闭的状态</p>
+<p>TIME_WAIT：这个状态从图上看，有3中情况，从FIN_WAIT_2进入，客户端收到服务器发送过来的FIN包之后进入TIME_WAIT状态，有CLOSING状态进入，这是同时关闭的状态，同时发起FIN请求，同时接收并做了ACK的回复，从FIN_WAIT_1进入，收到对端的FIN,ACK，并回复ACK，这个地方感觉是，FIN和ACK是一块来的.</p>
+<p>CLOSE_WAIT:接收到FIN之后，被动的一方进入此状态，并回复ACK</p>
+<p>LAST_ACK：被动的一端发送FIN包之后 处于LAST_ACK状态。</p>
+<h4 id="整图："><a href="#整图：" class="headerlink" title="整图："></a>整图：</h4><img src="/2019/10/17/a-id-12/v2-e90df2948790f09daeb4f978903a7584_hd.jpg">
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/10/11/a-id-9/">Redis为什么是单线程，高并发快的3大原因详解</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
