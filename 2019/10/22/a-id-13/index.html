@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python进程、线程、协程概念 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python进程、线程、协程概念</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 22, 2019&nbsp;&nbsp;10:58:33</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Python进程、线程、协程概念"><a href="#Python进程、线程、协程概念" class="headerlink" title="Python进程、线程、协程概念"></a>Python进程、线程、协程概念</h2><h2 id="一、进程"><a href="#一、进程" class="headerlink" title="一、进程"></a>一、进程</h2><h2 id="进程的概念"><a href="#进程的概念" class="headerlink" title="进程的概念"></a>进程的概念</h2><h2 id="1-进程是一个实体。每个进程都有自己的地址空间-CPU分配-。实体空间包括三部分："><a href="#1-进程是一个实体。每个进程都有自己的地址空间-CPU分配-。实体空间包括三部分：" class="headerlink" title="1.进程是一个实体。每个进程都有自己的地址空间(CPU分配)。实体空间包括三部分："></a>1.进程是一个实体。每个进程都有自己的地址空间(CPU分配)。实体空间包括三部分：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 文本区域：存储处理器执行的代码。</span><br><span class="line">* 数据区域：存储变量或进程执行期间使用的动态分配的内存。</span><br><span class="line">* 堆栈：进程执行时调用的指令和本地变量。</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-进程是一个“执行中的程序”。"><a href="#2-进程是一个“执行中的程序”。" class="headerlink" title="2.进程是一个“执行中的程序”。"></a>2.进程是一个“执行中的程序”。</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">程序是指令与数据的有序集合,程序本身是没有生命的,只有CPU赋予程序生命时(CPU执行程序),它才能成为一个活动的实体,称为“进程”。</span><br></pre></td></tr></table></figure>
+
+<p><strong>概括来说，进程就是一个具有独立功能的程序在某个数据集上的一次运行活动</strong></p>
+<h2 id="进程的特点"><a href="#进程的特点" class="headerlink" title="进程的特点"></a>进程的特点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">* 动态性：进程是程序的一次执行过程，动态产生，动态消亡。</span><br><span class="line">* 独立性：进程是一个能独立运行的基本单元。是系统分配资源与调度的基本单元。</span><br><span class="line">* 并发性：任何进程都可以与其他进程并发执行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、并发与并行"><a href="#二、并发与并行" class="headerlink" title="二、并发与并行"></a>二、并发与并行</h2><p><strong>并发：在操作系统中，某一时间段，几个程序在同一个CPU上运行，但在任意一个时间点上，只有一个程序在CPU上运行。</strong></p>
+<p>当有多个线程时，如果系统只有一个CPU，那么CPU不可能真正同时进行多个线程，CPU的运行时间会被划分成若干个时间段，每个时间段分配给各个线程去执行，一个时间段里某个线程运行时，其他线程处于挂起状态，这就是并发。并发解决了程序排队等待的问题，如果一个程序发生阻塞，其他程序仍然可以正常执行。</p>
+<p><strong>并行：当操作系统有多个CPU时，一个CPU处理A线程，另一个CPU处理B线程，两个线程互相不抢占CPU资源，可以同时进行，这种方式成为并行。</strong></p>
+<h2 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h2><p>并发只是在宏观上给人感觉有多个程序在同时运行，但在实际的单CPU系统中，每一时刻只有一个程序在运行，微观上这些程序是分时交替执行。<br>在多CPU系统中，将这些并发执行的程序分配到不同的CPU上处理，每个CPU用来处理一个程序，这样多个程序便可以实现同时执行。</p>
+<h2 id="三、线程"><a href="#三、线程" class="headerlink" title="三、线程"></a>三、线程</h2><h2 id="3-1、线程的引入"><a href="#3-1、线程的引入" class="headerlink" title="3.1、线程的引入"></a>3.1、线程的引入</h2><p>60年代，操作系统中拥有资源并独立运行的基本单位是进程，进程是资源的拥有者，进程的创建、撤销、切换花销太大。多CPU处理出现，可以满足多个单位同时运行，但是多个进程并行花销太大。80年代，出现了<strong>轻量级的，能够独立运行的基本单位，线程。</strong></p>
+<h2 id="3-2、线程的概念"><a href="#3-2、线程的概念" class="headerlink" title="3.2、线程的概念"></a>3.2、线程的概念</h2><ul>
+<li><strong>线程是进程中的一个实体，是被系统独立调度和分派的基本单位。</strong> 线程的实体包括程序，数据，TCB。TCB包括：</li>
+</ul>
+<ol>
+<li>线程状态</li>
+<li>线程不运行时，被保存的现场资源</li>
+<li>一组执行堆栈</li>
+<li>每个线程的局部变量</li>
+<li>访问统一进程中的资源</li>
+</ol>
+<ul>
+<li><strong>线程自己不拥有系统资源，只拥有一点运行中必不可少的资源。</strong></li>
+<li><strong>同一进程中的多个线程并发执行，这些线程共享进程所拥有的资源。</strong></li>
+</ul>
+<h2 id="3-3、进程与线程的区别"><a href="#3-3、进程与线程的区别" class="headerlink" title="3.3、进程与线程的区别"></a>3.3、进程与线程的区别</h2><ul>
+<li>进程是CPU资源分配的基本单位，线程是独立运行和独立调度的基本单位（CPU上真正运行的是线程）。</li>
+<li>进程拥有自己的资源空间，一个进程包含若干个线程，线程与CPU资源分配无关，多个线程共享同一进程内的资源。</li>
+<li>线程的调度与切换比进程快很多。</li>
+</ul>
+<h2 id="四、协程"><a href="#四、协程" class="headerlink" title="四、协程"></a>四、协程</h2><p><strong>协程是一种比线程更加轻量级的存在，最重要的是，协程不被操作系统内核管理，协程是完全由程序控制的。</strong></p>
+<p><em>运行效率极高，协程的切换完全由程序控制，不像线程切换需要花费操作系统的开销,线程数量越多，协程的优势就越明显。</em></p>
+<p>协程不需要多线程的锁机制，因为只有一个线程，不存在变量冲突。</p>
+<p>对于多核CPU，利用多进程+协程的方式，能充分利用CPU，获得极高的性能。</p>
+<h2 id="Python中使用协程的例子"><a href="#Python中使用协程的例子" class="headerlink" title="Python中使用协程的例子"></a>Python中使用协程的例子</h2><p>yield关键字相当于是暂停功能，程序运行到yield停止，send函数可以传参给生成器函数，参数赋值给yield。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def customer():</span><br><span class="line">    while True:</span><br><span class="line">        number = yield</span><br><span class="line">        print(&apos;开始消费：&apos;,number)</span><br><span class="line">        </span><br><span class="line">custom = customer()</span><br><span class="line">next(custom)</span><br><span class="line">for i in range(10):</span><br><span class="line">    print(&apos;开始生产：&apos;,i)</span><br><span class="line">    custom.send(i)</span><br></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><img src="/2019/10/22/a-id-13/v2-aa70451ebba857eaaf23d9b263b18a83_hd.jpg">
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/10/17/a-id-12/">三次握手/四次挥手</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

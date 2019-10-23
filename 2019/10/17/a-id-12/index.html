@@ -220,7 +220,7 @@
 <ul>
 <li>确认双方的接收能力、发送能力是否正常。</li>
 <li>指定自己的初始化序列号，为后面的可靠传送做准备。</li>
-<li>如果是HTTPS协议的话，三次捂手这个过程，还会进行数字证书的验证以及加密秘钥的生成。</li>
+<li>如果是HTTPS协议的话，三次握手这个过程，还会进行数字证书的验证以及加密秘钥的生成。</li>
 </ul>
 <p>单单这样还不足以应付三次握手，面试官可能还会问一些问题，例如：</p>
 <h4 id="ISN是固定的吗？"><a href="#ISN是固定的吗？" class="headerlink" title="ISN是固定的吗？"></a>ISN是固定的吗？</h4><p>三次握手的一个重要功能是客户端和服务端交换Initial Sequence Number（ INS ），以便让对方知道接下来接收数据的时候如何按序列号组装数据。</p>
@@ -337,8 +337,6 @@
 <p>CLOSE_WAIT:接收到FIN之后，被动的一方进入此状态，并回复ACK</p>
 <p>LAST_ACK：被动的一端发送FIN包之后 处于LAST_ACK状态。</p>
 <h4 id="整图："><a href="#整图：" class="headerlink" title="整图："></a>整图：</h4><img src="/2019/10/17/a-id-12/v2-e90df2948790f09daeb4f978903a7584_hd.jpg">
-
-
         </div>
 
         
@@ -374,6 +372,8 @@
             </div>
         </section>
         <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/22/a-id-13/">Python进程、线程、协程概念</a>
             
             
             <a class="next" rel="next" href="/2019/10/11/a-id-9/">Redis为什么是单线程，高并发快的3大原因详解</a>

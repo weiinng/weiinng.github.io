@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python2和Python3的区别? | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python2和Python3的区别?</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 23, 2019&nbsp;&nbsp;21:51:07</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Python2和Python3的区别？"><a href="#Python2和Python3的区别？" class="headerlink" title="Python2和Python3的区别？"></a>Python2和Python3的区别？</h1><h2 id="一-核心差异"><a href="#一-核心差异" class="headerlink" title="一.核心差异"></a><strong>一.核心差异</strong></h2><ol>
+<li><p>Python3对unicode字符的原生支持。</p>
+<p>python2中使用ASCII码作为默认编码方式导致string有两种类型str和unicode，Python3只支持unicode的string。Python2和Python3字节和字符的对印关系为：</p>
+<table>
+<thead>
+<tr>
+<th>python2</th>
+<th>python3</th>
+<th>表现</th>
+<th>转换</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td>bytes</td>
+<td>字节</td>
+<td>encode</td>
+<td>存储</td>
+</tr>
+<tr>
+<td>unicode</td>
+<td>str</td>
+<td>字符</td>
+<td>decode</td>
+<td>显示</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>Python3 采用绝对路径的方式进行import.</p>
+<p>Python2中相对路径的import会导致标准库导入变得困难（想象一下，同一目录下有file.py，如何同时导入这个文件和标准库file）。</p>
+<p>Python3中这一点被修改，如果还需要导入同一目录文件必须使用绝对路径，否则只能使用相关导入的方式来进行导入。</p>
+</li>
+<li><p>Python2中存在老式类和新式类的区别。</p>
+<p>python3统一采用新式类。新式类声明要求继承object，必须采用新式类应用多继承。</p>
+</li>
+<li><p>Python3使用更加严格的缩进。</p>
+<p>Python2的缩进机制中，一个tab和八个space是等价的，所以在缩进中可以同时允许tab和space在代码中共存。这种等价机制导致部分IDE使用存在问题。</p>
+<p>Python3中一个tab只能找另一个tab来代替，因此tab和space共存会导致报错：</p>
+<p><strong><font color="red">TabError: inconsistent use of tabs and spaces in indentation.</font></strong></p>
+</li>
+</ol>
+<h2 id="2-废弃类差异。"><a href="#2-废弃类差异。" class="headerlink" title="2.废弃类差异。"></a><strong>2.废弃类差异。</strong></h2><ol>
+<li><p>print语句被python3废弃，统一使用print函数。</p>
+</li>
+<li><p>exec语句被python3废弃，统一使用exec函数。</p>
+</li>
+<li><p>execfile语句被python3废弃，推荐使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exec(open(&quot;./filename&quot;).read())</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>不相等操作符“&lt;&gt;”被Python3废弃，统一使用“!=”</p>
+</li>
+<li><p>long整数类被python3废弃，统一使用int</p>
+</li>
+<li><p>xrange函数被Python3废弃，统一使用range,Python3中range的机制也进行了修改并提高了大数据集生成效率。</p>
+</li>
+<li><p>Python3中这些方法不再返回list对象：</p>
+<p>dictionary关联的keys()、values()、item()、zip()、map()、filter()、但是可以通过list强行转换：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mydict=&#123;&quot;a&quot;:1,&quot;b&quot;:2,&quot;c&quot;:3&#125;</span><br><span class="line">mydict.keys() #&lt;built-in method keys of dict object at 0x000000000040B4C8&gt;</span><br><span class="line">list(mydict.keys()) #[&apos;a&apos;, &apos;c&apos;, &apos;b&apos;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>迭代器iterator的next()函数被Python3废弃，统一使用next(iterator)</p>
+</li>
+<li><p>raw_input函数被python3废弃，统一使用input函数。</p>
+</li>
+<li><p>字典变量的has_key被python废弃，统一使用in关键词。</p>
+</li>
+<li><p>file函数被python3废弃，统一使用open来处理文件，可以通过io.IOBase检查文件类型。</p>
+</li>
+<li><p>apply函数被python3废弃。</p>
+</li>
+<li><p>异常StandardError被Python3废弃，统一使用Exception</p>
+</li>
+</ol>
+<h2 id="3-修改类差异"><a href="#3-修改类差异" class="headerlink" title="3.修改类差异"></a><strong>3.修改类差异</strong></h2><ol>
+<li><p>浮点数触发操作符“/”和“//”的区别：</p>
+<p>“/”：</p>
+<p>Python2：若为两格整形数进行运算，结果为整形，但若两个数中有一个为浮点数，则结果为浮点数；</p>
+<p>Python3：为真除法，运算结果不在根据参加运算的数据类型。</p>
+<p>“//”：</p>
+<p>Python2：返回小于除法运算结果的最大整数；从类型上将，与“/”运算符返回的逻辑一致。</p>
+<p>Python3：和Python2运算结果一样。</p>
+</li>
+<li><p>异常抛出和捕获机制的区别。</p>
+<p>Python2：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">raise IOError, "file error" #抛出异常</span><br><span class="line">except NameError, err:   #捕捉异常</span><br></pre></td></tr></table></figure>
+
+<p>Python3：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">raise IOError("file error") #抛出异常</span><br><span class="line">except NameError as err: #捕捉异常</span><br></pre></td></tr></table></figure>
+
+<p>通过as的方法给异常起别名。</p>
+</li>
+<li><p>for循环中变量值区别。</p>
+<p>Python2，for循环会修改外部相同名称的变量值：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">1</span></span><br><span class="line">print （<span class="string">'comprehension: '</span>, [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)]）</span><br><span class="line">print （'after: i =', i ） #i=4</span><br></pre></td></tr></table></figure>
+
+<p>Python3，for循环不会修改外部相同名称变量的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">i = <span class="number">1</span></span><br><span class="line"><span class="keyword">print</span> （<span class="string">'comprehension: '</span>, [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>)]）</span><br><span class="line"><span class="keyword">print</span> （<span class="string">'after: i ='</span>, i ） <span class="comment">#i=1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>round函数返回值区别</p>
+<p>Python2，round 函数返回 float 类型值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">isinstance(round(15.5),int) #True</span><br></pre></td></tr></table></figure>
+
+<p>Python3，round 函数返回 int 类型值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">isinstance(round(15.5),float) #True</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>比较操作符区别</p>
+<p>Python2 中任意两个对象都可以比较</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11 &lt; &apos;test&apos; #True</span><br></pre></td></tr></table></figure>
+
+<p>Python3 中只有同一数据类型的对象可以比较</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">11 &lt; &apos;test&apos; # TypeError: unorderable types: int() &lt; str()</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="4-第三方工具包差异"><a href="#4-第三方工具包差异" class="headerlink" title="4.第三方工具包差异"></a><strong>4.第三方工具包差异</strong></h2><p>​        我们在pip 官方下载源 <a href="https://pypi.python.org/" target="_blank" rel="noopener"><strong>pypi</strong> </a>搜索Python2.7 和Python3.5 的第三方工具包数可以发现，Python2.7版本对应的第三方工具类目数量是 28523,Python3.5 版本的数量是 12457，这两个版本在第三方工具包支持数量差距相当大。</p>
+<p>​        我们从数据分析的应用角度列举了常见实用的第三方工具包（如下表），并分析这些工具包在Python2.7 和 Python3.5 的支持情况：</p>
+<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>工具名</strong></th>
+<th><strong>用途</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据收集</td>
+<td>scrapy</td>
+<td>网页采集，爬虫</td>
+</tr>
+<tr>
+<td>数据收集</td>
+<td>scrapy-redis</td>
+<td>分布式爬虫</td>
+</tr>
+<tr>
+<td>数据收集</td>
+<td>selenium</td>
+<td>web 测试，仿真浏览器</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>beautifulsoup</td>
+<td>网页解释库，提供 lxml 的支持</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>lxml</td>
+<td>xml 解释库</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>xlrd</td>
+<td>excel 文件读取</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>xlwt</td>
+<td>excel 文件写入</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>xlutils</td>
+<td>excel 文件简单格式修改</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>pywin32</td>
+<td>excel 文件的读取写入及复杂格式定制</td>
+</tr>
+<tr>
+<td>数据处理</td>
+<td>Python-docx</td>
+<td>Word 文件的读取写入</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>numpy</td>
+<td>基于矩阵的数学计算库</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>pandas</td>
+<td>基于表格的统计分析库</td>
+</tr>
+</tbody></table>
+<table>
+<thead>
+<tr>
+<th><strong>分类</strong></th>
+<th><strong>工具名</strong></th>
+<th><strong>用途</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据分析</td>
+<td>scipy</td>
+<td>科学计算库，支持高阶抽象和复杂模型</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>statsmodels</td>
+<td>统计建模和计量经济学工具包</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>scikit-learn</td>
+<td>机器学习工具库</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>gensim</td>
+<td>自然语言处理工具库</td>
+</tr>
+<tr>
+<td>数据分析</td>
+<td>jieba</td>
+<td>中文分词工具库</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>MySQL-python</td>
+<td>mysql 的读写接口库</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>mysqlclient</td>
+<td>mysql 的读写接口库</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>SQLAlchemy</td>
+<td>数据库的 ORM 封装</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>pymssql</td>
+<td>sql server 读写接口库</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>redis</td>
+<td>redis 的读写接口</td>
+</tr>
+<tr>
+<td>数据存储</td>
+<td>PyMongo</td>
+<td>mongodb 的读写接口</td>
+</tr>
+<tr>
+<td>数据呈现</td>
+<td>matplotlib</td>
+<td>流行的数据可视化库</td>
+</tr>
+<tr>
+<td>数据呈现</td>
+<td>seaborn</td>
+<td>美观的数据可是湖库，基于 matplotlib</td>
+</tr>
+<tr>
+<td>工具辅助</td>
+<td>jupyter</td>
+<td>基于 web 的 python IDE，常用于数据分析</td>
+</tr>
+<tr>
+<td>工具辅助</td>
+<td>chardet</td>
+<td>字符检查工具</td>
+</tr>
+<tr>
+<td>工具辅助</td>
+<td>ConfigParser</td>
+<td>配置文件读写支持</td>
+</tr>
+<tr>
+<td>工具辅助</td>
+<td>requests</td>
+<td>HTTP 库，用于网络访问</td>
+</tr>
+</tbody></table>
+<h2 id="5-工具安装问题"><a href="#5-工具安装问题" class="headerlink" title="5.工具安装问题"></a><strong>5.工具安装问题</strong></h2><p>windows 环境</p>
+<ul>
+<li><p>Python2 无法安装 mysqlclient。</p>
+</li>
+<li><p>Python3 无法安装 MySQL-python、 flup、functools32、Gooey、Pywin32、 webencodings。</p>
+</li>
+<li><p>matplotlib 在 python3 环境中安装报错：</p>
+<p><font color="red">The following required packages can not be built:freetype, png。</font></p>
+<p>需要手动下载安装源码包安装解决。</p>
+</li>
+<li><p>scipy 在 Python3 环境中安装报错，</p>
+<p><font color="red">numpy.distutils.system_info.NotFoundError，</font></p>
+<p>需要自己手工下载对应的安装包，依赖 numpy,pandas 必须严格根据 python 版本、操作系统、64 位与否。</p>
+<p>运行matplotlib 后发现基础包 numpy+mkl 安装失败，需要自己下载，国内暂无下载源</p>
+</li>
+</ul>
+<p>centos 环境下</p>
+<ul>
+<li><p>Python2 无法安装mysql-python 和mysqlclient 包，报错：</p>
+<p><font color="red">EnvironmentError: mysql_config not found，</font></p>
+<p>解决方案是安装 mysql-devel 包解决。</p>
+</li>
+<li><p>使用 matplotlib 报错：</p>
+<p><font color="red">no module named _tkinter，</font> </p>
+<p>安装 Tkinter、tk-devel、tc-devel 解决。</p>
+</li>
+<li><p>pywin32 也无法在 centos 环境下安装。</p>
+</li>
+</ul>
+<h2 id="6-切换"><a href="#6-切换" class="headerlink" title="6.切换"></a><strong>6.切换</strong></h2><p>电脑共存python2和pyhthon3，把安装目录下的python.exe文件改python2.exe和python3.exe，这样在调用的之后直接输入对应版本的就可。</p>
+<img src="/2019/01/23/a-id-14/70.jpg">
+
+<img src="/2019/01/23/a-id-14/701.png">
+
+<p> <strong>Python3和Python2中 int 和 long的区别？</strong></p>
+<p> int(符号整数):通常被称为是整数或整数,没有小数点的正或负整数；</p>
+<p>  long(长整数):无限大小的整数,这样写整数和一个大写或小写的L。</p>
+<h2 id="six库，解决python2的项目如何能够完全迁移到python3？"><a href="#six库，解决python2的项目如何能够完全迁移到python3？" class="headerlink" title="six库，解决python2的项目如何能够完全迁移到python3？"></a><strong>six库，解决python2的项目如何能够完全迁移到python3？</strong></h2><p>SIX是用于python2与python3兼容的库。</p>
+<p>它存在的目的是为了拥有无需修改即可在Python 2和Python 3上同时工作的代码。话虽这么说，但是这并不代表在Python 3中引用该库就可以轻松地跑Python 2的代码。</p>
+<p>实际上，SIX是重定义了在python2和3中有差异的函数，例如dict的获取全部键值函数：在Python2中是</p>
+<p>.iterkeys()</p>
+<p>在Python3中是</p>
+<p>.keys()</p>
+<p>而在SIX中是</p>
+<p>six.iterkeys(dict)（当然对应版本的原函数也能够使用）</p>
+<p>也就是说，离开了SIX库的话你写的代码不论在Python2还是Python3中都无法运行。因此不是急于追求兼容性的话并不需要使用这个库。</p>
+<p>安装：</p>
+<p><a href="https://github.com/benjaminp/six/releases" target="_blank" rel="noopener">https://github.com/benjaminp/six/releases</a></p>
+<p>解压后双击steup.py即可。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>import six</p>
+<p>之后按照SIX提供的语法书写即可写出pyhton2/3上兼容的代码。</p>
+<p>six.PY2/ six.PY3 ：检查编译器版本是否为python2/3</p>
+<p>以下是SIX提供的兼容语法：</p>
+<p>常量定义：</p>
+<p>six.class_types</p>
+<p>可能的类类型。在Python 2中，这包含旧类和新类。在Python 3中，这只是新类。</p>
+<p>six.integer_types</p>
+<p>可能的整数类型。在Python 2中，这是long或 int，在Python 3中同int。</p>
+<p>six.string_types</p>
+<p>文本数据的可能类型。这是Python 2终点basestring()和 Python 3中的str。</p>
+<p>six.text_type</p>
+<p>用于表示（Unicode）文本数据的类型。这是unicode()在Python 2和Python 3中的str（Pyhon3对文本数据进行了整合，默认为Unicode文本数据）。</p>
+<p>six.binary_type</p>
+<p>代表二进制数据的类型。这是Python 2中的str和 Python 3中的bytes。</p>
+<p>six.MAXSIZE</p>
+<p>像list 或dict这样的容器的最大尺寸。这相当于 Python 2.6及更高版本（包括3.x）的sys.maxsize。请注意，这与sys.maxint Python 2 非常相似，但并不相同 。sys.maxint在Python 3中没有直接的等价物， 因为它的整数类型的长度仅受限于内存大小。</p>
+<h3 id="内置函数定义"><a href="#内置函数定义" class="headerlink" title="内置函数定义"></a>内置函数定义</h3><p>1、six.get_unbound_function（meth）</p>
+<p>获取非绑定方法的meth。在Python 3，不存在非绑定方法，所以这个功能只是返回meth不变。用法示例：</p>
+<p>from six import get_unbound_function</p>
+<p>class X(object):</p>
+<p>def method(self):</p>
+<p>pass</p>
+<p>method_function = get_unbound_function(X.method)six.get_method_function（meth）</p>
+<p>2、six.get_method_self（meth）</p>
+<p>获取self绑定的方法的meth。</p>
+<p>3、six.get_function_closure（func）</p>
+<p>等效于Python 2.6+中的func.<strong>closure</strong>和Python 2.5中的func.func_closure</p>
+<p>4、six.get_function_code（func）</p>
+<p>获取与func关联的代码对象。等效于Python 2.6+中的 func.<strong>code</strong>和Python 2.5中的func.func_code。</p>
+<p>5、six.get_function_defaults（func）</p>
+<p>获取与func关联的默认元组。等效于Python 2.6+中的 func.<strong>defaults</strong>和Python 2.5中的func.func_defaults。</p>
+<p>6、six.get_function_globals（func）</p>
+<p>获取全局函数。等效于Python 2.6+中的func.<strong>globals</strong>和Python 2.5中的func.func_globals。</p>
+<p>7、six.next（it） six.advance_iterator（it）</p>
+<p>获取迭代器it的下一个项目。如果迭代器到达末尾，则会引发StopIteration。等效于Python 中的it.next()2和Python 3中的next(it).Python 2.6及更高版本具有内置next函数，因此只有需要兼容Python 2.5版本及以下时才需要该函数。</p>
+<p>8、six.callable（obj ）</p>
+<p>检查是否可以调用obj。callable标记已经在Python 3.2中有返回，所以只有在支持Python 3.0或3.1时才需要使用six的版本。</p>
+<p>9、six.iterkeys（字典，** kwargs ）</p>
+<p>返回字典键上的迭代器。等效于Python 2中的 dictionary.iterkeys()和Python 3中的dictionary.keys()。 kwargs被传递给底层方法。</p>
+<p>10、six.itervalues（字典，** kwargs ）</p>
+<p>返回字典值的迭代器。等效于Python 2中的dictionary.itervalues()和Python 3中的dictionary.values()。kwargs被传递给底层方法。</p>
+<p>11、six.iteritems（字典，** kwargs ）</p>
+<p>返回字典项目的迭代器。等效于Python 2中的 dictionary.iteritems()和Python 3中的dictionary.items()。 kwargs被传递给底层方法。</p>
+<p>12、six.iterlists（字典，** kwargs ）</p>
+<p>调用Python 2中的dictionary.iterlists() 或Python 3中的dictionary.lists()。原版的Python映射类型没有这种等效; 此方法旨在能够使用像Werkzeug’s这样的多值词典。 kwargs被传递给底层方法。</p>
+<p>13、six.viewkeys（字典）</p>
+<p>通过字典的键返回视图。等效于 Python 2.7中的dict.viewkeys()和Python 3中的dict.keys()。</p>
+<p>14、six.viewvalues（字典）</p>
+<p>通过字典的值返回视图。等效于 Python 2.7中的dict.viewvalues()和Python 3中的dict.values()。</p>
+<p>15、six.viewitems（字典）</p>
+<p>返回字典项目的视图。等效于 Python 2.7中的dict.viewitems()和Python 3中的dict.items()。</p>
+<p>16、six.create_bound_method（func，obj ）</p>
+<p>返回一个方法对象包装func并绑定到obj。在Python 2和Python 3上，这将返回一个types.MethodType对象。这个包装器函数存在的原因是，在Python 2中，MethodType构造函数需要传递obj的类。</p>
+<p>17、six.create_unbound_method（func，cls ）</p>
+<p>返回一个未绑定的方法对象包装函数。在Python 2中，这将返回一个types.MethodType对象。在Python 3中，未绑定的方法不存在，并且此包装将简单地返回func。</p>
+<p>18、class six.Iterator</p>
+<p>一个用于制作小型迭代器的类。其目的是将其划分子类并提供一种<strong>next</strong>方法。在Python 2中，Iterator 有一个方法：next。它只代表<strong>next</strong>。或许可以仅仅为 <strong>next</strong>取别名next。但是这会对重定义了 <strong>next</strong>的子类造成严重影响。Iterator在Python 3中是空的。（实际上，它只是被命名为object。）</p>
+<p>列举 Python2和Python3的区别</p>
+<ol>
+<li>print</li>
+</ol>
+<p>​       在python2中，print被视为一个语句而不是一个函数，python3中，print()被视为一个函数</p>
+<ol start="2">
+<li><p>整数的除法</p>
+<p>在python2中，键入的任何不带小数的数字，将被视为整数的编程类型。比如5/2=2，解决方法：5.0/2.0=2.5</p>
+</li>
+</ol>
+<p>​       在python3中，整数除法变得更直观 5/2=2.5</p>
+<ol start="3">
+<li>Unicode</li>
+</ol>
+<p>​       Python 2 默认使用 ASCII 字母表；Python 3 默认使用 Unicode</p>
+<ol start="4">
+<li>后续发展</li>
+</ol>
+<p>​       Python 2.7 将在 2020 年失去后续的支持，</p>
+<p>​       Python 3 将继续开发更多的功能和修复更多的错误。</p>
+<p><strong>Python3.6之后的字典都是有序的了！！</strong></p>
+<h1 id="为什么要放弃python2使用python3"><a href="#为什么要放弃python2使用python3" class="headerlink" title="为什么要放弃python2使用python3?"></a>为什么要放弃python2使用python3?</h1><p>就一个问题字符串编码问题</p>
+<p>作为一个新时代程序员为啥放着好用的不用非要去用不好的。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/03/25/2006Django2-0-4-Uplpadify3-0实现多文件异步上传/">Django2.0.4 + Uploadify3.0（h5版）实现多文件异步上传和删除</a>
+            
+            
+            <a class="next" rel="next" href="/2019/01/09/2001利用Motor来异步读写Mongodb提高效率/">基于python3.7利用Motor来异步读写Mongodb提高效率</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
