@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Thrift-II-网络服务模型 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Thrift-II-网络服务模型</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 24, 2019&nbsp;&nbsp;14:39:56</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/高可用架构/">高可用架构</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><code>Thrift</code>提供的<strong>网络服务模型</strong>：<strong>单线程</strong>、<strong>多线程</strong>、<strong>事件驱动</strong>，从另一个角度划分为：<strong>阻塞服务模型</strong>、<strong>非阻塞服务模型</strong>。</p>
+<ul>
+<li>阻塞服务模型：<code>TSimpleServer</code>、<code>TThreadPoolServer</code>。</li>
+<li>非阻塞服务模型：<code>TNonblockingServer</code>、<code>THsHaServer</code>和<code>TThreadedSelectorServer</code>。</li>
+</ul>
+<p><code>TServer</code>类的层次关系：</p>
+<img src="/2019/10/24/a-id-20/v2-6c7e0628829ed15426b9f5df3320d9ca_hd.jpg">
+
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="TServer"><a href="#TServer" class="headerlink" title="TServer"></a>TServer</h2><p><code>TServer</code>定义了静态内部类<code>Args</code>，<code>Args</code>继承自抽象类<code>AbstractServerArgs</code>。<code>AbstractServerArgs</code>采用了建造者模式，向<code>TServer</code>提供各种工厂：</p>
+<img src="/2019/10/24/a-id-20/v2-0142d055f346f54b4b47d483e31316e3_hd.jpg">
+
+<p>下面是<code>TServer</code>的部分核心代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TServer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Args</span> <span class="keyword">extends</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">server</span>.<span class="title">TServer</span>.<span class="title">AbstractServerArgs</span>&lt;<span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">server</span>.<span class="title">TServer</span>.<span class="title">Args</span>&gt; </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Args</span><span class="params">(TServerTransport transport)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(transport);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbstractServerArgs</span>&lt;<span class="title">T</span> <span class="keyword">extends</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">server</span>.<span class="title">TServer</span>.<span class="title">AbstractServerArgs</span>&lt;<span class="title">T</span>&gt;&gt; </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> TServerTransport serverTransport;</span><br><span class="line">        TProcessorFactory processorFactory;</span><br><span class="line">        TTransportFactory inputTransportFactory = <span class="keyword">new</span> TTransportFactory();</span><br><span class="line">        TTransportFactory outputTransportFactory = <span class="keyword">new</span> TTransportFactory();</span><br><span class="line">        TProtocolFactory inputProtocolFactory = <span class="keyword">new</span> TBinaryProtocol.Factory();</span><br><span class="line">        TProtocolFactory outputProtocolFactory = <span class="keyword">new</span> TBinaryProtocol.Factory();</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">AbstractServerArgs</span><span class="params">(TServerTransport transport)</span> </span>&#123;</span><br><span class="line">            serverTransport = transport;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> TProcessorFactory processorFactory_;</span><br><span class="line">    <span class="keyword">protected</span> TServerTransport serverTransport_;</span><br><span class="line">    <span class="keyword">protected</span> TTransportFactory inputTransportFactory_;</span><br><span class="line">    <span class="keyword">protected</span> TTransportFactory outputTransportFactory_;</span><br><span class="line">    <span class="keyword">protected</span> TProtocolFactory inputProtocolFactory_;</span><br><span class="line">    <span class="keyword">protected</span> TProtocolFactory outputProtocolFactory_;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isServing;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">TServer</span><span class="params">(org.apache.thrift.server.TServer.AbstractServerArgs args)</span> </span>&#123;</span><br><span class="line">        processorFactory_ = args.processorFactory;</span><br><span class="line">        serverTransport_ = args.serverTransport;</span><br><span class="line">        inputTransportFactory_ = args.inputTransportFactory;</span><br><span class="line">        outputTransportFactory_ = args.outputTransportFactory;</span><br><span class="line">        inputProtocolFactory_ = args.inputProtocolFactory;</span><br><span class="line">        outputProtocolFactory_ = args.outputProtocolFactory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">serve</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">stop</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isServing</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> isServing;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setServing</span><span class="params">(<span class="keyword">boolean</span> serving)</span> </span>&#123;</span><br><span class="line">        isServing = serving;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>TServer</code>的三个方法：<code>serve()</code>、<code>stop()</code>和<code>isServing()</code>。<code>serve()</code>用于启动服务，<code>stop()</code>用于关闭服务，<code>isServing()</code>用于检测服务的起停状态。</p>
+<p><code>TServer</code>的<strong>不同实现类</strong>的启动方式不一样，因此<code>serve()</code>定义为抽象方法。不是所有的服务都需要优雅的退出, 因此<code>stop()</code>方法没有被定义为抽象。</p>
+<hr>
+<h2 id="TSimpleServer"><a href="#TSimpleServer" class="headerlink" title="TSimpleServer"></a>TSimpleServer</h2><p><code>TSimpleServer</code>的<strong>工作模式</strong>采用最简单的<strong>阻塞</strong>IO，实现方法简洁明了，便于理解，但是一次只能接收和处理一个<code>socket</code>连接，效率比较低。它主要用于演示<code>Thrift</code>的工作过程，在实际开发过程中很少用到它。</p>
+<h2 id="一-工作流程"><a href="#一-工作流程" class="headerlink" title="(一) 工作流程"></a>(一) 工作流程</h2><img src="/2019/10/24/a-id-20/v2-02617c11d2e8ba0334e23fc8d0bc0ca0_hd.jpg">
+
+<h2 id="二-使用入门"><a href="#二-使用入门" class="headerlink" title="(二) 使用入门"></a>(二) 使用入门</h2><p>服务端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(ServerConfig.SERVER_PORT);</span><br><span class="line">    TServerSocket serverTransport = <span class="keyword">new</span> TServerSocket(serverSocket);</span><br><span class="line">    HelloWorldService.Processor processor =</span><br><span class="line">            <span class="keyword">new</span> HelloWorldService.Processor&lt;HelloWorldService.Iface&gt;(<span class="keyword">new</span> HelloWorldServiceImpl());</span><br><span class="line">    TBinaryProtocol.Factory protocolFactory = <span class="keyword">new</span> TBinaryProtocol.Factory();</span><br><span class="line"></span><br><span class="line">    TSimpleServer.Args tArgs = <span class="keyword">new</span> TSimpleServer.Args(serverTransport);</span><br><span class="line">    tArgs.processor(processor);</span><br><span class="line">    tArgs.protocolFactory(protocolFactory);</span><br><span class="line">    <span class="comment">// 简单的单线程服务模型 一般用于测试</span></span><br><span class="line">    TServer tServer = <span class="keyword">new</span> TSimpleServer(tArgs);</span><br><span class="line">    System.out.println(<span class="string">"Running Simple Server"</span>);</span><br><span class="line">    tServer.serve();</span><br></pre></td></tr></table></figure>
+
+<p>客户端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TTransport transport = <span class="keyword">new</span> TSocket(ServerConfig.SERVER_IP, ServerConfig.SERVER_PORT, ServerConfig.TIMEOUT);</span><br><span class="line">    TProtocol protocol = <span class="keyword">new</span> TBinaryProtocol(transport);</span><br><span class="line">    HelloWorldService.Client client = <span class="keyword">new</span> HelloWorldService.Client(protocol);</span><br><span class="line">    transport.open();</span><br><span class="line"></span><br><span class="line">    String result = client.say(<span class="string">"Leo"</span>);</span><br><span class="line">    System.out.println(<span class="string">"Result =: "</span> + result);</span><br><span class="line">    transport.close();</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-源码分析"><a href="#三-源码分析" class="headerlink" title="(三) 源码分析"></a>(三) 源码分析</h2><p>查看上述流程的源代码，即<code>TSimpleServer.java</code>中的<code>serve()</code>方法如下：</p>
+<img src="/2019/10/24/a-id-20/v2-38e96977b25ca5a93228097f2eec4fc2_hd.jpg">
+
+<p><code>serve()</code>方法的操作：</p>
+<ol>
+<li>设置<code>TServerSocket</code>的<code>listen()</code>方法启动连接<strong>监听</strong>。</li>
+<li>以<strong>阻塞</strong>的方式接受客户端地连接请求，每进入一个<strong>连接</strong>即为其创建一个通道<code>TTransport</code>对象。</li>
+<li>为客户端创建<strong>处理器对象</strong>、<strong>输入传输通道对象</strong>、<strong>输出传输通道对象</strong>、<strong>输入协议对象</strong>和<strong>输出协议对象</strong>。</li>
+<li>通过<code>TServerEventHandler</code>对象处理具体的业务请求。</li>
+</ol>
+<hr>
+<h2 id="ThreadPoolServer"><a href="#ThreadPoolServer" class="headerlink" title="ThreadPoolServer"></a>ThreadPoolServer</h2><p><code>TThreadPoolServer</code>模式采用<strong>阻塞</strong><code>socket</code>方式工作，主线程负责<strong>阻塞式</strong>监听是否有新<code>socket</code>到来，具体的业务处理交由一个<strong>线程池</strong>来处理。</p>
+<h2 id="一-工作流程-1"><a href="#一-工作流程-1" class="headerlink" title="(一) 工作流程"></a>(一) 工作流程</h2><img src="/2019/10/24/a-id-20/v2-74c0b1114edd5f8d9dbed598186724b5_hd.jpg">
+
+<h2 id="二-使用入门-1"><a href="#二-使用入门-1" class="headerlink" title="(二) 使用入门"></a>(二) 使用入门</h2><p>服务端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(ServerConfig.SERVER_PORT);</span><br><span class="line">    TServerSocket serverTransport = <span class="keyword">new</span> TServerSocket(serverSocket);</span><br><span class="line">    HelloWorldService.Processor&lt;HelloWorldService.Iface&gt; processor =</span><br><span class="line">            <span class="keyword">new</span> HelloWorldService.Processor&lt;&gt;(<span class="keyword">new</span> HelloWorldServiceImpl());</span><br><span class="line"></span><br><span class="line">    TBinaryProtocol.Factory protocolFactory = <span class="keyword">new</span> TBinaryProtocol.Factory();</span><br><span class="line">    TThreadPoolServer.Args ttpsArgs = <span class="keyword">new</span> TThreadPoolServer.Args(serverTransport);</span><br><span class="line">    ttpsArgs.processor(processor);</span><br><span class="line">    ttpsArgs.protocolFactory(protocolFactory);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 线程池服务模型 使用标准的阻塞式IO 预先创建一组线程处理请求</span></span><br><span class="line">    TServer ttpsServer = <span class="keyword">new</span> TThreadPoolServer(ttpsArgs);</span><br><span class="line">    System.out.println(<span class="string">"Running ThreadPool Server"</span>);</span><br><span class="line">    ttpsServer.serve();</span><br></pre></td></tr></table></figure>
+
+<p>客户端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TTransport transport = <span class="keyword">new</span> TSocket(ServerConfig.SERVER_IP, ServerConfig.SERVER_PORT, ServerConfig.TIMEOUT);</span><br><span class="line">    TProtocol protocol = <span class="keyword">new</span> TBinaryProtocol(transport);</span><br><span class="line">    HelloWorldService.Client client = <span class="keyword">new</span> HelloWorldService.Client(protocol);</span><br><span class="line"></span><br><span class="line">    transport.open();</span><br><span class="line">    String result = client.say(<span class="string">"ThreadPoolClient"</span>);</span><br><span class="line">    System.out.println(<span class="string">"Result =: "</span> + result);</span><br><span class="line">    transport.close();</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-源码分析-1"><a href="#三-源码分析-1" class="headerlink" title="(三) 源码分析"></a>(三) 源码分析</h2><p><code>ThreadPoolServer</code>解决了<code>TSimpleServer</code>不支持<strong>并发</strong>和<strong>多连接</strong>的问题，引入了<strong>线程池</strong>。实现的模型是<code>One Thread Per Connection</code>。查看上述流程的源代码，先查看<strong>线程池</strong>的代码片段：</p>
+<img src="/2019/10/24/a-id-20/v2-98e3301964b1d7ce596d40948a35cea9_hd.jpg">
+
+<p><code>TThreadPoolServer.java</code>中的<code>serve()</code>方法如下：</p>
+<img src="/2019/10/24/a-id-20/v2-dfb98d08bab99a90f4f7020eca7fbfcd_hd.jpg">
+
+<p><code>serve()</code>方法的操作：</p>
+<ol>
+<li>设置<code>TServerSocket</code>的<code>listen()</code>方法启动连接<strong>监听</strong>。</li>
+<li>以<strong>阻塞</strong>的方式接受<strong>客户端</strong>的<strong>连接请求</strong>，每进入一个<strong>连接</strong>，将<strong>通道对象</strong>封装成一个<code>WorkerProcess</code>对象(<code>WorkerProcess</code>实现了<code>Runnabel</code>接口)，并提交到<strong>线程池</strong>。</li>
+<li><code>WorkerProcess</code>的<code>run()</code>方法负责<strong>业务处理</strong>，为客户端创建了<strong>处理器对象</strong>、<strong>输入传输通道对象</strong>、<strong>输出传输通道对象</strong>、<strong>输入协议对象</strong>和<strong>输出协议对象</strong>。</li>
+<li>通过<code>TServerEventHandler</code>对象处理具体的业务请求。</li>
+</ol>
+<p><code>WorkerProcess</code>的<code>run()</code>方法：</p>
+<img src="/2019/10/24/a-id-20/v2-8ea60d1594663a9f4803b166ef0c3b26_hd.jpg">
+
+<h2 id="四-优缺点"><a href="#四-优缺点" class="headerlink" title="(四) 优缺点"></a>(四) 优缺点</h2><h2 id="TThreadPoolServer模式的优点"><a href="#TThreadPoolServer模式的优点" class="headerlink" title="TThreadPoolServer模式的优点"></a>TThreadPoolServer模式的优点</h2><p>拆分了<strong>监听线程</strong>(<code>Accept Thread</code>)和处理<strong>客户端连接</strong>的<strong>工作线程</strong>(<code>Worker Thread</code>)，<strong>数据读取</strong>和<strong>业务处理</strong>都交给<strong>线程池</strong>处理。因此在<strong>并发量较大</strong>时新连接也能够被及时接受。</p>
+<p><strong>线程池模式</strong>比较适合<strong>服务器端</strong>能预知最多有多少个<strong>客户端并发</strong>的情况，这时每个请求都能被业务线程池及时处理，性能也非常高。</p>
+<h2 id="TThreadPoolServer模式的缺点"><a href="#TThreadPoolServer模式的缺点" class="headerlink" title="TThreadPoolServer模式的缺点"></a>TThreadPoolServer模式的缺点</h2><p>线程池模式的处理能力受限于<strong>线程池</strong>的工作能力，当<strong>并发请求数</strong>大于线程池中的<strong>线程数</strong>时，新请求也只能<strong>排队等待</strong>。</p>
+<hr>
+<h2 id="TNonblockingServer"><a href="#TNonblockingServer" class="headerlink" title="TNonblockingServer"></a>TNonblockingServer</h2><p><code>TNonblockingServer</code>模式也是<strong>单线程工作</strong>，但是采用<code>NIO</code>的模式，借助<code>Channel/Selector</code>机制, 采用<code>IO</code><strong>事件模型</strong>来处理。</p>
+<p>所有的<code>socket</code>都被注册到<code>selector</code>中，在一个<strong>线程</strong>中通过<code>seletor</code><strong>循环监控</strong>所有的<code>socket</code>。</p>
+<p>每次<code>selector</code>循环结束时，处理所有的处于<strong>就绪状态</strong>的<code>socket</code>，对于有数据到来的<code>socket</code>进行<strong>数据读取</strong>操作，对于有数据发送的socket则进行<strong>数据发送</strong>操作，对于监听<code>socket</code>则产生一个新业务<code>socket</code>并将其<strong>注册</strong>到<code>selector</code>上。</p>
+<blockquote>
+<p>注意：TNonblockingServer要求底层的传输通道必须使用TFramedTransport。</p>
+</blockquote>
+<h2 id="一-工作流程-2"><a href="#一-工作流程-2" class="headerlink" title="(一) 工作流程"></a>(一) 工作流程</h2><img src="/2019/10/24/a-id-20/v2-0904008ec3694f438670b8608fc91660_hd.jpg">
+
+<h2 id="二-使用入门-2"><a href="#二-使用入门-2" class="headerlink" title="(二) 使用入门"></a>(二) 使用入门</h2><p>服务端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">TProcessor tprocessor = <span class="keyword">new</span> HelloWorldService.Processor&lt;HelloWorldService.Iface&gt;(<span class="keyword">new</span> HelloWorldServiceImpl());</span><br><span class="line">    TNonblockingServerSocket tnbSocketTransport = <span class="keyword">new</span> TNonblockingServerSocket(ServerConfig.SERVER_PORT);</span><br><span class="line"></span><br><span class="line">    TNonblockingServer.Args tnbArgs = <span class="keyword">new</span> TNonblockingServer.Args(tnbSocketTransport);</span><br><span class="line">    tnbArgs.processor(tprocessor);</span><br><span class="line">    tnbArgs.transportFactory(<span class="keyword">new</span> TFramedTransport.Factory());</span><br><span class="line">    tnbArgs.protocolFactory(<span class="keyword">new</span> TCompactProtocol.Factory());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用非阻塞式IO服务端和客户端需要指定TFramedTransport数据传输的方式</span></span><br><span class="line">    TServer server = <span class="keyword">new</span> TNonblockingServer(tnbArgs);</span><br><span class="line">    System.out.println(<span class="string">"Running Non-blocking Server"</span>);</span><br><span class="line">    server.serve();</span><br></pre></td></tr></table></figure>
+
+<p>客户端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TTransport transport = <span class="keyword">new</span> TFramedTransport(<span class="keyword">new</span> TSocket(ServerConfig.SERVER_IP, ServerConfig.SERVER_PORT, ServerConfig.TIMEOUT));</span><br><span class="line">    <span class="comment">// 协议要和服务端一致</span></span><br><span class="line">    TProtocol protocol = <span class="keyword">new</span> TCompactProtocol(transport);</span><br><span class="line">    HelloWorldService.Client client = <span class="keyword">new</span> HelloWorldService.Client(protocol);</span><br><span class="line">    transport.open();</span><br><span class="line"></span><br><span class="line">    String result = client.say(<span class="string">"NonBlockingClient"</span>);</span><br><span class="line">    System.out.println(<span class="string">"Result =: "</span> + result);</span><br><span class="line">    transport.close();</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-源码分析-2"><a href="#三-源码分析-2" class="headerlink" title="(三) 源码分析"></a>(三) 源码分析</h2><p><code>TNonblockingServer</code>继承于<code>AbstractNonblockingServer</code>，这里我们更关心基于<code>NIO</code>的<code>selector</code>部分的关键代码。</p>
+<img src="/2019/10/24/a-id-20/v2-6730cf487d5039d8c8a4c7d52c67c77c_hd.jpg">
+
+<h2 id="四-优缺点-1"><a href="#四-优缺点-1" class="headerlink" title="(四) 优缺点"></a>(四) 优缺点</h2><h2 id="TNonblockingServer模式优点"><a href="#TNonblockingServer模式优点" class="headerlink" title="TNonblockingServer模式优点"></a>TNonblockingServer模式优点</h2><p>相比于<code>TSimpleServer</code>效率提升主要体现在<code>IO</code><strong>多路复用上</strong>，<code>TNonblockingServer</code>采用<strong>非阻塞</strong><code>IO</code>，对<code>accept/read/write</code>等<code>IO</code>事件进行<strong>监控</strong>和<strong>处理</strong>，同时监控多个<code>socket</code>的状态变化。</p>
+<h2 id="TNonblockingServer模式缺点"><a href="#TNonblockingServer模式缺点" class="headerlink" title="TNonblockingServer模式缺点"></a>TNonblockingServer模式缺点</h2><p><code>TNonblockingServer</code>模式在<strong>业务处理</strong>上还是采用<strong>单线程顺序</strong>来完成。在业务处理比较<strong>复杂</strong>、<strong>耗时</strong>的时候，例如某些接口函数需要读取数据库执行时间较长，会导致<strong>整个服务</strong>被<strong>阻塞</strong>住，此时该模式<strong>效率也不高</strong>，因为<strong>多个调用请求任务</strong>依然是<strong>顺序</strong>一个接一个执行。</p>
+<h2 id="THsHaServer"><a href="#THsHaServer" class="headerlink" title="THsHaServer"></a>THsHaServer</h2><p>鉴于<code>TNonblockingServer</code>的缺点，<code>THsHaServer</code>继承于<code>TNonblockingServer</code>，引入了<strong>线程池</strong>提高了任务处理的<strong>并发能力</strong>。<code>THsHaServer</code>是<strong>半同步半异步</strong>(<code>Half-Sync/Half-Async</code>)的处理模式，<code>Half-Aysnc</code>用于<code>IO</code><strong>事件处理</strong>(<code>Accept/Read/Write</code>)，<code>Half-Sync</code>用于业务<code>handler</code>对<code>rpc</code>的<strong>同步处理</strong>上。</p>
+<blockquote>
+<p>注意：THsHaServer和TNonblockingServer一样，要求底层的传输通道必须使用TFramedTransport。</p>
+</blockquote>
+<h2 id="一-工作流程-3"><a href="#一-工作流程-3" class="headerlink" title="(一) 工作流程"></a>(一) 工作流程</h2><img src="/2019/10/24/a-id-20/v2-298fb04d2f68dd6fb28ba9b219b65579_hd.jpg">
+
+<h2 id="二-使用入门-3"><a href="#二-使用入门-3" class="headerlink" title="(二) 使用入门"></a>(二) 使用入门</h2><p>服务端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TNonblockingServerSocket tnbSocketTransport = <span class="keyword">new</span> TNonblockingServerSocket(ServerConfig.SERVER_PORT);</span><br><span class="line">    TProcessor tprocessor = <span class="keyword">new</span> HelloWorldService.Processor&lt;HelloWorldService.Iface&gt;(<span class="keyword">new</span> HelloWorldServiceImpl());</span><br><span class="line">    <span class="comment">// 半同步半异步</span></span><br><span class="line">    THsHaServer.Args thhsArgs = <span class="keyword">new</span> THsHaServer.Args(tnbSocketTransport);</span><br><span class="line">    thhsArgs.processor(tprocessor);</span><br><span class="line">    thhsArgs.transportFactory(<span class="keyword">new</span> TFramedTransport.Factory());</span><br><span class="line">    thhsArgs.protocolFactory(<span class="keyword">new</span> TBinaryProtocol.Factory());</span><br><span class="line"></span><br><span class="line">    TServer server = <span class="keyword">new</span> THsHaServer(thhsArgs);</span><br><span class="line">    System.out.println(<span class="string">"Running HsHa Server"</span>);</span><br><span class="line">    server.serve();</span><br></pre></td></tr></table></figure>
+
+<p>客户端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TTransport transport = <span class="keyword">new</span> TFramedTransport(<span class="keyword">new</span> TSocket(ServerConfig.SERVER_IP, ServerConfig.SERVER_PORT, ServerConfig.TIMEOUT));</span><br><span class="line">    <span class="comment">// 协议要和服务端一致</span></span><br><span class="line">    TProtocol protocol = <span class="keyword">new</span> TBinaryProtocol(transport);</span><br><span class="line">    HelloWorldService.Client client = <span class="keyword">new</span> HelloWorldService.Client(protocol);</span><br><span class="line">    transport.open();</span><br><span class="line"></span><br><span class="line">    String result = client.say(<span class="string">"HsHaClient"</span>);</span><br><span class="line">    System.out.println(<span class="string">"Result =: "</span> + result);</span><br><span class="line">    transport.close();</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-源码分析-3"><a href="#三-源码分析-3" class="headerlink" title="(三) 源码分析"></a>(三) 源码分析</h2><p><code>THsHaServer</code>继承于<code>TNonblockingServer</code>，新增了<strong>线程池</strong>并发处理工作任务的功能，查看线程池的相关代码：</p>
+<img src="/2019/10/24/a-id-20/v2-e83554a8ab53cf382a068517697561b6_hd.jpg">
+
+<p><strong>任务线程池</strong>的创建过程：</p>
+<img src="/2019/10/24/a-id-20/v2-0b452a8f3a0ccadb68b00f4f4afca318_hd.jpg">
+
+<blockquote>
+<p>下文的TThreadedSelectorServer囊括了THsHaServer的大部分特性，源码分析可参考TThreadedSelectorServer。</p>
+</blockquote>
+<h2 id="四-优缺点-2"><a href="#四-优缺点-2" class="headerlink" title="(四) 优缺点"></a>(四) 优缺点</h2><h2 id="THsHaServer的优点"><a href="#THsHaServer的优点" class="headerlink" title="THsHaServer的优点"></a>THsHaServer的优点</h2><p><code>THsHaServer</code>与<code>TNonblockingServer</code>模式相比，<code>THsHaServer</code>在完成<strong>数据读取</strong>之后，将<strong>业务处理</strong>过程交由一个<strong>线程池</strong>来完成，<strong>主线程</strong>直接返回进行<strong>下一次循环</strong>操作，效率大大提升。</p>
+<h2 id="THsHaServer的缺点"><a href="#THsHaServer的缺点" class="headerlink" title="THsHaServer的缺点"></a>THsHaServer的缺点</h2><p><strong>主线程</strong>仍然需要完成所有<code>socket</code>的<strong>监听接收</strong>、<strong>数据读取</strong>和<strong>数据写入</strong>操作。当<strong>并发请求数</strong>较大时，且发送<strong>数据量</strong>较多时，监听<code>socket</code>上<strong>新连接请求</strong>不能被及时接受。</p>
+<hr>
+<h2 id="TThreadedSelectorServer"><a href="#TThreadedSelectorServer" class="headerlink" title="TThreadedSelectorServer"></a>TThreadedSelectorServer</h2><p><code>TThreadedSelectorServer</code>是对<code>THsHaServer</code>的一种扩充，它将<code>selector</code>中的<strong>读写</strong><code>IO</code><strong>事件</strong>(<code>read/write</code>)从<strong>主线程</strong>中分离出来。同时引入<code>worker</code><strong>工作线程池</strong>，它也是种<code>Half-Sync/Half-Async</code>的服务模型。</p>
+<p><code>TThreadedSelectorServer</code>模式是目前<code>Thrift</code>提供的最高级的<strong>线程服务模型</strong>，它内部有如果几个部分构成：</p>
+<ol>
+<li><strong>一个</strong><code>AcceptThread</code>线程对象，专门用于处理监听<code>socket</code>上的新连接。</li>
+<li><strong>若干个</strong><code>SelectorThread</code>对象专门用于处理业务<code>socket</code>的<strong>网络</strong><code>I/O</code><strong>读写</strong>操作，所有网络数据的<strong>读写</strong>均是有这些线程来完成。</li>
+<li>一个<strong>负载均衡器</strong><code>SelectorThreadLoadBalancer</code>对象，主要用于<code>AcceptThread</code><strong>线程</strong>接收到一个新<code>socket</code>连接请求时，决定将这个<strong>新连接</strong>请求分配给哪个<code>SelectorThread</code><strong>线程</strong>。</li>
+<li>一个<code>ExecutorService</code>类型的<strong>工作线程池</strong>，在<code>SelectorThread</code>线程中，监听到有业务<code>socket</code>中有调用请求过来，则将<strong>请求数据读取</strong>之后，交给<code>ExecutorService</code><strong>线程池</strong>中的线程完成此次调用的具体执行。主要用于处理每个<code>rpc</code>请求的<code>handler</code><strong>回调处理</strong>(这部分是<strong>同步的</strong>)。</li>
+</ol>
+<h2 id="一-工作流程-4"><a href="#一-工作流程-4" class="headerlink" title="(一) 工作流程"></a>(一) 工作流程</h2><img src="/2019/10/24/a-id-20/v2-ccac8623cbeacd98b6c59cd98ca0f5fa_hd.jpg">
+
+<h2 id="二-使用入门-4"><a href="#二-使用入门-4" class="headerlink" title="(二) 使用入门"></a>(二) 使用入门</h2><p>服务端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">TNonblockingServerSocket serverSocket = <span class="keyword">new</span> TNonblockingServerSocket(ServerConfig.SERVER_PORT);</span><br><span class="line">    TProcessor processor = <span class="keyword">new</span> HelloWorldService.Processor&lt;HelloWorldService.Iface&gt;(<span class="keyword">new</span> HelloWorldServiceImpl());</span><br><span class="line">    <span class="comment">// 多线程半同步半异步</span></span><br><span class="line">    TThreadedSelectorServer.Args ttssArgs = <span class="keyword">new</span> TThreadedSelectorServer.Args(serverSocket);</span><br><span class="line">    ttssArgs.processor(processor);</span><br><span class="line">    ttssArgs.protocolFactory(<span class="keyword">new</span> TBinaryProtocol.Factory());</span><br><span class="line">    <span class="comment">// 使用非阻塞式IO时 服务端和客户端都需要指定数据传输方式为TFramedTransport</span></span><br><span class="line">    ttssArgs.transportFactory(<span class="keyword">new</span> TFramedTransport.Factory());</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 多线程半同步半异步的服务模型</span></span><br><span class="line">    TThreadedSelectorServer server = <span class="keyword">new</span> TThreadedSelectorServer(ttssArgs);</span><br><span class="line">    System.out.println(<span class="string">"Running ThreadedSelector Server"</span>);</span><br><span class="line">    server.serve();</span><br></pre></td></tr></table></figure>
+
+<p>客户端：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">new</span> Thread(<span class="string">"Thread "</span> + i) &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            <span class="comment">// 设置传输通道 对于非阻塞服务 需要使用TFramedTransport(用于将数据分块发送)</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++) &#123;</span><br><span class="line">                TTransport transport = <span class="keyword">null</span>;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    transport = <span class="keyword">new</span> TFramedTransport(<span class="keyword">new</span> TSocket(ServerConfig.SERVER_IP, ServerConfig.SERVER_PORT, ServerConfig.TIMEOUT));</span><br><span class="line">                    TProtocol protocol = <span class="keyword">new</span> TBinaryProtocol(transport);</span><br><span class="line">                    HelloWorldService.Client client = <span class="keyword">new</span> HelloWorldService.Client(protocol);</span><br><span class="line">                    transport.open();</span><br><span class="line">                    String result = client.say(<span class="string">"ThreadedSelector Client"</span>);</span><br><span class="line">                    System.out.println(<span class="string">"Result =: "</span> + result);</span><br><span class="line">                    transport.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    <span class="comment">// 关闭传输通道</span></span><br><span class="line">                    transport.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;.start();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="三-核心代码"><a href="#三-核心代码" class="headerlink" title="(三) 核心代码"></a>(三) 核心代码</h2><p>以上工作流程的三个组件<code>AcceptThread</code>、<code>SelectorThread</code>和<code>ExecutorService</code>在源码中的定义如下：</p>
+<p><code>TThreadedSelectorServer</code>模式中有一个专门的线程<code>AcceptThread</code>用于处理<strong>新连接请求</strong>，因此能够及时响应<strong>大量并发连接请求</strong>；另外它将<strong>网络I/O操作</strong>分散到多个<code>SelectorThread</code><strong>线程</strong>中来完成，因此能够快速对<strong>网络</strong><code>I/O</code>进行<strong>读写操作</strong>，能够很好地应对<strong>网络</strong><code>I/O</code>较多的情况。</p>
+<img src="/2019/10/24/a-id-20/v2-385889f287e1025d9c6873abe64526df_hd.jpg">
+
+<p><code>TThreadedSelectorServer</code>默认参数定义如下：</p>
+<img src="/2019/10/24/a-id-20/v2-fc557ba706931cc908f79093ac075e56_hd.jpg">
+
+<ul>
+<li>负责网络IO读写的selector默认线程数(selectorThreads)：2</li>
+<li>负责业务处理的默认工作线程数(workerThreads)：5</li>
+<li>工作线程池单个线程的任务队列大小(acceptQueueSizePerThread)：4</li>
+</ul>
+<p>创建、初始化并启动<code>AcceptThread</code>和<code>SelectorThreads</code>，同时启动<code>selector</code>线程的<strong>负载均衡器</strong>(<code>selectorThreads</code>)。</p>
+<img src="/2019/10/24/a-id-20/v2-a87792b4490d8447569751bd131aeeb4_hd.jpg">
+
+<h2 id="AcceptThread源码"><a href="#AcceptThread源码" class="headerlink" title="AcceptThread源码"></a>AcceptThread源码</h2><p><code>AcceptThread</code>继承于<code>Thread</code>，可以看出包含三个重要的属性：<strong>非阻塞式传输通道</strong>(<code>TNonblockingServerTransport</code>)、<code>NIO</code><strong>选择器</strong>(<code>acceptSelector</code>)和<strong>选择器线程负载均衡器</strong>(<code>threadChooser</code>)。</p>
+<img src="/2019/10/24/a-id-20/v2-12823837d421d025ed4bc683bc5ef6eb_hd.jpg">
+
+<p>查看<code>AcceptThread</code>的<code>run()</code>方法，可以看出<code>accept</code>线程一旦启动，就会不停地调用<code>select()</code>方法：</p>
+<img src="/2019/10/24/a-id-20/v2-735b5e38cb5153fee9bf53cc1db441b1_hd.jpg">
+
+<p>查看<code>select()</code>方法，<code>acceptSelector</code><strong>选择器</strong>等待<code>IO</code>事件的到来，拿到<code>SelectionKey</code>即检查是不是<code>accept</code>事件。如果是，通过<code>handleAccept()</code>方法接收一个<strong>新来的连接</strong>；否则，如果是<code>IO</code><strong>读写事件</strong>，<code>AcceptThread</code>不作任何处理，交由<code>SelectorThread</code>完成。</p>
+<img src="/2019/10/24/a-id-20/v2-60e6899e3d08b6f085a13d49b8fffa89_hd.jpg">
+
+<p>在<code>handleAccept()</code>方法中，先通过<code>doAccept()</code>去拿<strong>连接通道</strong>，然后<code>Selector</code><strong>线程负载均衡器</strong>选择一个<code>Selector</code>线程，完成接下来的<code>IO</code><strong>读写事件</strong>。</p>
+<img src="/2019/10/24/a-id-20/v2-b34e356e0688d38cf9dd9c37d34e1329_hd.jpg">
+
+<p>接下来继续查看<code>doAddAccept()</code>方法的实现，毫无悬念，它进一步调用了<code>SelectorThread</code>的<code>addAcceptedConnection()</code>方法，把<strong>非阻塞传输通道对象</strong>传递给<strong>选择器线程</strong>做进一步的<code>IO</code><strong>读写操作</strong>。</p>
+<img src="/2019/10/24/a-id-20/v2-aece7cdc78f14118d6dbff0f53cbfc49_hd.jpg">
+
+<h2 id="SelectorThreadLoadBalancer源码"><a href="#SelectorThreadLoadBalancer源码" class="headerlink" title="SelectorThreadLoadBalancer源码"></a>SelectorThreadLoadBalancer源码</h2><p><code>SelectorThreadLoadBalancer</code>如何创建？</p>
+<img src="/2019/10/24/a-id-20/v2-174d37dd84cbc4fa95d739a8138d11a9_hd.jpg">
+
+<p><code>SelectorThreadLoadBalancer</code>是一个基于<strong>轮询算法</strong>的<code>Selector</code><strong>线程选择器</strong>，通过<strong>线程迭代器</strong>为新进来的<strong>连接</strong>顺序分配<code>SelectorThread</code>。</p>
+<img src="/2019/10/24/a-id-20/v2-02bd60011c95ed48bc17d8106b25160c_hd.jpg">
+
+<h2 id="SelectorThread源码"><a href="#SelectorThread源码" class="headerlink" title="SelectorThread源码"></a>SelectorThread源码</h2><p><code>SelectorThread</code>和<code>AcceptThread</code>一样，是<code>TThreadedSelectorServer</code>的一个<strong>成员内部类</strong>，每个<code>SelectorThread</code><strong>线程对象</strong>内部都有一个<strong>阻塞式的队列</strong>，用于存放该线程<strong>被接收</strong>的<strong>连接通道</strong>。</p>
+<img src="/2019/10/24/a-id-20/v2-c2ccf051b02a1ba24829701134a2e888_hd.jpg">
+
+<p><strong>阻塞队列</strong>的大小可由构造函数指定：</p>
+<img src="/2019/10/24/a-id-20/v2-7c8240d3203cfb851f8ad6a371177252_hd.jpg">
+
+<p>上面看到，在<code>AcceptThread</code>的<code>doAddAccept()</code>方法中调用了<code>SelectorThread</code>的<code>addAcceptedConnection()</code>方法。</p>
+<p>这个方法做了两件事： 1. 将被此<code>SelectorThread</code>线程接收的<strong>连接通道</strong>放入<strong>阻塞队列</strong>中。 2. 通过<code>wakeup()</code>方法唤醒<code>SelectorThread</code>中的<code>NIO</code><strong>选择器</strong><code>selector</code>。</p>
+<img src="/2019/10/24/a-id-20/v2-008512b5d0f83075ecbc052c86c12dc6_hd.jpg">
+
+<p>既然<code>SelectorThread</code>也是继承于<code>Thread</code>，查看其<code>run()</code>方法的实现：</p>
+<img src="/2019/10/24/a-id-20/v2-1288e976140f09130f656d0e877b4072_hd.jpg">
+
+<p><code>SelectorThread</code>方法的<code>select()</code>监听<code>IO</code>事件，仅仅用于处理<strong>数据读取</strong>和<strong>数据写入</strong>。如果连接有<strong>数据可读</strong>，读取并以<code>frame</code>的方式缓存；如果需要向连接中<strong>写入数据</strong>，缓存并发送客户端的数据。且在<strong>数据读写</strong>处理完成后，需要向<code>NIO</code>的<code>selector</code><strong>清空</strong>和<strong>注销</strong>自身的<code>SelectionKey</code>。</p>
+<img src="/2019/10/24/a-id-20/v2-01f60579079162ae09d6ec6f5f033093_hd.jpg">
+
+<ul>
+<li><strong>数据写操作</strong>完成以后，整个<code>rpc</code>调用过程也就结束了，<code>handleWrite()</code>方法如下：</li>
+</ul>
+<img src="/2019/10/24/a-id-20/v2-84c75b45225daba88bc02e59aef30208_hd.jpg">
+
+<ul>
+<li><strong>数据读操作</strong>完成以后，<code>Thrift</code>会利用<strong>已读数据</strong>执行<strong>目标方法</strong>，<code>handleRead()</code>方法如下：</li>
+</ul>
+<img src="/2019/10/24/a-id-20/v2-f4b98236d1342db18d0d6a50e3b4f764_hd.jpg">
+
+<p><code>handleRead</code>方法在执行<code>read()</code>方法，将<strong>数据读取</strong>完成后，会调用<code>requestInvoke()</code>方法调用<strong>目标方法</strong>完成具体业务处理。<code>requestInvoke()</code>方法将<strong>请求数据</strong>封装为一个<code>Runnable</code>对象，提交到<strong>工作任务线程池</strong>(<code>ExecutorService</code>)进行处理。</p>
+<img src="/2019/10/24/a-id-20/v2-e45732a2fa4cf47edb969e17acbd5a57_hd.jpg">
+
+<p><code>select()</code>方法完成后，线程继续运行<code>processAcceptedConnections()</code>方法处理<strong>下一个连接</strong>的<code>IO</code>事件。</p>
+<img src="/2019/10/24/a-id-20/v2-3d81fcf7c7cd38af590da7c4dad0f1a6_hd.jpg">
+
+<p>这里比较核心的几个操作：</p>
+<ol>
+<li>尝试从<code>SelectorThread</code>的<strong>阻塞队列</strong><code>acceptedQueue</code>中获取一个<strong>连接的传输通道</strong>。如果获取成功，调用<code>registerAccepted()</code>方法；否则，进入下一次循环。</li>
+<li><code>registerAccepted()</code>方法将<strong>传输通道</strong>底层的<strong>连接</strong>注册到<code>NIO</code>的<strong>选择器</strong><code>selector</code>上面，获取到一个<code>SelectionKey</code>。</li>
+<li>创建一个<code>FrameBuffer</code>对象，并绑定到获取的<code>SelectionKey</code>上面，用于数据传输时的中间<strong>读写缓存</strong>。</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文对<code>Thrift</code>的各种<strong>线程服务模型</strong>进行了介绍，包括2种<strong>阻塞式服务模型</strong>：<code>TSimpleServer</code>、<code>TThreadPoolServer</code>，3种<strong>非阻塞式服务模型</strong>：<code>TNonblockingServer</code>、<code>THsHaServer</code>和<code>TThreadedSelectorServer</code>。对各种服务模型的<strong>具体用法</strong>、<strong>工作流程</strong>、<strong>原理和源码实现</strong>进行了一定程度的分析。</p>
+<p>鉴于篇幅较长，请各位看官请慢慢批阅！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/10/24/a-id-19/">Thrift-I-概述与入门</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

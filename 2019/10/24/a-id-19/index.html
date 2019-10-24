@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Thrift-I-概述与入门 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Thrift-I-概述与入门</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 24, 2019&nbsp;&nbsp;14:31:38</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/高可用架构/">高可用架构</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p><code>Thrift</code>是一个<strong>轻量级</strong>、<strong>跨语言</strong>的<strong>远程服务调用</strong>框架，最初由<code>Facebook</code>开发，后面进入<code>Apache</code>开源项目。它通过自身的<code>IDL</code><strong>中间语言</strong>, 并借助<strong>代码生成引擎</strong>生成各种主流语言的<code>RPC</code><strong>服务端</strong>/<strong>客户端</strong>模板代码。</p>
+<p><code>Thrift</code>支持多种不同的<strong>编程语言</strong>，包括<code>C++</code>、<code>Java</code>、<code>Python</code>、<code>PHP</code>、<code>Ruby</code>等，本系列主要讲述基于<code>Java</code>语言的<code>Thrift</code>的配置方式和具体使用。</p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><h2 id="Thrift的技术栈"><a href="#Thrift的技术栈" class="headerlink" title="Thrift的技术栈"></a>Thrift的技术栈</h2><p><code>Thrift</code>对<strong>软件栈</strong>的定义非常的清晰, 使得各个组件能够<strong>松散的耦合</strong>, 针对不同的应用场景, 选择不同是方式去搭建服务。</p>
+<img src="/2019/10/24/a-id-19/v2-1f9d199ad7d02d90898059d0b7b1699e_hd.jpg">
+
+<p><code>Thrift</code><strong>软件栈</strong>分层<strong>从下向上</strong>分别为：<strong>传输层</strong>(<code>Transport Layer</code>)、<strong>协议层</strong>(<code>Protocol Layer</code>)、<strong>处理层</strong>(<code>Processor Layer</code>)和<strong>服务层</strong>(<code>Server Layer</code>)。</p>
+<ul>
+<li><strong>传输层</strong>(<code>Transport Layer</code>)：传输层负责直接从网络中<strong>读取</strong>和<strong>写入</strong>数据，它定义了具体的<strong>网络传输协议</strong>；比如说<code>TCP/IP</code>传输等。</li>
+<li><strong>协议层</strong>(<code>Protocol Layer</code>)：协议层定义了<strong>数据传输格式</strong>，负责网络传输数据的<strong>序列化</strong>和<strong>反序列化</strong>；比如说<code>JSON</code>、<code>XML</code>、<strong>二进制数据</strong>等。</li>
+<li><strong>处理层</strong>(<code>Processor Layer</code>)：处理层是由具体的<code>IDL</code>（<strong>接口描述语言</strong>）生成的，封装了具体的<strong>底层网络传输</strong>和<strong>序列化方式</strong>，并委托给用户实现的<code>Handler</code>进行处理。</li>
+<li><strong>服务层</strong>(<code>Server Layer</code>)：整合上述组件，提供具体的<strong>网络线程/IO服务模型</strong>，形成最终的服务。</li>
+</ul>
+<h2 id="Thrift的特性"><a href="#Thrift的特性" class="headerlink" title="Thrift的特性"></a>Thrift的特性</h2><h2 id="一-开发速度快"><a href="#一-开发速度快" class="headerlink" title="(一) 开发速度快"></a>(一) 开发速度快</h2><p>通过编写<code>RPC</code>接口<code>Thrift IDL</code>文件，利用<strong>编译生成器</strong>自动生成<strong>服务端骨架</strong>(<code>Skeletons</code>)和<strong>客户端桩</strong>(<code>Stubs</code>)。从而省去开发者<strong>自定义</strong>和<strong>维护接口编解码</strong>、<strong>消息传输</strong>、<strong>服务器多线程模型</strong>等基础工作。</p>
+<ul>
+<li>服务端：只需要按照<strong>服务骨架</strong>即<strong>接口</strong>，编写好具体的<strong>业务处理程序</strong>(<code>Handler</code>)即<strong>实现类</strong>即可。</li>
+<li>客户端：只需要拷贝<code>IDL</code>定义好的<strong>客户端桩</strong>和<strong>服务对象</strong>，然后就像调用本地对象的方法一样调用远端服务。</li>
+</ul>
+<h2 id="二-接口维护简单"><a href="#二-接口维护简单" class="headerlink" title="(二) 接口维护简单"></a>(二) 接口维护简单</h2><p>通过维护<code>Thrift</code>格式的IDL（<strong>接口描述语言</strong>）文件（注意写好注释），即可作为给<code>Client</code>使用的接口文档使用，也<strong>自动生成</strong>接口代码，始终保持代码和文档的一致性。且<code>Thrift</code>协议可灵活支持<strong>接口</strong>的<strong>可扩展性</strong>。</p>
+<h2 id="三-学习成本低"><a href="#三-学习成本低" class="headerlink" title="(三) 学习成本低"></a>(三) 学习成本低</h2><p>因为其来自<code>Google Protobuf</code>开发团队，所以其<code>IDL</code>文件风格类似<code>Google Protobuf</code>，且更加<strong>易读易懂</strong>；特别是<code>RPC</code><strong>服务接口</strong>的风格就像写一个<strong>面向对象</strong>的<code>Class</code>一样简单。</p>
+<p>初学者只需参照：<a href="https://link.zhihu.com/?target=http%3A//thrift.apache.org/" target="_blank" rel="noopener">http://thrift.apache.org/</a>，一个多小时就可以理解<code>Thrift IDL</code>文件的语法使用。</p>
+<h2 id="四-多语言-跨语言支持"><a href="#四-多语言-跨语言支持" class="headerlink" title="(四) 多语言/跨语言支持"></a>(四) 多语言/跨语言支持</h2><p><code>Thrift</code>支持<code>C++</code>、 <code>Java</code>、<code>Python</code>、<code>PHP</code>、<code>Ruby</code>、<code>Erlang</code>、<code>Perl</code>、<code>Haskell</code>、<code>C#</code>、<code>Cocoa</code>、<code>JavaScript</code>、<code>Node.js</code>、<code>Smalltalk</code>等多种语言，即可生成上述语言的<strong>服务器端</strong>和<strong>客户端程序</strong>。</p>
+<p>对于我们经常使用的<code>Java</code>、<code>PHP</code>、<code>Python</code>、<code>C++</code>支持良好，虽然对<code>iOS</code>环境的<code>Objective-C</code>(<code>Cocoa</code>)支持稍逊，但也完全满足我们的使用要求。</p>
+<h2 id="五-稳定-广泛使用"><a href="#五-稳定-广泛使用" class="headerlink" title="(五) 稳定/广泛使用"></a>(五) 稳定/广泛使用</h2><p><code>Thrift</code>在很多开源项目中已经被验证是<strong>稳定</strong>和<strong>高效</strong>的，例如<code>Cassandra</code>、<code>Hadoop</code>、<code>HBase</code>等；国外在<code>Facebook</code>中有广泛使用，国内包括百度、美团小米、和饿了么等公司。</p>
+<img src="/2019/10/24/a-id-19/v2-8e86d41f469c25c83c68085bd333cb1b_hd.jpg">
+
+<h2 id="Thrift的数据类型"><a href="#Thrift的数据类型" class="headerlink" title="Thrift的数据类型"></a>Thrift的数据类型</h2><p>Thrift 脚本可定义的数据类型包括以下几种类型：</p>
+<ol>
+<li><strong>基本类型：**</strong>bool<strong>: 布尔值 　　**byte</strong>: 8位有符号整数 　　<strong>i16</strong>: 16位有符号整数 　　<strong>i32</strong>: 32位有符号整数 　　<strong>i64</strong>: 64位有符号整数 　　<strong>double</strong>: 64位浮点数 　　<strong>string</strong>: UTF-8编码的字符串 　　<strong>binary</strong>: 二进制串</li>
+<li><strong>结构体类型：**</strong>struct**: 定义的结构体对象</li>
+<li><strong>容器类型：**</strong>list<strong>: 有序元素列表 　　**set</strong>: 无序无重复元素集合 　　<strong>map</strong>: 有序的key/value集合</li>
+<li><strong>异常类型：**</strong>exception**: 异常类型</li>
+<li><strong>服务类型：**</strong>service**: 具体对应服务的类</li>
+</ol>
+<h2 id="Thrift的协议"><a href="#Thrift的协议" class="headerlink" title="Thrift的协议"></a>Thrift的协议</h2><p><code>Thrift</code>可以让用户选择<strong>客户端</strong>与<strong>服务端</strong>之间<strong>传输通信协议</strong>的类别，在<strong>传输协议</strong>上总体划分为<strong>文本</strong>(<code>text</code>)和<strong>二进制</strong>(<code>binary</code>)传输协议。为<strong>节约带宽</strong>，<strong>提高传输效率</strong>，一般情况下使用<strong>二进制</strong>类型的传输协议为多数，有时还会使用基于<strong>文本类型</strong>的协议，这需要根据项目/产品中的实际需求。常用协议有以下几种：</p>
+<ul>
+<li>TBinaryProtocol：<strong>二进制</strong>编码格式进行数据传输</li>
+<li>TCompactProtocol：<strong>高效率</strong>的、<strong>密集</strong>的<strong>二进制</strong>编码格式进行数据传输</li>
+<li>TJSONProtocol： 使用<code>JSON</code><strong>文本</strong>的数据编码协议进行数据传输</li>
+<li>TSimpleJSONProtocol：只提供<code>JSON</code><strong>只写</strong>的协议，适用于通过<strong>脚本语言解析</strong></li>
+</ul>
+<h2 id="Thrift的传输层"><a href="#Thrift的传输层" class="headerlink" title="Thrift的传输层"></a>Thrift的传输层</h2><p>常用的传输层有以下几种：</p>
+<ul>
+<li>TSocket：使用<strong>阻塞式</strong><code>I/O</code>进行传输，是最常见的模式</li>
+<li>TNonblockingTransport：使用<strong>非阻塞方式</strong>，用于构建<strong>异步客户端</strong></li>
+<li>TFramedTransport：使用<strong>非阻塞方式</strong>，按<strong>块的大小</strong>进行传输，类似于<code>Java</code>中的<code>NIO</code></li>
+</ul>
+<h2 id="Thrift的服务端类型"><a href="#Thrift的服务端类型" class="headerlink" title="Thrift的服务端类型"></a>Thrift的服务端类型</h2><ul>
+<li>TSimpleServer：<strong>单线程</strong>服务器端，使用标准的<strong>阻塞式</strong><code>I/O</code></li>
+<li>TThreadPoolServer：<strong>多线程</strong>服务器端，使用标准的<strong>阻塞式</strong><code>I/O</code></li>
+<li>TNonblockingServer：<strong>单线程</strong>服务器端，使用<strong>非阻塞式</strong><code>I/O</code></li>
+<li>THsHaServer：<strong>半同步半异步</strong>服务器端，基于<strong>非阻塞式</strong><code>IO</code>读写和<strong>多线程</strong>工作任务处理</li>
+<li>TThreadedSelectorServer：<strong>多线程选择器</strong>服务器端，对<code>THsHaServer</code>在<strong>异步</strong><code>IO</code>模型上进行增强</li>
+</ul>
+<h2 id="Thrift入门示例"><a href="#Thrift入门示例" class="headerlink" title="Thrift入门示例"></a>Thrift入门示例</h2><h2 id="一-编写Thrift-IDL文件"><a href="#一-编写Thrift-IDL文件" class="headerlink" title="(一) 编写Thrift IDL文件"></a>(一) 编写Thrift IDL文件</h2><p>a). 下载<code>0.10.0</code>的<code>Thrift IDL</code>编译器，下载地址：<a href="https://link.zhihu.com/?target=http%3A//thrift.apache.org/docs/install" target="_blank" rel="noopener">http://thrift.apache.org/docs/install</a>。 通过<strong>编译生成器</strong>生成<code>.java</code>接口的类文件。</p>
+<img src="/2019/10/24/a-id-19/v2-6a3b1f4b828f5d27020b2dbdc7b44edf_hd.jpg">
+
+
+<p>b). 下载<code>Windows</code>安装环境的<code>.exe</code>文件，将<code>thrift.exe</code>的路径加入环境变量中。在<code>Idea</code>上安装<code>Thrift</code>编辑插件。</p>
+<img src="/2019/10/24/a-id-19/v2-21410e287e005d91d9e16e2001efca2f_hd.jpg">
+
+<p>c). 编写<code>hello.thrift</code>的<code>IDL</code>文件：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service HelloWorldService &#123;</span><br><span class="line">  <span class="function">string <span class="title">say</span><span class="params">(<span class="number">1</span>: string username)</span></span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>d). 使用代码生成工具生成代码，执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">thrift -gen java hello.thrift</span><br></pre></td></tr></table></figure>
+
+<p>e). 由于未指定代码生成的目标目录，生成的类文件默认存放在<code>gen-java</code>目录下。这里生成一个<code>HelloWorldService.java</code>类文件，文件大小超过数千行，下面截取一部分<strong>核心代码</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldService</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iface</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">say</span><span class="params">(String username)</span> <span class="keyword">throws</span> org.apache.thrift.TException</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AsyncIface</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(String username, org.apache.thrift.async.AsyncMethodCallback&lt;String&gt; resultHandler)</span> <span class="keyword">throws</span> org.apache.thrift.TException</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> <span class="keyword">extends</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">TServiceClient</span> <span class="keyword">implements</span> <span class="title">Iface</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="keyword">implements</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">TServiceClientFactory</span>&lt;<span class="title">Client</span>&gt; </span>&#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Factory</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Client <span class="title">getClient</span><span class="params">(org.apache.thrift.protocol.TProtocol prot)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client(prot);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> Client <span class="title">getClient</span><span class="params">(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> Client(iprot, oprot);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Client</span><span class="params">(org.apache.thrift.protocol.TProtocol prot)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(prot, prot);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Client</span><span class="params">(org.apache.thrift.protocol.TProtocol iprot, org.apache.thrift.protocol.TProtocol oprot)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(iprot, oprot);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">say</span><span class="params">(String username)</span> <span class="keyword">throws</span> org.apache.thrift.TException </span>&#123;</span><br><span class="line">            send_say(username);</span><br><span class="line">            <span class="keyword">return</span> recv_say();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 省略.....</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">AsyncClient</span> <span class="keyword">extends</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">async</span>.<span class="title">TAsyncClient</span> <span class="keyword">implements</span> <span class="title">AsyncIface</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="keyword">implements</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">thrift</span>.<span class="title">async</span>.<span class="title">TAsyncClientFactory</span>&lt;<span class="title">AsyncClient</span>&gt; </span>&#123;</span><br><span class="line">            <span class="keyword">private</span> org.apache.thrift.async.TAsyncClientManager clientManager;</span><br><span class="line">            <span class="keyword">private</span> org.apache.thrift.protocol.TProtocolFactory protocolFactory;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="title">Factory</span><span class="params">(org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.protocol.TProtocolFactory protocolFactory)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">this</span>.clientManager = clientManager;</span><br><span class="line">                <span class="keyword">this</span>.protocolFactory = protocolFactory;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="function"><span class="keyword">public</span> AsyncClient <span class="title">getAsyncClient</span><span class="params">(org.apache.thrift.transport.TNonblockingTransport transport)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> AsyncClient(protocolFactory, clientManager, transport);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">AsyncClient</span><span class="params">(org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.async.TAsyncClientManager clientManager, org.apache.thrift.transport.TNonblockingTransport transport)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>(protocolFactory, clientManager, transport);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">(String username, org.apache.thrift.async.AsyncMethodCallback&lt;String&gt; resultHandler)</span> <span class="keyword">throws</span> org.apache.thrift.TException </span>&#123;</span><br><span class="line">            checkReady();</span><br><span class="line">            say_call method_call = <span class="keyword">new</span> say_call(username, resultHandler, <span class="keyword">this</span>, ___protocolFactory, ___transport);</span><br><span class="line">            <span class="keyword">this</span>.___currentMethod = method_call;</span><br><span class="line">            ___manager.call(method_call);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 省略.....</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 省略.....</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于开发人员而言，使用原生的<code>Thrift</code>框架，仅需要关注以下四个核心<strong>内部接口/类</strong>：<code>Iface</code>, <code>AsyncIface</code>, <code>Client</code>和<code>AsyncClient</code>。</p>
+<ul>
+<li><strong>Iface</strong>：<strong>服务端</strong>通过实现<code>HelloWorldService.Iface</code>接口，向<strong>客户端</strong>的提供具体的<strong>同步</strong>业务逻辑。</li>
+<li><strong>AsyncIface</strong>：<strong>服务端</strong>通过实现<code>HelloWorldService.Iface</code>接口，向<strong>客户端</strong>的提供具体的<strong>异步</strong>业务逻辑。</li>
+<li><strong>Client</strong>：<strong>客户端</strong>通过<code>HelloWorldService.Client</code>的实例对象，以<strong>同步</strong>的方式<strong>访问服务端</strong>提供的服务方法。</li>
+<li><strong>AsyncClient</strong>：<strong>客户端</strong>通过<code>HelloWorldService.AsyncClient</code>的实例对象，以<strong>异步</strong>的方式<strong>访问服务端</strong>提供的服务方法。</li>
+</ul>
+<h2 id="二-新建Maven工程"><a href="#二-新建Maven工程" class="headerlink" title="(二) 新建Maven工程"></a>(二) 新建Maven工程</h2><p>a). 新建<code>maven</code>工程，引入<code>thrift</code>的依赖，这里使用的是版本<code>0.10.0</code>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.thrift<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>libthrift<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">version</span>&gt;</span>0.10.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>b). 将生成类的<code>HelloWorldService.java</code>源文件拷贝进项目源文件目录中，并实现<code>HelloWorldService.Iface</code>的定义的<code>say()</code>方法。</p>
+<p>HelloWorldServiceImpl.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorldServiceImpl</span> <span class="keyword">implements</span> <span class="title">HelloWorldService</span>.<span class="title">Iface</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">say</span><span class="params">(String username)</span> <span class="keyword">throws</span> TException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"Hello "</span> + username;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>c). 服务器端程序编写：</p>
+<p>SimpleServer.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleServer</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        ServerSocket serverSocket = <span class="keyword">new</span> ServerSocket(ServerConfig.SERVER_PORT);</span><br><span class="line">        TServerSocket serverTransport = <span class="keyword">new</span> TServerSocket(serverSocket);</span><br><span class="line">        HelloWorldService.Processor processor =</span><br><span class="line">                <span class="keyword">new</span> HelloWorldService.Processor&lt;HelloWorldService.Iface&gt;(<span class="keyword">new</span> HelloWorldServiceImpl());</span><br><span class="line"></span><br><span class="line">        TBinaryProtocol.Factory protocolFactory = <span class="keyword">new</span> TBinaryProtocol.Factory();</span><br><span class="line">        TSimpleServer.Args tArgs = <span class="keyword">new</span> TSimpleServer.Args(serverTransport);</span><br><span class="line">        tArgs.processor(processor);</span><br><span class="line">        tArgs.protocolFactory(protocolFactory);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 简单的单线程服务模型 一般用于测试</span></span><br><span class="line">        TServer tServer = <span class="keyword">new</span> TSimpleServer(tArgs);</span><br><span class="line">        System.out.println(<span class="string">"Running Simple Server"</span>);</span><br><span class="line">        tServer.serve();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>d). 客户端程序编写：</p>
+<p>SimpleClient.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SimpleClient</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        TTransport transport = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            transport = <span class="keyword">new</span> TSocket(ServerConfig.SERVER_IP, ServerConfig.SERVER_PORT, ServerConfig.TIMEOUT);</span><br><span class="line">            TProtocol protocol = <span class="keyword">new</span> TBinaryProtocol(transport);</span><br><span class="line">            HelloWorldService.Client client = <span class="keyword">new</span> HelloWorldService.Client(protocol);</span><br><span class="line">            transport.open();</span><br><span class="line"></span><br><span class="line">            String result = client.say(<span class="string">"Leo"</span>);</span><br><span class="line">            System.out.println(<span class="string">"Result =: "</span> + result);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (TException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (<span class="keyword">null</span> != transport) &#123;</span><br><span class="line">                transport.close();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>e). 运行服务端程序，<strong>服务端</strong>在<strong>指定端口</strong>监听<strong>客户端</strong>的<strong>连接请求</strong>，控制台输出启动日志：</p>
+<img src="/2019/10/24/a-id-19/v2-00bb2df8e26f0481656b261a2b9ce523_hd.jpg">
+
+<p> f). 运行客户端程序，<strong>客户端</strong>通过网络请求<code>HelloWorldService</code>的<code>say()</code>方法的<strong>具体实现</strong>，控制台输出返回结果： </p>
+<img src="/2019/10/24/a-id-19/v2-f2cc7dd6533ee84421d5381d6754ae60_hd.jpg">
+
+<p>这里使用的一个基于<strong>单线程同步</strong>的<strong>简单服务模型</strong>，一般仅用于入门学习和测试！</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>本文对<code>Thrift</code>的概念做了相关介绍，体验了一番<code>thrift</code>程序如何编写！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/24/a-id-20/">Thrift-II-网络服务模型</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/23/a-id-15/">使用Docker-compose搭建nginx-keepalived双机热备来实现高可用nginx集群</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
