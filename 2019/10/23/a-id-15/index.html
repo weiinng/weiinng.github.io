@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>使用Docker-compose搭建nginx-keepalived双机热备来实现高可用nginx集群 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">使用Docker-compose搭建nginx-keepalived双机热备来实现高可用nginx集群</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 23, 2019&nbsp;&nbsp;21:59:52</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/高可用架构/">高可用架构</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>A： 你说你们公司使用nginx反向代理tornado，部署了多少多少台机器，好像很牛逼的样子，但是我问你，如果主机也就是部署了nginx那台机器并发过大导致宕机了怎么办？ </p>
+<p>B： 不考虑带宽峰值的话，比较新的 CPU 跑 nginx 单核每秒能接近 2 万请求，而且nginx如果纯做 HTTP 转发的话，Nginx 的性能高到恐怖，会挂掉很不科学。。。。 </p>
+<p>A： 好吧，算你会忽悠，那如果插头被扫地大妈踢掉了怎么办，因为没电导致服务器宕机 </p>
+<p>B： 阿里云机房会断电。。。你特么在逗我吧。。 </p>
+<p>实负责转发的主机宕机概率很小，但是绝对不是没有，任何事都不是绝对，所谓的高可用架构就是体现在容灾机制上，如果主机宕机我们必须要做预案，万无一失才叫高可用架构，这里我们使用docker-compose来部署nginx-keepalived双机热备机制，vip主机可以进行漂移，这样主机挂掉了，还有备用机可以顶上</p>
+<p>  Keepalived是Linux下面实现VRRP备份路由的高可靠性运行件。基于Keepalived设计的服务模式能够真正做到主服务器和备份服务器故障时IP瞬间无缝交接。二者结合，可以构架出比较稳定的软件LB方案。</p>
+<p>  简单点说，就是keepalived可以将下面这种简单的负载均衡模式</p>
+<img src="/2019/10/23/a-id-15/20191018001744_76893.png">
+
+<p>  改造成下面这种高可用的架构 </p>
+<img src="/2019/10/23/a-id-15/20191018001813_79219.png">
+
+<p> 当有主机挂掉的时候，服务能瞬间切换到备用机</p>
+<p>  首先，安装docker和docker-compose按下不表，可以参考这篇文章，<a href="https://v3u.cn/a_id_108" target="_blank" rel="noopener">在centos7.6上利用docker-compose统一管理容器和服务</a>  </p>
+<p>  建立nginx_keepalived文件夹</p>
+<p>  建立Dockerfile文件，这里我们使用alpine作为基础镜像，原因很简单，因为它体积小啊</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">FROM nginx:1.13.5-alpine</span><br><span class="line"></span><br><span class="line">RUN apk update &amp;&amp; apk upgrade</span><br><span class="line"></span><br><span class="line">RUN apk add --no-cache bash curl ipvsadm iproute2 openrc keepalived &amp;&amp; </span><br><span class="line">    rm -f /var/cache/apk/* /tmp/*</span><br><span class="line"></span><br><span class="line">COPY entrypoint.sh /entrypoint.sh</span><br><span class="line"></span><br><span class="line">RUN chmod +x /entrypoint.sh</span><br><span class="line"></span><br><span class="line">CMD [&quot;/entrypoint.sh&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>​    然后建立docker-compose.yml文件，这里我们仿照线上环境，部署一台主机和一台从机，分别安装nginx </p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">version: <span class="string">"3"</span></span><br><span class="line">services:</span><br><span class="line">  nginx_master:</span><br><span class="line">    build:</span><br><span class="line">      context: ./</span><br><span class="line">      dockerfile: ./Dockerfile</span><br><span class="line">    volumes:</span><br><span class="line">      - ./index-master.html:/usr/share/nginx/html/index.html</span><br><span class="line">      - ./favicon.ico:/usr/share/nginx/html/favicon.ico</span><br><span class="line">      - ./keepalived-master.conf:/etc/keepalived/keepalived.conf</span><br><span class="line">    networks:</span><br><span class="line">      static-network:</span><br><span class="line">        ipv4_address: <span class="number">172.20</span><span class="number">.128</span><span class="number">.2</span></span><br><span class="line">    cap_add: </span><br><span class="line">      - NET_ADMIN</span><br><span class="line">  nginx_slave:</span><br><span class="line">    build:</span><br><span class="line">      context: ./</span><br><span class="line">      dockerfile: ./Dockerfile</span><br><span class="line">    volumes:</span><br><span class="line">      - ./index-slave.html:/usr/share/nginx/html/index.html</span><br><span class="line">      - ./favicon.ico:/usr/share/nginx/html/favicon.ico</span><br><span class="line">      - ./keepalived-slave.conf:/etc/keepalived/keepalived.conf</span><br><span class="line">    networks:</span><br><span class="line">      static-network:</span><br><span class="line">        ipv4_address: <span class="number">172.20</span><span class="number">.128</span><span class="number">.3</span></span><br><span class="line">    cap_add: </span><br><span class="line">        - NET_ADMIN</span><br><span class="line">  proxy:</span><br><span class="line">    image: haproxy:<span class="number">1.7</span>-alpine</span><br><span class="line">    ports:</span><br><span class="line">      - <span class="number">8000</span>:<span class="number">6301</span></span><br><span class="line">    volumes:</span><br><span class="line">      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg</span><br><span class="line">    networks:</span><br><span class="line">      - static-network</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  static-network:</span><br><span class="line">    ipam:</span><br><span class="line">      config:</span><br><span class="line">        - subnet: <span class="number">172.20</span><span class="number">.0</span><span class="number">.0</span>/<span class="number">16</span></span><br></pre></td></tr></table></figure>
+
+<p>   随后，撰写nginx配置文件，keepalived-master.conf 这里由于我们没有后端tornado服务，所以使用虚拟代理服务</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_nginx &#123;</span><br><span class="line">    script <span class="string">"pidof nginx"</span></span><br><span class="line">    interval <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id <span class="number">33</span></span><br><span class="line">    priority <span class="number">200</span></span><br><span class="line">    advert_int <span class="number">1</span></span><br><span class="line">    unicast_src_ip <span class="number">172.20</span><span class="number">.128</span><span class="number">.2</span></span><br><span class="line">    unicast_peer &#123;</span><br><span class="line">        <span class="number">172.20</span><span class="number">.128</span><span class="number">.3</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass letmein</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        <span class="number">172.20</span><span class="number">.128</span><span class="number">.4</span>/<span class="number">24</span> dev eth0</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_nginx</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  同理再复制一份从机的nginx配置keepalived-slave.conf</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">vrrp_script chk_nginx &#123;</span><br><span class="line">    script <span class="string">"pidof nginx"</span></span><br><span class="line">    interval <span class="number">2</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state BACKUP</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id <span class="number">33</span></span><br><span class="line">    priority <span class="number">100</span></span><br><span class="line">    advert_int <span class="number">1</span></span><br><span class="line">    unicast_src_ip <span class="number">172.20</span><span class="number">.128</span><span class="number">.3</span></span><br><span class="line">    unicast_peer &#123;</span><br><span class="line">        <span class="number">172.20</span><span class="number">.128</span><span class="number">.2</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass letmein</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        <span class="number">172.20</span><span class="number">.128</span><span class="number">.4</span>/<span class="number">24</span> dev eth0</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    track_script &#123;</span><br><span class="line">        chk_nginx</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  随后为后端服务做两个网页，一个主机index-master.html一个从机index-slave.html</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"ie=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>主机<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line">#box&#123; </span><br><span class="line">    margin: 0px auto;</span><br><span class="line">    font-family: 'Times New Roman', Times, serif; </span><br><span class="line">    font-size: 30px;</span><br><span class="line">    font-style: initial;</span><br><span class="line">    color: aliceblue;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">body&#123;</span><br><span class="line">    background-color: black</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        主机</span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>   从机的复制一份，将主机改成从机即可</p>
+<p>   因为我们要模拟后台服务，所以需要haproxy.cfg配置文件</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">global</span></span><br><span class="line">    log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local0</span><br><span class="line">    maxconn <span class="number">4096</span></span><br><span class="line">    daemon</span><br><span class="line">    nbproc <span class="number">4</span></span><br><span class="line"></span><br><span class="line">defaults</span><br><span class="line">    log <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> local3</span><br><span class="line">    mode http</span><br><span class="line">    option dontlognull</span><br><span class="line">    option redispatch</span><br><span class="line">    retries <span class="number">2</span></span><br><span class="line">    maxconn <span class="number">2000</span></span><br><span class="line">    balance roundrobin</span><br><span class="line">    timeout connect <span class="number">5000</span>ms</span><br><span class="line">    timeout client <span class="number">5000</span>ms</span><br><span class="line">    timeout server <span class="number">5000</span>ms</span><br><span class="line"></span><br><span class="line">frontend main</span><br><span class="line">    bind *:<span class="number">6301</span></span><br><span class="line">    default_backend webserver</span><br><span class="line"></span><br><span class="line">backend webserver</span><br><span class="line">    server ngxin_master <span class="number">172.20</span><span class="number">.128</span><span class="number">.4</span>:<span class="number">80</span> check inter <span class="number">2000</span> rise <span class="number">2</span> fall <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>   最后，撰写服务的shell脚本entrypoint.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">/usr/sbin/keepalived -n -l -D -f /etc/keepalived/keepalived.conf --dont-fork --log-console &amp;</span><br><span class="line"></span><br><span class="line">nginx -g &quot;daemon off;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>  整个项目结构如下：</p>
+<img src="/2019/10/23/a-id-15/20191018003404_17382.png">
+
+<p> 现在我们来启动容器集群，输入命令：docker-compose up</p>
+<p>  发现容器已经启动</p>
+<img src="/2019/10/23/a-id-15/20191018003503_34389.png">
+
+<p>  另外一个命令行，输入:docker ps </p>
+<img src="/2019/10/23/a-id-15/20191018003541_88696.png">
+
+<p>   可以看到，后台分别三个容器正在启动，两台nginx反向代理8000端口的后台服务，访问 localhost:8000 </p>
+<img src="/2019/10/23/a-id-15/20191018003725_19549.png">
+
+<p> 现在我们来模仿一下nginx主机宕机的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pause nginx_keepalive_nginx_master_1</span><br></pre></td></tr></table></figure>
+
+<p>  再次访问 localhost:8000</p>
+<p>  发现已经自动无缝切换到备用机，整个过程非常流畅</p>
+  <img src="/2019/10/23/a-id-15/20191018003915_99804.png">
+
+<p>  高可用架构的特性就体现在这里，所以在面试中，对于面试官提出的问题要不断的总结，对于不熟悉不知道的问题，一定要深入研究一下，这样才可以在面试中无往而不胜。</p>
+<p>  最后附上项目地址：<a href="https://gitee.com/QiHanXiBei/nginx_keepalive" target="_blank" rel="noopener">https://gitee.com/QiHanXiBei/nginx_keepalive</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Docker-compose/"># Docker-compose</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/10/22/a-id-13/">Python进程、线程、协程概念</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>微服务架构 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">微服务架构</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 12, 2019&nbsp;&nbsp;10:33:56</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/高可用架构/">高可用架构</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="什么是微服务？"><a href="#什么是微服务？" class="headerlink" title="什么是微服务？"></a>什么是微服务？</h1><p>微服务架构风格是一种将单个应用程序作为一套小型服务开发的方法。</p>
+<p>每种应用程序都在自己进程中运行，并与轻量级机制（通常是HTTP资源API）进行通信。</p>
+<p>这些服务是围绕业务功能构建的，可以通过自动部署机制独立部署。</p>
+<p>这些服务的集中管理最少，可以用不同的编程语言编写，并使用不同的数据存储技术。</p>
+<p>微服务架构的系统是一个分布式的系统，按业务进行划分为独立的服务单元，解决单体系统的不足，同时也满足越来越复杂的业务需求。</p>
+<p><strong>微服务的特点？</strong></p>
+<ol>
+<li><p>独立部署，灵活拓展。</p>
+<p>传统的单体架构是以整个系统为单位进行部署，而微服务则是以一个独立组件（例如用户服务，商品服务）为单位进行部署。</p>
+<p>现在的<strong><font color="red">docker</font></strong>，可以为微服务提供有效容器。</p>
+</li>
+<li><p>资源的有效隔离</p>
+<p>微服务的设计原则之一，就是每一个微服务拥有独立的数据源，假如微服务A想要读写微服务B的数据库，只能调用微服务B对外暴露的接口来完成。这样有效避免了微服务之间争用数据库和缓存资源所带来的的问题。</p>
+<p>每一个微服务实例在docker上面运行，实现了服务器资源（内存、CPU资源等）的有效隔离。</p>
+</li>
+<li><p>团队组织架构的调整</p>
+<p>微服务设计的思想改变了原有的企业研发团队组织架构。</p>
+<p>传统的研发组织架构师水平架构，前端有前端的团队，后端有后端的团队，DBA有DBA的团队，测试有测试的团队。</p>
+<p>而微服务的设计思想对团队的划分有一定的影响，使得团队组织架构的划分更倾向于垂直架构，比如用户业务是一个团队来负责，支付业务是一个团队来负责。</p>
+</li>
+</ol>
+<p><strong>微服务与面向服务架构SOA的区别</strong></p>
+<p>SOA架构是一种粗颗粒、松耦合的服务架构，其更多的是强调异构系统之间的服务通信。</p>
+<p>SOA架构强调的是<strong><font color="red">异构</font></strong>系统之间的通信和解耦合，而微服务架构强调的是系统按业务边界做细粒度的拆分和部署。</p>
+<p>Bobbo和string cloud 很好地支持了SOA和微服务架构，但不能说Bubbo是SOA，string，cloud是微服务。</p>
+<p><strong>微服务架构的不足</strong></p>
+<p>微服务架构把原有的项目拆成多个独立的工程，增加了开发和测试的复杂度。</p>
+<p>微服务架构需要保证不同服务之间的数据一致性，引入了分布式事务和异步补偿机制，为设计和开发带来了一定挑战。</p>
+<p>架构设计没有绝对的好坏，关键还是看应用场景。</p>
+<h1 id="RPC简介及框架选择"><a href="#RPC简介及框架选择" class="headerlink" title="RPC简介及框架选择"></a>RPC简介及框架选择</h1><p>简单介绍一下RPC协议以及常见的框架，对比传统的<strong><font color="red">Restful Api</font></strong>和RPC方式的优缺点。常见RPC框架，GRPC及序列化方式Protobuf等。</p>
+<p><strong>HTTP协议：</strong></p>
+<p>http协议是基于tcp协议的，tcp协议是流式协议，包头部分可以通过多出的\r\n来分界。</p>
+<p>包体部分如何分界呢？</p>
+<p>这是协议本身要解决的问题。</p>
+<p>目前一般有两种方式，第一种方式就是在包头中有个content-Length字段，这个字段的值的大小标识了POST数据的长度，服务器收到一个数据包后，先从包头解析出这个字段的值，再根据这个值去读取相应长度的作为http协议的包体数据。</p>
+<p>浏览器connect 80 端口。</p>
+<p><strong>RESTful API （http + json）</strong></p>
+<p>什么是restful架构：</p>
+<ol>
+<li>每一个url代表一种资源；</li>
+<li>客户端和服务器之间，传递这种资源的某种表现层，比如用json，xml，jpeg等；</li>
+<li>客户端通过四个HTTP动词，对服务端资源进行操作，实现“表现层状态转化”。</li>
+</ol>
+<p>url定位资源，用HTTP动词（GET、POST、DELETE、DETC）描述操作。</p>
+<p>用HTTP协议里的动词来实现资源的添加，修改，删除等操作。即通过HTTP动词来实现资源的状态扭转：</p>
+<ul>
+<li><p>GET用来获取资源，</p>
+</li>
+<li><p>POST用来新建资源（也可以用来更新资源）</p>
+</li>
+<li><p>PUT用来更新资源，</p>
+</li>
+<li><p>DELETE用来删除资源。</p>
+</li>
+</ul>
+<p><strong>RPC</strong></p>
+<p>进程间通信（IPC ， Inter-Process Communication），指至少两个进程或县城间传送数据或信号的一些技术或方法。进程是计算机系统分配资源的最小单位。每个进程都有自己的一部分独立系统资源，彼此是隔离的。为了能使不同的进程互相访问资源并进行协调工作，才有了进程间通信，这些进程可以运行在同一个计算机上或网络连接的不同计算机上，进程间通信技术包括消息传递、同步、共享内存和远程过程调用。IPC是一种标准的Unix通信机制。</p>
+<p>有两种类型的进程间通信（IPC）</p>
+<ul>
+<li>本地过程调用（LPC）LPC用在多任务操作系统中，使得同时运行的任务能互相会话，这些任务共享内存空间使任务同步和互相发发送消息。</li>
+<li>远程过程调用（RPC）RPC类似于LPC，只是在网上工作。RPC开始是出现在Sum维系统公司和HP公司的运行UNIX操作系统的计算机中。</li>
+</ul>
+<p>为什么RPC呢？</p>
+<p>就是无法在一个进程内，甚至一个计算机内通过本地调用的方式完成的需求，比如如不同的系统间通讯，甚至不同的组织间通讯，由于计算能力需要横向拓展，需要在多台机器组成的集群上部署应用。</p>
+<p>RPC的核心并不在于使用什么协议。RPC的目的是让你在本地调用远程的方法，而对你来说这个调用是透明的，你并不知道这种调用的方法是部署在哪里。通过RPC能够<strong><font color="red">解耦</font></strong>服务，这才是使用RPC的真正目的。RPC的原理主要用到了动态代理模式，至于http协议，只是传输协议而已。简单的实现可以参考spring remoting，复杂的实现可以参考dubbo。</p>
+<p>简单的说，</p>
+<ul>
+<li>RPC就是从一台机器（客户端）上通过参数传递的方式调用另一台机器（服务器）上的一个函数或方法（可以统称为服务）并得到返回的结果。</li>
+<li>RPC 会隐藏底层的通讯细节（不需要直接处理Socket通讯或Http通讯） RPC 是一个请求响应模型。</li>
+<li>客户端发起请求，服务器返回响应（类似于Http的工作方式） RPC 在使用形式上像调用本地函数（或方法）一样去调用远程的函数（或方法）。</li>
+</ul>
+<p><strong>RPC通信过程</strong></p>
+<p><a href="https://blog.csdn.net/u013521220/article/details/66530188" target="_blank" rel="noopener">RPC架构简单理解</a><br><a href="https://waylau.com/remote-procedure-calls/" target="_blank" rel="noopener">远程过程调用(RPC)详解</a></p>
+<p>默认socket通信。本地机器的RPC框架反序列化出执行结果，函数return这个结果</p>
+<img src="/2019/10/12/a-id-17/729358-839e7a32b598953e.webp">
+
+
+
+<p><strong>RPC和restful api对比</strong></p>
+<p><a href="https://stackoverflow.com/questions/15056878/rest-vs-json-rpc" target="_blank" rel="noopener">* REST vs JSON-RPC? - stackoverflow</a><br><a href="https://www.zhihu.com/question/41609070/answer/191965937" target="_blank" rel="noopener">既然有http 请求，为什么还要用rpc调用？ - 手不要乱摸的回答 - 知乎</a><br><a href="https://blog.csdn.net/weixin_42098168/article/details/80365260" target="_blank" rel="noopener">为什么需要RPC，而不是简单的HTTP接口</a></p>
+<p>REST是一种设计风格，它的很多思维方式与RPC是完全冲突的。 RPC的思想是把本地函数映射到API，也就是说一个API对应的是一个function，我本地有一个getAllUsers，远程也能通过某种约定的协议来调用这个getAllUsers。至于这个协议是Socket、是HTTP还是别的什么并不重要； RPC中的主体都是动作，是个动词，表示我要做什么。 而REST则不然，它的URL主体是资源，是个名词。而且也仅支持HTTP协议，规定了使用HTTP Method表达本次要做的动作，类型一般也不超过那四五种。这些动作表达了对资源仅有的几种转化方式。<br>RPC的根本问题是耦合。RPC客户端以多种方式与服务实现紧密耦合，并且很难在不中断客户端的情况下更改服务实现。RPC更偏向内部调用，REST更偏向外部调用。</p>
+<p>Web 服务应该算是 RPC 的一个子集，理论上 RPC 能实现的功能， 用 Web 服务也能实现，甚至很多 RPC 框架选用 HTTP 协议作为传输层。<br>现在很多网站的 API 都是以 HTTP 服务的形式提供的，这也算是 RPC 的一种形式。</p>
+<p>区别主要在这 2 个东西设计的出发点不太一样：</p>
+<ul>
+<li>HTTP 是面向浏览器设计的应用层协议，操作的核心在<strong>资源。</strong>我们更多的用 Web 服务在做网站。</li>
+<li>RPC 是为了在像在本地调用一个函数那样调用远程的代码而设计的，所以更关注减少本地调用和远程调用的差异，像 SOAP(简单对象访问协议) 这种东西是可以把对象当参数传的。</li>
+</ul>
+<p>我们讨论 RPC 和 Web 的区别，其实是在谈论 2 个东西：序列化协议和传输协议。序列化协议比如常见的 XML，JSON 和比较现代的 Protocol Buffers、Thrift。 传输协议比如 TCP、UDP 以及更高层的 HTTP 1.1、HTTP 2.0。</p>
+<p>一般我们考虑用 RPC 而不是 HTTP 构建自己的服务，通常是考虑到下面的因素：</p>
+<ul>
+<li>接口是否需要 Schema 约束</li>
+<li>是否需要更高效的传输协议（TCP，HTTP 2.0）</li>
+<li>是否对数据包的大小非常敏感</li>
+</ul>
+<p>比如 HTTP 是基于文本的协议，头部有非常多冗余（对于 RPC 服务而言）。HTTP 中我们用的最多就是 RESTful ，而 RESTful 是个弱 Schema 约束，大家通过文档沟通，但是如果我就是不在实现的时候对接口文档约定的参数做检查，你也不能把我怎么样。这个时候 Thrift 这种序列化协议的优势就体现出来了，由于 Schema 的存在，可以保证服务端接受的参数和 Schema 保持一致。</p>
+<p>RPC框架</p>
+<p><a href="https://www.zhihu.com/question/25536695/answer/221638079" target="_blank" rel="noopener">谁能用通俗的语言解释一下什么是 RPC 框架？ - 洪春涛的回答 - 知乎</a><br><a href="https://www.cnblogs.com/doit8791/p/4979465.html" target="_blank" rel="noopener">常用的跨语言通信方案</a><br><a href="https://blog.csdn.net/mindfloating/article/details/39474123" target="_blank" rel="noopener">深入浅出 RPC - 深入篇</a></p>
+<ul>
+<li>Call ID映射。我们怎么告诉远程机器我们要调用Multiply，而不是Add或者FooBar呢？在本地调用中，函数体是直接通过函数指针来指定的，我们调用Multiply，编译器就自动帮我们调用它相应的函数指针。但是在远程调用中，函数指针是不行的，因为两个进程的地址空间是完全不一样的。所以，在RPC中，所有的函数都必须有自己的一个ID。这个ID在所有进程中都是唯一确定的。客户端在做远程过程调用时，必须附上这个ID。然后我们还需要在客户端和服务端分别维护一个 {函数 &lt;–&gt; Call ID} 的对应表。两者的表不一定需要完全相同，但相同的函数对应的Call ID必须相同。当客户端需要进行远程调用时，它就查一下这个表，找出相应的Call ID，然后把它传给服务端，服务端也通过查表，来确定客户端需要调用的函数，然后执行相应函数的代码。</li>
+<li>序列化和反序列化。客户端怎么把参数值传给远程的函数呢？在本地调用中，我们只需要把参数压到栈里，然后让函数自己去栈里读就行。但是在远程过程调用时，客户端跟服务端是不同的进程，不能通过内存来传递参数。甚至有时候客户端和服务端使用的都不是同一种语言（比如服务端用C++，客户端用Java或者Python）。这时候就需要客户端把参数先转成一个字节流，传给服务端后，再把字节流转成自己能读取的格式。这个过程叫序列化和反序列化。同理，从服务端返回的值也需要序列化反序列化的过程。</li>
+<li>网络传输。远程调用往往用在网络上，客户端和服务端是通过网络连接的。所有的数据都需要通过网络传输，因此就需要有一个网络传输层。网络传输层需要把Call ID和序列化后的参数字节流传给服务端，然后再把序列化后的调用结果传回客户端。只要能完成这两者的，都可以作为传输层使用。因此，它所使用的协议其实是不限的，能完成传输就行。尽管大部分RPC框架都使用TCP协议，但其实UDP也可以，而gRPC干脆就用了HTTP2。Java的Netty也属于这层的东西。</li>
+</ul>
+<p>目前有很多Java的RPC框架，有基于Json的，有基于XML，也有基于二进制对象的。</p>
+<p>论复杂度，RPC框架肯定是高于简单的HTTP接口的。但毋庸置疑，HTTP接口由于受限于HTTP协议，需要带HTTP请求头，导致传输起来效率或者说安全性不如RPC</p>
+<img src="/2019/10/12/a-id-17/729358-de38e5423ffbc3e7.webp">
+
+
+
+<p>常用RPC框架</p>
+<p>支持Java最多，golang</p>
+<ul>
+<li>Netty - Netty框架不局限于RPC，更多的是作为一种网络协议的实现框架，比如HTTP，由于RPC需要高效的网络通信，就可能选择以Netty作为基础。</li>
+<li>brpc是一个基于protobuf接口的RPC框架，在百度内部称为“baidu-rpc”，它囊括了百度内部所有RPC协议，并支持多种第三方协议，从目前的性能测试数据来看，brpc的性能领跑于其他同类RPC产品。</li>
+<li>Dubbo是Alibaba开发的一个RPC框架，远程接口基于Java Interface, 依托于Spring框架。</li>
+<li>gRPC的Java实现的底层网络库是基于Netty开发而来，其Go实现是基于net库。</li>
+<li>Thrift是Apache的一个项目(<a href="http://thrift.apache.org/" target="_blank" rel="noopener">http://thrift.apache.org</a>)，前身是Facebook开发的一个RPC框架，采用thrift作为IDL (Interface description language)。</li>
+<li>jsonrpc</li>
+</ul>
+<p>JSON-RPC</p>
+<p><a href="https://www.jianshu.com/p/545acae57e27" target="_blank" rel="noopener">python web接口实现（restful方式、jsonrpc方式）</a><br>区块链项目中用的较多？资料不是很多<br>JSON-RPC是一种序列化协议。JSON 是 JS 对象的字符串表示法，它使用文本表示一个 JS 对象的信息，本质是一个字符串。<br>非常简单，方便，速度慢<br>相关Python 包(直接集成到flask和django)<br>Flask-JSONRPC,django-json-rpc；jsonrpcserver,jsonrpcclient</p>
+<p>thrift</p>
+<p><a href="https://www.jianshu.com/p/82a6bdaabcd3" target="_blank" rel="noopener">Python RPC 之 Thrift</a><br>Facebook开源的跨语言RPC框架。</p>
+<p>gRPC</p>
+<p><a href="http://doc.oschina.net/grpc?t=56831" target="_blank" rel="noopener">gRPC 官方文档中文版</a><br><a href="https://zhuanlan.zhihu.com/p/27595419" target="_blank" rel="noopener">深入了解gRPC协议-知乎</a></p>
+<ol>
+<li>tensorflow分布式与tensorflow serving底层通信都是是用的grpc<br>序列化用protobuf，通信使用http2</li>
+<li>latest Google APIs will have gRPC versions of their interfaces, letting you easily build Google functionality into your applications.</li>
+<li>支持 C, C++, Node.js, Python, Ruby, Objective-C,PHP and C#</li>
+</ol>
+<p>HTTP2</p>
+<p><a href="https://zhuanlan.zhihu.com/p/26559480" target="_blank" rel="noopener">一文读懂 HTTP2 特性 - 又拍云的文章 - 知乎</a><br><a href="https://link.zhihu.com/?target=https%3A//http2.akamai.com/demo" target="_blank" rel="noopener">HTTP/2 和 HTTP/1 速度对比</a><br><a href="http://www.http2demo.io/" target="_blank" rel="noopener">http://www.http2demo.io/</a><br><a href="https://hpbn.co/http2/" target="_blank" rel="noopener">HTTP/2</a><br>HTTP/2 是 HTTP 协议自 1999 年 HTTP 1.1 发布后的首个更新，主要基于 SPDY 协议。<br>HTTP/2的主要目标是通过启用完整请求和响应复用来减少延迟，通过有效压缩HTTP头字段来最大限度地降低协议开销，并添加对请求优先级和服务器推送的支持;多路复用(同一tcp,多个流)，头部压缩，服务推送。</p>
+<p>Protobuf</p>
+<p><a href="https://www.cnblogs.com/doit8791/p/4979465.html" target="_blank" rel="noopener">常用的跨语言通信方案</a><br><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-gpb/index.html" target="_blank" rel="noopener">Google Protocol Buffer 的使用和原理</a><br><a href="http://colobu.com/2015/01/07/Protobuf-language-guide/" target="_blank" rel="noopener">Protobuf 语法指南</a><br>Protocol Buffers 是一种轻便高效的结构化数据存储格式，可以用于结构化数据串行化，或者说序列化。它很适合做数据存储或 RPC 数据交换格式。可用于通讯协议、数据存储等领域的语言无关、平台无关、可扩展的序列化结构数据格式。目前提供了 C++、Java、Python 三种语言的 API。<br>同 XML 相比， Protobuf 的主要优点在于性能高。它以高效的二进制方式存储，比 XML 小 3 到 10 倍，快 20 到 100 倍。</p>
+<p>框架选择</p>
+<p><a href="https://blog.csdn.net/dazheng/article/details/48830511" target="_blank" rel="noopener">gRPC vs Thrift</a><br><a href="http://www.useopen.net/blog/2015/rpc-performance.html" target="_blank" rel="noopener">RPC框架性能基本比较测试</a><br><a href="https://www.zhihu.com/question/30027669" target="_blank" rel="noopener">怎么看待谷歌的开源 RPC 框架 gRPC？ - 知乎</a><br><a href="https://zhuanlan.zhihu.com/p/35427150" target="_blank" rel="noopener">微服务的服务间通信与服务治理</a><br><a href="https://zhuanlan.zhihu.com/p/33623693" target="_blank" rel="noopener">最佳实践 | 7大维度看国外企业为啥选择gRPC打造高性能微服务？</a></p>
+<p>如何选择</p>
+<p><strong>什么时候应该选择gRPC而不是Thrift</strong></p>
+<p>　　需要良好的文档、示例<br>　　喜欢、习惯HTTP/2、ProtoBuf<br>　　对网络传输带宽敏感<br><strong>什么时候应该选择Thrift而不是gRPC</strong><br>　　需要在非常多的语言间进行数据交换<br>　　对CPU敏感<br>　　协议层、传输层有多种控制要求<br>　　需要稳定的版本<br>　　不需要良好的文档和示例</p>
+<p>总的来说，Python rpc框架选择较少，thrift性能最好，grpc性能比thrift稍差，原因是多了http2，而thrift直接基于tcp，但grpc序列化方案更通用(protobuf)优秀，文档较好；<br>jsonrpc 本身基于http/1进行通信，速度最慢，相对于之前速度无提升，只是接口和数据格式更为统一；</p>
+<p><strong>gRPC不足</strong></p>
+<p>1）GRPC尚未提供连接池<br>2）尚未提供“服务发现”、“负载均衡”机制<br>3）因为基于HTTP2，绝大部多数HTTP Server、Nginx都尚不支持，即Nginx不能将GRPC请求作为HTTP请求来负载均衡，而是作为普通的TCP请求。（nginx将会在1.9版本支持）</p>
+<h1 id="为什么使用Thrift-RPC框架？"><a href="#为什么使用Thrift-RPC框架？" class="headerlink" title="为什么使用Thrift RPC框架？"></a>为什么使用Thrift RPC框架？</h1><p><strong>Thrift 有什么特点？</strong></p>
+<ol>
+<li>基于二进制的高性能的编解码框架</li>
+<li>基于NIO的底层通信</li>
+<li>相对简单的服务调用模型</li>
+<li>使用IDL支持跨平台调用</li>
+</ol>
+<p><strong>Thrift 的整体架构？</strong></p>
+<img src="/2019/10/12/a-id-17/im21age.png">
+
+<p>官方文档 <a href="https://thrift.apache.org/docs/concepts" target="_blank" rel="noopener">Apache Thrift - Concepts</a>详细说明了Thrift的架构：</p>
+<p><strong>Thrift network stack</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">+-------------------------------------------+</span><br><span class="line">| Server                                    |</span><br><span class="line">| (single-threaded, event-driven etc)       |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">| Processor                                 |</span><br><span class="line">| (compiler generated)                      |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">| Protocol                                  |</span><br><span class="line">| (JSON, compact etc)                       |</span><br><span class="line">+-------------------------------------------+</span><br><span class="line">| Transport                                 |</span><br><span class="line">| (raw TCP, HTTP etc)                       |</span><br><span class="line">+-------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>Transport</strong></p>
+<p><code>Transport layer</code>提供了一个从网络IO读写的简单抽象，可以使Thrift与底层解耦。</p>
+<p>Transport接口有：</p>
+<ul>
+<li>open</li>
+<li>close</li>
+<li>read</li>
+<li>write</li>
+<li>flush</li>
+</ul>
+<p>除了Transport接口，还有一个<code>ServerTransport</code>，用来在server端创建请求的连接。</p>
+<ul>
+<li>open</li>
+<li>listen</li>
+<li>accept</li>
+<li>close</li>
+</ul>
+<p><strong>Protocol</strong></p>
+<p><code>Protocol</code>定义了传输数据的序列化、反序列化机制（JSON、XML、binary、compact binary等）。</p>
+<p>Protocol的接口如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">writeMessageBegin(name, type, seq)</span><br><span class="line">writeMessageEnd()</span><br><span class="line">writeStructBegin(name)</span><br><span class="line">writeStructEnd()</span><br><span class="line">writeFieldBegin(name, type, id)</span><br><span class="line">writeFieldEnd()</span><br><span class="line">writeFieldStop()</span><br><span class="line">writeMapBegin(ktype, vtype, size)</span><br><span class="line">writeMapEnd()</span><br><span class="line">writeListBegin(etype, size)</span><br><span class="line">writeListEnd()</span><br><span class="line">writeSetBegin(etype, size)</span><br><span class="line">writeSetEnd()</span><br><span class="line">writeBool(bool)</span><br><span class="line">writeByte(<span class="keyword">byte</span>)</span><br><span class="line">writeI16(i16)</span><br><span class="line">writeI32(i32)</span><br><span class="line">writeI64(i64)</span><br><span class="line">writeDouble(<span class="keyword">double</span>)</span><br><span class="line">writeString(string)</span><br><span class="line"></span><br><span class="line">name, type, seq = readMessageBegin()</span><br><span class="line">                  readMessageEnd()</span><br><span class="line">name = readStructBegin()</span><br><span class="line">       readStructEnd()</span><br><span class="line">name, type, id = readFieldBegin()</span><br><span class="line">                 readFieldEnd()</span><br><span class="line">k, v, size = readMapBegin()</span><br><span class="line">             readMapEnd()</span><br><span class="line">etype, size = readListBegin()</span><br><span class="line">              readListEnd()</span><br><span class="line">etype, size = readSetBegin()</span><br><span class="line">              readSetEnd()</span><br><span class="line">bool = readBool()</span><br><span class="line"><span class="keyword">byte</span> = readByte()</span><br><span class="line">i16 = readI16()</span><br><span class="line">i32 = readI32()</span><br><span class="line">i64 = readI64()</span><br><span class="line"><span class="keyword">double</span> = readDouble()</span><br><span class="line">string = readString()</span><br></pre></td></tr></table></figure>
+
+<p><strong>Processor</strong></p>
+<p><code>Processor</code>封装了读取输入流、写入输出流的能力，其中输入流、输出流都是<code>Protocol</code>的对象。接口很简单：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">TProcessor</span> </span>&#123;</span><br><span class="line">    <span class="function">bool <span class="title">process</span><span class="params">(TProtocol in, TProtocol out)</span> <span class="keyword">throws</span> TException</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中用户需要实现TProcessor接口。</p>
+<h1 id="Thrift-的源码实现？"><a href="#Thrift-的源码实现？" class="headerlink" title="Thrift 的源码实现？"></a>Thrift 的源码实现？</h1><p><strong>TTransport</strong></p>
+<img src="/2019/10/12/a-id-17/im12age.png">
+
+<p>TTransport有很多实现，其中最重要的就是TFramedTransport。</p>
+<p>客户端的实际使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">TSocket socket = <span class="keyword">new</span> TSocket(host, port);</span><br><span class="line">socket.setTimeout(timeout);</span><br><span class="line">TTransport transport = <span class="keyword">new</span> TFramedTransport(socket);</span><br><span class="line">TProtocol protocol = <span class="keyword">new</span> TCompactProtocol(transport);</span><br><span class="line">transport.open();</span><br></pre></td></tr></table></figure>
+
+<p><strong>TProtocol</strong></p>
+<img src="/2019/10/12/a-id-17/image1001.png">
+
+<p>Thrift主要支持的协议有：</p>
+<ul>
+<li>JSON</li>
+<li>SimpleJSON</li>
+<li>Binary</li>
+<li>Compact Binary</li>
+</ul>
+<p>其中<code>Binary</code>协议的序列化、反序列化，可以参考我的另一篇文章：<a href="https://www.jianshu.com/p/1b322180d011" target="_blank" rel="noopener">Thrift 对象序列化、反序列化-字节数组分析</a>。</p>
+<p><strong>TServer</strong></p>
+<img src="/2019/10/12/a-id-17/image0926006.png">
+
+<p>解释起来太麻烦，还是直接贴思维导图吧，更直观 0_o</p>
+<img src="/2019/10/12/a-id-17/image.png">
+
+<p><strong>TServerTransport</strong></p>
+<p>TServerTransport作为服务器的Acceptor抽象，来监听端口，创建客户端Socket连接。</p>
+<img src="/2019/10/12/a-id-17/ima11ge.png">
+
+<ul>
+<li>TNonblockingServerTransport和TNonblockingServerSocket作为非阻塞IO的Acceptor,封装了ServerSocketChannel</li>
+<li>TServerSocket作为阻塞同步IO的Acceptor，封装了ServerSocket</li>
+</ul>
+<h1 id="其他-RPC-框架有哪些？"><a href="#其他-RPC-框架有哪些？" class="headerlink" title="其他 RPC 框架有哪些？"></a>其他 RPC 框架有哪些？</h1><ul>
+<li>rpcx: 基于Go的服务治理的rpc框架、客户端支持跨语言</li>
+<li>grpc: Google 出品的跨语言rpc框架，很弱的(实验性的)负载均衡, 测试使用的是grpc-go</li>
+<li>go std rpc: Go标准库的rpc, 不支持跨语言(jsonrpc支持json rpc 1.0)</li>
+<li>thrift: 跨语言的rpc框架，facebook贡献</li>
+<li>dubbo: 国内较早开源的服务治理的Java rpc框架，虽然在阿里巴巴内部竞争中落败于HSF，沉寂了几年，但是在国内得到了广泛的应用，目前dubbo项目又获得了支持，并且dubbo 3.0也开始开发</li>
+<li>motan: 微博内部使用的rpc框架，底层支持java,生态圈往service mesh发展以支持多语言</li>
+<li>hprose: 国内开发人员开发的一个跨语言的rpc框架，非服务治理但是性能高效</li>
+<li>twirp: twitch.tv刚刚开源的一个restful风格的rpc框架</li>
+<li>go-micro: Go语言的一个服务治理rpc框架， 在测试中发现性能不太好，所以没有继续测试，相关的测试代码已在github库中</li>
+<li>go kit:</li>
+<li>腾讯 Tars:腾讯公司的rpc框架</li>
+<li>百度 brpc: 百度公司的rpc框架</li>
+<li>spring cloud:</li>
+</ul>
+<p>参考自：<a href="https://colobu.com/2018/01/31/benchmark-2018-spring-of-popular-rpc-frameworks/" target="_blank" rel="noopener">流行的rpc框架benchmark 2018新春版</a>。</p>
+<h1 id="为什么不使用Dubbo"><a href="#为什么不使用Dubbo" class="headerlink" title="为什么不使用Dubbo?"></a>为什么不使用Dubbo?</h1><p>因为我们是python开发！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/14/a-id-16/">关于mysql索引树形结构为B树+而非B树，为啥？</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/11/a-id-9/">Redis为什么是单线程，高并发快的3大原因详解</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
