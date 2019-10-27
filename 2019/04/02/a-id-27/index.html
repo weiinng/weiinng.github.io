@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>关于Tornado:真实的异步和虚假的异步 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">关于Tornado:真实的异步和虚假的异步</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 2, 2019&nbsp;&nbsp;15:27:20</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>​    我们知道Tornado 优秀的大并发处理能力得益于它的 web server 从底层开始就自己实现了一整套基于 epoll 的单线程异步架构，其他 web 框架比如Django或者Flask的自带 server 基本是基于 wsgi 写的简单服务器，并没有自己实现底层结构。而tornado.ioloop 就是 tornado web server 最底层的实现。</p>
+<p>​    ioloop 的实现基于 epoll ，那么什么是 epoll？ epoll 是Linux内核为处理大批量文件描述符而作了改进的 poll / select 。<br>那么到底什么是 poll / select ？ socket 通信时的服务端，当它接受（ accept ）一个连接并建立通信后（ connection ）就进行通信，而此时我们并不知道连接的客户端有没有信息发完。 这时候我们有两种选择：</p>
+<p>  一直在这里等着直到收发数据结束；</p>
+<p>​    每隔一会儿来看看这里有没有数据；</p>
+<p>​    第一种办法虽然可以解决问题，但我们要注意的是对于一个线程进程同时只能处理一个 socket 通信，其他连接只能被阻塞。 显然这种方式在单进程情况下不现实。</p>
+<p>​    第二种办法要比第一种好一些，多个连接可以统一在一定时间内轮流看一遍里面有没有数据要读写，看上去我们可以处理多个连接了，这个方式就是 poll / select 的解决方案。 看起来似乎解决了问题，但实际上，随着连接越来越多，轮询所花费的时间将越来越长，而服务器连接的 socket 大多不是活跃的，所以轮询所花费的大部分时间将是无用的。为了解决这个问题， epoll 被创造出来，它的概念和 poll 类似，不过每次轮询时，他只会把有数据活跃的 socket 挑出来轮询，这样在有大量连接时轮询就节省了大量时间。<br>​    </p>
+<p>​    具体说说select:select最早于1983年出现在4.2BSD中，它通过一个select()系统调用来监视多个文件描述符的数组，当select()返回后，该数组中就绪的文件描述符便会被内核修改标志位，使得进程可以获得这些文件描述符从而进行后续的读写操作。</p>
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> true &#123;</span><br><span class="line">    select(streams[])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> streams[] &#123;</span><br><span class="line">        <span class="keyword">if</span> i has data</span><br><span class="line">        read until unavailable</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    select的优点是支持目前几乎所有的平台，缺点主要有如下2个：</p>
+<p> 1）单个进程能够监视的文件描述符的数量存在最大限制，在Linux上一般为1024，不过可以通过修改宏定义甚至重新编译内核的方式提升这一限制。</p>
+<p> 2）select 所维护的存储大量文件描述符的数据结构，随着文件描述符数量的增大，其复制的开销也线性增长。同时，由于网络响应时间的延迟使得大量TCP连接处于非活跃状态，但调用select()会对所有socket进行一次线性扫描，所以这也浪费了一定的开销。</p>
+<p> poll则在1986年诞生于System V Release 3，它和select在本质上没有多大差别，但是poll没有最大文件描述符数量的限制。</p>
+<p>​    epoll是Linux 2.6 开始出现的为处理大批量文件描述符而作了改进的poll，是Linux下多路复用IO接口select/poll的增强版本，它能显著提高程序在大量并发连接中只有少量活跃的情况下的系统CPU利用率。另一点原因就是获取事件的时候，它无须遍历整个被侦听的描述符集，只要遍历那些被内核IO事件异步唤醒而加入Ready队列的描述符集合就行了。<br> 在select/poll中，进程只有在调用一定的方法后，内核才对所有监视的文件描述符进行扫描，而epoll事先通过epoll_ctl()来注册一个文件描述符，一旦基于某个文件描述符就绪时，内核会采用类似callback的回调机制，迅速激活这个文件描述符，当进程调用epoll_wait()时便得到通知。<br>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> true &#123;</span><br><span class="line">    active_stream[] = epoll_wait(epollfd)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> active_stream[] &#123;</span><br><span class="line">        read <span class="keyword">or</span> write till</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    两相对比，可以看出来，epoll只轮询数据活跃的socket，性能自然就比较高了。</p>
+<p>​    而Tornado其实默认是同步阻塞机制的，为了能够实现异步，你就必须使用异步的写法才可以，这里有一个简单的demo:</p>
+<p>​    </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span>  tornado.web <span class="keyword">import</span> RequestHandler</span><br><span class="line"><span class="keyword">import</span> tornado.ioloop</span><br><span class="line"><span class="keyword">import</span> tornado.httpclient</span><br><span class="line"><span class="keyword">import</span> tornado.web</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#异步任务</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncHandler</span><span class="params">(RequestHandler)</span>:</span></span><br><span class="line"><span class="meta">    @tornado.web.asynchronous</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        http_client = tornado.httpclient.AsyncHTTPClient()</span><br><span class="line">        http_client.fetch(<span class="string">"http://baidu.com"</span>,</span><br><span class="line">                          callback=self.on_fetch)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_fetch</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response)</span><br><span class="line">        self.write(<span class="string">'done'</span>)</span><br><span class="line">        self.finish()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#同步任务</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SyncHandler</span><span class="params">(RequestHandler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        response = requests.get(<span class="string">"http://baidu.com"</span>)</span><br><span class="line">        print(response)</span><br><span class="line">        self.write(<span class="string">'done'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">make_app</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> tornado.web.Application(handlers=[</span><br><span class="line">        (<span class="string">r'/async_fetch'</span>, AsyncHandler),</span><br><span class="line">        (<span class="string">r'/sync_fetch'</span>, SyncHandler),</span><br><span class="line">    ],debug=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    app = make_app()</span><br><span class="line">    app.listen(<span class="number">8000</span>)</span><br><span class="line">    tornado.ioloop.IOLoop.current().start()</span><br></pre></td></tr></table></figure>
+
+<p>​    可以看到异步任务我们使用了（回调）和@tornado.web.asynchronous</p>
+<p>​    @tornado.web.asynchronous 并不能将一个同步方法变成异步，所以修饰在同步方法上是无效的，只是告诉框架，这个方法是异步的，且只能适用于HTTP verb方法（get、post、delete、put等）。@tornado.web.asynchronous 装饰器适用于callback-style的异步方法，对于用@tornado.web.asynchronous 修饰的异步方法，需要主动self.finish()来结束该请求，普通的方法(get()等)会自动结束请求在方法返回的时候。</p>
+<p>​    对比下效率:使用ab命令发送500个请求，每秒50个 ab -n 500 -c 50 </p>
+<img src="/2019/04/02/a-id-27/20190901151322_45414.png">
+
+<img src="/2019/04/02/a-id-27/20190901151335_70252.png">
+
+
+
+<p>   结果显而易见，异步效率更高，15秒完成了同步需要50秒的任务。</p>
+<p>​    但是，要想达到异步效果，就必须使用异步写法，让io操作变成异步io，而异步写法对于后台研发的综合素质要求比较高，那么能不能用同步的写法达成异步效果呢？当然可以，就是使用celery+tornado</p>
+<p>​    最后总结一下：</p>
+<p>​    Tornado的异步原理： 单线程的torndo打开一个IO事件循环， 当碰到IO请求（新链接进来 或者 调用api获取数据），由于这些IO请求都是非阻塞的IO，都会把这些非阻塞的IO socket 扔到一个socket管理器，所以，这里单线程的CPU只要发起一个网络IO请求，就不用挂起线程等待IO结果，这个单线程的事件继续循环，接受其他请求或者IO操作，如此循环。</p>
+<p>​    说人话：poll/select: 在一个育婴室内，护士会对育婴室内所有的婴儿挨个check一遍，如此往复。epoll:护士会使用高科技设备对婴儿进行监听，并且只会check生命体征有问题(活跃)的婴儿，如此往复。</p>
+<p>​    另外，对于如果面对超高的并发请求(qps上万)，仅仅采用 epoll 模型是不够的，我们还必须使用多进程多线程等方式来充分利用系统资源，这就引出了nginx反向代理tornado进行负载均衡。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/后端框架/"># 后端框架</a>
+                    
+                        <a href="/tags/Tornado/"># Tornado</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/09/a-id-62/">Python3.7.2 + Django2.0.4项目集成最新版支付宝支付接口</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/02/a-id-70/">Django2.0.4结合KindEditor4.1.11 富文本编辑器</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>让程序员崩溃的瞬间 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">让程序员崩溃的瞬间</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 7, 2019&nbsp;&nbsp;11:35:45</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>今天给大家带来点快乐，程序员才能看懂。</p>
+<p>来源：<a href="https://zhuanlan.zhihu.com/p/47066521" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/47066521</a></p>
+<ol>
+<li>公司实习生找 Bug</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljZzA4MGFzNDlJYm1aaWFxOWxzcHA0bHhUZ3JGTkdlQ1ByWU5WWDNpYUdMS2Y4a2lhTWg4NnAzbGhRLzY0MA.jfif">
+
+<ol start="2">
+<li>在调试时，将断点设置在错误的位置</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRm9PYzlYRExBTU5CNlM1VjdkenBTb0FNTWdUNlI0Z0VYcmYyQWljM0FESm9yTnR3TG43SHJmQS82NDA.jfif">
+
+<ol start="3">
+<li>当我有一个很棒的调试想法时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljMVc5ckJyeDJaaWI3dFVGOTRMbU1DdXV5RlRPQkxVOGlhUjVYcWI2cTdkZHBrUUEydW43Q2VEN0EvNjQw.jfif">
+
+<ol start="4">
+<li>偶然间看到自己多年前写的代码</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljVmtwYzFBREdRWDZtT2hzOE1NMm5OREZ4NmZJZkl4bldUN3dld1RrOEhEUmljbVlWUGNEc1N1dy82NDA.jfif">
+
+<ol start="5">
+<li>当我第一次启动我的单元测试时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljOXgzdFJXRXhWWDN0aWFsMW9pYklocFJvaWNOc2ljNWRYZ1NSVVJBNUl2eXpvVjVZaWIwZDdTUnhNMWcvNjQw.jfif">
+
+<ol start="6">
+<li>数据库的 Delete 语句忘了使用限定词 where…</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljejVrTEJUaHlwYkdBdnNWMktxNXF1MEVpYTRpYkI4YzNlaWN4TGhYY0M1YzY4RXZpYTFWMEs3VGljY3cvNjQw.jfif">
+
+<ol start="7">
+<li>明明是个小 bug，但就是死活修不好……</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljVGdDakJVOE9GN3hLbUZUUWVveVVxekNsZ1VJZEVhMEo2TEJSODVrR2ljTVVXT3BDYk9ubElpY1EvNjQw.jfif">
+
+<ol start="8">
+<li>当我尝试调整生产数据库中的一些东西时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljbG1uNkdBaWMzOGs2VUV4VzVpYzhxMjRpYm51VzFYMXFXd2M1OVVpY0k2Z1owZlJQWGJWZDF6ZW1wZy82NDA.jfif">
+
+<ol start="9">
+<li>好像真的没人发现我产品里的 bug……</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRVYxWDVNaWMydXA2dEx3bGMwYWljaWNmcGVzWHY3MUxkcUVLVlpzQ2I3RGtMU0NTUk5oSVN5dm1BLzY0MA.jfif">
+
+<ol start="10">
+<li>下班前我还有一项任务没有完成</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljd1p0T0hVZE96MmVacEZubWR4YzVvMFVUbE00ajJpYVhMbmRrMzBiNFBDZEpvd2JrZHVmd2FHZy82NDA.jfif">
+
+<ol start="11">
+<li>产品还没测试直接投入生产时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljbWZnYnA4cTJabm5pYkswMnB6d0xDN0NSY1NkYUxGbzh1U0UxenZpY2tBVUNhRGljY0tqQUlwbnN3LzY0MA.jfif">
+
+<ol start="12">
+<li>调试过多线程的都会懂！</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWlja0JtTHo2RWliQk45STFHbUw4MEFZZWg4SmlhOFFBVWljbjBQaWJzZkpvZklwSmx5aWNoNjVaT3hwUmcvNjQw.jfif">
+
+<ol start="13">
+<li>当我以为已捕获了所有可能的异常…的时候</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljSWpaY09QTmlhV1g0ME5QM0tuUk1KVmlhYk1iem1vQWxpYkhMU2IxTWI4WTZyVWIxNVYyOXJLTmdBLzY0MA.jfif">
+
+<ol start="14">
+<li>当我试图清理几行所谓的旧代码的时候</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljUmo2dzN5WFJzQ2ljdFVkVmNyZWVSYUoyYWlhQjRsNGdIeFR1MENQVmhYbnF3WmljUWRJaWI5cDJZdy82NDA.jfif">
+
+<ol start="15">
+<li>当有人让我帮他调试代码时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljaWNpYzBQVTZRTXJTaG1RT0dTWklLZjhleGZzcnloa0ZoZHJKdWljaWNLV25ab1BubkN2ZmdYZ2xWdy82NDA.jfif">
+
+<ol start="16">
+<li>当程序员第一次向老板演示项目时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljcEVHSE1PR3NtSWliazAwcWliT0M4bExrdmgyT1lFZHQyY1dOSHFqMmN3ZTVpYzhNSE1XNDdCMW5RLzY0MA.jfif">
+
+<ol start="17">
+<li>结对编程，需要再了解一下吗？</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljaWNMWUZvZFI0VGVidU54aWE0bVBFRFRja2pZNmRwZWZxejVSMlR3dDZWVTd5dGVRak9xWlR5dEEvNjQw.jfif">
+
+<ol start="18">
+<li>当你看到你几个月没碰过的代码</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljSnV1OHNGZFBIRFpOcGdSY0FWb0prcDBKekNFQUJHZ1JxendYSG0zM29uaWNkOFpqOVVBc25TZy82NDA.jfif">
+
+<ol start="19">
+<li>接到产品经理电话的我睡意全无！</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljYWlhM0h2M052QkJpYm5HcGJlNDQ4aWJ2c1Rjc29iUDlhaWNXUGlhWlR2ckxBazNQaWNvNm1QTzNvaWNKdy82NDA.jfif">
+
+<ol start="20">
+<li>测试的时候一切 ok，真正上线的时候……</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljdDg4NHViVVFaNjlENHRMdVBpYWxqa2liZW10UDVBOXJYUElkTFVITmlicUtobDV1TnZMdlFUakpBLzY0MA.jfif">
+
+<ol start="21">
+<li>作为一个程序员，拷问灵魂的时刻到了！</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljbmliU04zVFdMcmxOS29NTWVEZjl5SkE4dDhjaWJpYjFEcXJ5eHBMaWNYSmljODl2R3JOWVRxVUJwQlEvNjQw.jfif">
+
+<ol start="22">
+<li>当年学 C 语言的过程</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljMDJRZXpNVmhEeDhXR0VqWm9LZEZPUzNQbEVCRlQ1SWVic3F2QnoyeGRXc2Q3ZnRqdko3MWN3LzY0MA.jfif">
+
+<ol start="23">
+<li>当前端程序员想改后台代码时，后台程序员的样子</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljZlJsVUJJR1dFYlY0bENhaWFpYmljaFgxY3NYcUJuNVN5aWJnc2NaRnNSVG1rM3BuS1g2ejMzUDlMZy82NDA.jfif">
+
+<ol start="24">
+<li>调试 bug</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRWV1VEt1amsxR0JSbzVWWGljNEZ4eVhPQlFiZ2pyU2liQk9SNk9la3hyWXBvMjkzQllaQ2h2M3cvNjQw.jfif">
+
+<ol start="25">
+<li>正在调试，突然内存溢出了</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljV1hoeUtlclJYWmljaWNTMXNlMHdEcmF6MGlhUlFDQWxveU1MU2Y0a1htWW5Hcks1Y0cwWTV4aWJ1Zy82NDA.jfif">
+
+<ol start="26">
+<li>需求文档又改了</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljTVEzcGRWTk0yRWt1VkFpYTF0Y3dKY0NUU0FMRzlLdU1BVG9EOWliTDllWEMzS1FVbldFbENWNkEvNjQw.jfif">
+
+<ol start="27">
+<li>苦逼的后端工程师</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRUsyMDVhbTUyZGlhejBQRzJoaFZLaWFqaWJrSVdCa2RUVzc0aGRhVk4xWGU5b21mWFBuNUR0QzhBLzY0MA.jfif">
+
+<ol start="28">
+<li>后端工程师做 UI 的活</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljVkFMaDJvWUw0TGJHakVqaWI1U2RiYXhEbzk3MkRKOFkxakdDVVVRUDVJMVpmd0JPSHllVHRpYmcvNjQw.jfif">
+
+<ol start="29">
+<li>前后端分离开发</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljYkJKZGtRYjQzaWNwSHJQTzF1QllGeUkyWlRldWJqYnNPQlB5WklrRVQ1TFRuREUwcGliQndvSEEvNjQw.jfif">
+
+<ol start="30">
+<li>单身互联网狗的一天</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljWjlWeVRDdFZSMHhEV2dnOG8wUGlhQUJSZmlhaWJEUE5hWENWRG1rQ0JpYjZkb1ZpYXhnaWJXWTh5WFBBLzY0MA.jfif">
+
+<ol start="31">
+<li>在生产环境做 hotfix</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRGhPemtmenZEZnVTbEYwNXA0TE5oaWNJbGljVDNVQ3JFcUt0SlhHUGJ5Q3lkeGZJNklZazkwTWcvNjQw.jfif">
+
+<ol start="32">
+<li>刚调稳定的系统，公司叕空降了一位架构师，又双叕要重构现有系统……</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljUHVDUEx2MUZtMnNtUWZ5aWNnWlhTMWljQWZxWUFUaWMzamxZclJkaWFuMGYxc2liVGR6NGlhVkJEdGliUS82NDA.jfif">
+
+<ol start="33">
+<li>当程序员听客户说还在用 IE 时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWlja3pGcXlYZUowY2thYmhUTDhvTmd6SUxiUmFEY1BpYlRKdGFMdFNTZmpsUTAwS0RzMEpIM2pIUS82NDA.jfif">
+
+<ol start="34">
+<li>当黑客拿到 root 权限之后</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljVjI3RXcwekF6YW8zaWNXdEJ2aWF4aWNRS3B1cXI0ZUdpYXg4YXlITUNodG1iWVpnOEZkV24yN1dhZy82NDA.jfif">
+
+<ol start="35">
+<li>代码进入循环分支后</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljaWF4Y0k3aFBaYXl6eWljS3V5OFFIcmY1dXFCOGZBRzZSM3pNaWE0QjZsQmhBRXRWVERQTjhiazFnLzY0MA.jfif">
+
+<ol start="36">
+<li>新手程序员第一次做项目的过程</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljaWM0N1ZQM2x5TTlvRE1XYXBaNVZpY3JmWnFVT2R0aG8xOHZUQUNpYTVUaktoOTdXTlRpY1JtUHpiQS82NDA.jfif">
+
+<ol start="37">
+<li>零错误零警告一次编译通过</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljOE9Uek9lbmljTjNwMXc0ckY5OEdidlNSODVJaWNOOFZLcW1wWWZHSjY5cnVlZWpidjN4NGliaWNIUS82NDA.jfif">
+
+<ol start="38">
+<li>春节前后上班写代码状态是这样的</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljR3RpY3RrNnhhaWFOSjU2YWljMGNkTlRTaGljZWRGMEgwYk9wUGVIMWVIdGlhbVcyUWtwcTlrcWlheGNBLzY0MA.jfif">
+
+<ol start="39">
+<li>自信爆棚地去重构一个看似简单的模块</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljUWljWFJCSThzOTY1WE1McGliQ09ZbGxBdWhwN1VqNkF4MWtrOEdpYlJsU0dBZXl6YzRUQWFpYldXZy82NDA.jfif">
+
+<ol start="40">
+<li>被老板委派接手刚刚离职同事的项目…</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljcjZyU2liaWNaS3FYR0xueU1BOGI4NjJraE1XWW1CQ2ZXUUc4SVMwYWFndVdlVWlhdmd1d3pZVEZBLzY0MA.jfif">
+
+<ol start="41">
+<li>当他们要求我测试所有应用功能时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljQW9hQnRiZXdNUlI0ZkpoelAzSkFteGs0RHFneWtXdVRad3RQWU8yRWVXZXhsV3JqWWliWnNTZy82NDA.jfif">
+
+<ol start="42">
+<li>准备下班的时候,测试又提 bug 过來了…</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRjhIZ2w4R1U5eUFpYXlsWXc4S1AzdzR6d1lqSDVLV09seWlhekVTM3p5VTFJQXJSSDFYRVp3VlEvNjQw.jfif">
+
+<ol start="43">
+<li>使用新框架却忘记阅读文档</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWlja2lhYUttUFN0eklBY2V0UjkxeXpNR2hlYkthdzNPaG5sc1FickgwamZUZjVZNzA0eThRcVpmdy82NDA.jfif">
+
+<ol start="44">
+<li>测试实习生的代码</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljWkNzYlV6MU1HSWhVNUE2VHlHZURESkZkTnBxZXpib2FtT1NKZGNvSll1NFI3QnlUWUN3TUJnLzY0MA.jfif">
+
+<ol start="45">
+<li>网络延迟的危害…</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljcDQyaWJXWEliT2RpYU5yRnd5eFQxcVpYVHBVU1J1Q25pY1lEU3lHVWRDUklYRVF0OVkzeWdGUmlhdy82NDA.jfif">
+
+<ol start="46">
+<li>测试刚写完的代码</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljSFhtWHh6MVZEWVhmM0ZnUjZ4WnFDWk51dkJaaWJScjAwSjBoaWNiUHhLa2xzaWFOWHZ5dWNkdjl3LzY0MA.jfif">
+
+<ol start="47">
+<li>delete 时，忘记加 where 条件了</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRUtqM0tIS0dzbTllNDR0ZEowemxvWFE5QmljMkh4MVo5cFdVY0JmUUtaMFN1NVlKaWI3UEZhY2cvNjQw.jfif">
+
+<ol start="48">
+<li>轻量级架构遇到重量级需求</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljSWg5d0J1d0s5SGU3VFNEeUVhQVE0VUhod3JpYkJPWXdHRFpZdnF1WUJ6MlVVWVNPZVA4Tk9Fdy82NDA.jfif">
+
+<ol start="49">
+<li>当我以为我修复了一个 Bug</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljSGozaE5vT3I2MHhQZFRudFphdnJZWFdvblhyWlV5b2ljUnZ2Tm4zOWVGam1oSncwT2IwTlNlUS82NDA.jfif">
+
+<ol start="50">
+<li>当我看实习生编码</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljQ0t0Y2g5MDIxTUc4aWM4dmtxU2dzVmhCR2Vsa211emppY1Y2R2JadzV5aWFRbmtOSVB5d1dYcE9BLzY0MA.jfif">
+
+<ol start="51">
+<li>首次在 IE 中测试我的网站</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljSmlic0tuVUMzbjV4WXJtWlFtdFphalgzaWJ4MThXWkZtWkxGQzZlajF0dWJNQmRyUlU4Rnd0NUEvNjQw.jfif">
+
+<ol start="52">
+<li>当我第一次测试我的代码时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljaGpNVzduUFFvd2RoU1Z0VjZ1UXYxQ0h6WFZBaWEwSnhsc21oNGZTUmNISTVETEZFQXR3Z00wUS82NDA.jfif">
+
+<ol start="53">
+<li>新手调试 CSS</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljTm8wWmNORzRmSmU3NHBod2lhcTRIQjFFbkZzaWNEbzNUd3J0SXVKZGcySGNLV3BDSEhrYmJpY29BLzY0MA.jfif">
+
+<ol start="54">
+<li>提前交付客户要求</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljVjZYdFB5VjFxNTY3QzBrbVg0SDlzWGFwZ05UcVd2RFF2aWMzV05aTnFRSzJuYTFCNjF2TkhpY3cvNjQw.jfif">
+
+<ol start="55">
+<li>我设计的接口 和 别人调用我的接口 （好疼）</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRnlzV2liZGtGZzZqQVRpYzRKZ3kzZGp1cDFTV3M5NVZWV3BpYVZVWFVUd2JlYU02TnZhbE1wSnNnLzY0MA.jfif"> 
+
+<ol start="56">
+<li>try-catch 在错误的地方</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljckxrd2tBUHQ4WkxmRTg2ZjByV1NWdGJpYzdpYWlickZTd1h3S3psajUyMWJjd29RWFNwUzhFSVRnLzY0MA.jfif">
+
+<ol start="57">
+<li>修改一个小 bug，却把服务器弄宕机了</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljQlcxazZOQ3VzSlpvakdOUFlpYjM3NHdjRFVNR2NnWkR3N2tQejVjN0F1VkxYajUwWld6aWFQVXcvNjQw.jfif">
+
+<ol start="58">
+<li>当我推错了分支</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljTm51Sm9yZ3A0TmliaWNoeFR0MXMxT0dGN0lLbkt4RHFXWEduT29HVDFvMkVIN2FseE12SFFpYXVBLzY0MA.jfif">
+
+<ol start="59">
+<li>工作中经常被打断</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljR1Q3Y2NnS2x4UzNqb3MwQ2hpY3o1ZU1QOG1Yek9tRWhBeXZNZDRFQmVkSjJjSXUzVmVVODA0Zy82NDA.jfif">
+
+<ol start="60">
+<li>高级开发人员作为一个团队进行编程时</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljRVNmVmdEdElJWGlhU2N3M1VFNGtiWks3NXNsVTZpYmlhdzdwckFQTXZUQ01uYmcwTDZ3WDBpYzJxdy82NDA.jfif">
+
+<ol start="61">
+<li>能一个手指完成的绝不用两只手系列</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljcWVZSjl4ZVAxeWlhdUo5NUl2YkZXQ1dCNHVwdGtIWEVqcG9XazlmMFQwYzhTdjNLS0NFUkVpY1EvNjQw.jfif">
+
+<ol start="62">
+<li>高级开发人员重构代码</li>
+</ol>
+<img src="/2019/10/07/a-id-54/aHR0cHM6Ly9tbWJpei5xcGljLmNuL21tYml6X2dpZi8xNTlpY25OVFhDaE9HblJwQm1vaEFNYTAxY2tjeGdzUWljVUVUOUwwSmM5VmxvS2dEZXY5ekpsdmZlMHNocEdzbkZkUFZSaWFXSFpST1BnS2RhT0RpYzVuRmcvNjQw.jfif">
+
+<p>没有了，过瘾不，忍住，不能笑哈</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/09/a-id-1/">Python3的自省机制</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/07/a-id-55/">Docker常用命令</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

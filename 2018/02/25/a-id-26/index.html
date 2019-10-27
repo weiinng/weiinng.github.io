@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python学习到什么程度可以去面试？ | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python学习到什么程度可以去面试？</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">February 25, 2018&nbsp;&nbsp;18:39:14</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>这里有最新的Python最常见的180道面试题解析。</p>
+<p>当你发现这些题你差不多都能回答上来，那说明你的水平已经可以去面试工作了。</p>
+<hr>
+<p>网上有网友搜集了 180 道最新的 Python 面试题解析，让你最短时间内掌握核心知识点，一举通过Python 面试！</p>
+<h4 id="1-列出-5-个常用-Python-标准库？"><a href="#1-列出-5-个常用-Python-标准库？" class="headerlink" title="1.列出 5 个常用 Python 标准库？"></a>1.列出 5 个常用 Python 标准库？</h4><p>os：提供了不少与操作系统相关联的函数</p>
+<p>sys:   通常用于命令行参数</p>
+<p>re:   正则匹配</p>
+<p>math: 数学运算</p>
+<p>datetime:处理日期时间</p>
+<h4 id="2-Python-内建数据类型有哪些？"><a href="#2-Python-内建数据类型有哪些？" class="headerlink" title="2.Python 内建数据类型有哪些？"></a>2.Python 内建数据类型有哪些？</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">整型--int</span><br><span class="line"></span><br><span class="line">布尔型--bool</span><br><span class="line"></span><br><span class="line">字符串--str</span><br><span class="line"></span><br><span class="line">列表--list</span><br><span class="line"></span><br><span class="line">元组--tuple</span><br><span class="line"></span><br><span class="line">字典--dict</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-简述-with-方法打开处理文件帮我我们做了什么？"><a href="#3-简述-with-方法打开处理文件帮我我们做了什么？" class="headerlink" title="3.简述 with 方法打开处理文件帮我我们做了什么？"></a>3.简述 with 方法打开处理文件帮我我们做了什么？</h4><img src="/2018/02/25/a-id-26/15876556-4e229af77de652a2.webp">
+
+<p>打开文件在进行读写的时候可能会出现一些异常状况，如果按照常规的f.open</p>
+<p>写法，我们需要try,except,finally，做异常判断，并且文件最终不管遇到什么情况，都要执行finally f.close()关闭文件，with方法帮我们实现了finally中f.close</p>
+<p>（当然还有其他自定义功能，有兴趣可以研究with方法源码）</p>
+<h4 id="4-列出-Python-中可变数据类型和不可变数据类型，为什么？"><a href="#4-列出-Python-中可变数据类型和不可变数据类型，为什么？" class="headerlink" title="4.列出 Python 中可变数据类型和不可变数据类型，为什么？"></a>4.列出 Python 中可变数据类型和不可变数据类型，为什么？</h4><p>不可变数据类型：数值型、字符串型string和元组tuple</p>
+<p>不允许变量的值发生变化，如果改变了变量的值，相当于是新建了一个对象，而对于相同的值的对象，在内存中则只有一个对象（一个地址），如下图用id()方法可以打印对象的id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = 3</span><br><span class="line"></span><br><span class="line">b = 3</span><br><span class="line"></span><br><span class="line">id(a)</span><br><span class="line">1365598496</span><br><span class="line"></span><br><span class="line">id(b)</span><br><span class="line">1365598496</span><br></pre></td></tr></table></figure>
+
+<p>可变数据类型：列表list和字典dict；</p>
+<p>允许变量的值发生变化，即如果对变量进行append、+=等这种操作后，只是改变了变量的值，而不会新建一个对象，变量引用的对象的地址也不会变化，不过对于相同的值的不同对象，在内存中则会存在不同的对象，即每个对象都有自己的地址，相当于内存中对于同值的对象保存了多份，这里不存在引用计数，是实实在在的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = [1,2]</span><br><span class="line"></span><br><span class="line">b = [1,2]</span><br><span class="line"></span><br><span class="line">id(a)</span><br><span class="line">2572957427336</span><br><span class="line"></span><br><span class="line">id(b)</span><br><span class="line">2572957321544</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-Python-获取当前日期？"><a href="#5-Python-获取当前日期？" class="headerlink" title="5.Python 获取当前日期？"></a>5.Python 获取当前日期？</h4><h4 id="6-统计字符串每个单词出现的次数"><a href="#6-统计字符串每个单词出现的次数" class="headerlink" title="6.统计字符串每个单词出现的次数"></a>6.统计字符串每个单词出现的次数</h4><h4 id="7-用-python-删除文件和用-linux-命令删除文件方法"><a href="#7-用-python-删除文件和用-linux-命令删除文件方法" class="headerlink" title="7.用 python 删除文件和用 linux 命令删除文件方法"></a>7.用 python 删除文件和用 linux 命令删除文件方法</h4><h4 id="8-写一段自定义异常代码"><a href="#8-写一段自定义异常代码" class="headerlink" title="8.写一段自定义异常代码"></a>8.写一段自定义异常代码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try:</span><br><span class="line">  foo = opne(&quot;file&quot;)  #open 被错写成为open</span><br><span class="line">except:</span><br><span class="line">    sys.exit(&quot;could not open file!&quot;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="9-举例说明异常模块中-try-except-else-finally-的相关意义"><a href="#9-举例说明异常模块中-try-except-else-finally-的相关意义" class="headerlink" title="9.举例说明异常模块中 try except else finally 的相关意义"></a>9.举例说明异常模块中 try except else finally 的相关意义</h4><p>try..except..else没有捕获到异常，执行else语句</p>
+<p>try..except..finally不管是否捕获到异常，都执行finally语句</p>
+<h4 id="10-遇到-bug-如何处理"><a href="#10-遇到-bug-如何处理" class="headerlink" title="10.遇到 bug 如何处理"></a>10.遇到 bug 如何处理</h4><h2 id="语言特性"><a href="#语言特性" class="headerlink" title="语言特性"></a>语言特性</h2><h4 id="1-谈谈对-Python-和其他语言的区别"><a href="#1-谈谈对-Python-和其他语言的区别" class="headerlink" title="1.谈谈对 Python 和其他语言的区别"></a>1.谈谈对 Python 和其他语言的区别</h4><h4 id="2-简述解释型和编译型编程语言"><a href="#2-简述解释型和编译型编程语言" class="headerlink" title="2.简述解释型和编译型编程语言"></a>2.简述解释型和编译型编程语言</h4><h4 id="3-Python-的解释器种类以及相关特点？"><a href="#3-Python-的解释器种类以及相关特点？" class="headerlink" title="3.Python 的解释器种类以及相关特点？"></a>3.Python 的解释器种类以及相关特点？</h4><h4 id="4-说说你知道的Python3-和-Python2-之间的区别？"><a href="#4-说说你知道的Python3-和-Python2-之间的区别？" class="headerlink" title="4.说说你知道的Python3 和 Python2 之间的区别？"></a>4.说说你知道的Python3 和 Python2 之间的区别？</h4><p>1、Python3 使用 print 必须要以小括号包裹打印内容，比如 print(‘hi’)</p>
+<p>Python2 既可以使用带小括号的方式，也可以使用一个空格来分隔打印内容，比如 print ‘hi’</p>
+<p>2、python2 range(1,10)返回列表，python3中返回迭代器，节约内存</p>
+<p>3、python2中使用ascii编码，python中使用utf-8编码</p>
+<p>4、python2中unicode表示字符串序列，str表示字节序列</p>
+<p>​      python3中str表示字符串序列，byte表示字节序列</p>
+<p>5、python2中为正常显示中文，引入coding声明，python3中不需要</p>
+<p>6、python2中是raw_input()函数，python3中是input()函数</p>
+<h4 id="5-Python3-和-Python2-中-int-和-long-区别？"><a href="#5-Python3-和-Python2-中-int-和-long-区别？" class="headerlink" title="5.Python3 和 Python2 中 int 和 long 区别？"></a>5.Python3 和 Python2 中 int 和 long 区别？</h4><h4 id="6-xrange-和-range-的区别？"><a href="#6-xrange-和-range-的区别？" class="headerlink" title="6.xrange 和 range 的区别？"></a>6.xrange 和 range 的区别？</h4><h2 id="编码规范"><a href="#编码规范" class="headerlink" title="编码规范"></a>编码规范</h2><h4 id="7-什么是-PEP8"><a href="#7-什么是-PEP8" class="headerlink" title="7.什么是 PEP8?"></a>7.什么是 PEP8?</h4><h4 id="8-了解-Python-之禅么？"><a href="#8-了解-Python-之禅么？" class="headerlink" title="8.了解 Python 之禅么？"></a>8.了解 Python 之禅么？</h4><h4 id="9-了解-docstring-么？"><a href="#9-了解-docstring-么？" class="headerlink" title="9.了解 docstring 么？"></a>9.了解 docstring 么？</h4><h4 id="10-了解类型注解么？"><a href="#10-了解类型注解么？" class="headerlink" title="10.了解类型注解么？"></a>10.了解类型注解么？</h4><h4 id="11-例举你知道-Python-对象的命名规范，例如方法或者类等"><a href="#11-例举你知道-Python-对象的命名规范，例如方法或者类等" class="headerlink" title="11.例举你知道 Python 对象的命名规范，例如方法或者类等"></a>11.例举你知道 Python 对象的命名规范，例如方法或者类等</h4><h4 id="12-Python-中的注释有几种？"><a href="#12-Python-中的注释有几种？" class="headerlink" title="12.Python 中的注释有几种？"></a>12.Python 中的注释有几种？</h4><h4 id="13-如何优雅的给一个函数加注释？"><a href="#13-如何优雅的给一个函数加注释？" class="headerlink" title="13.如何优雅的给一个函数加注释？"></a>13.如何优雅的给一个函数加注释？</h4><h4 id="14-如何给变量加注释？"><a href="#14-如何给变量加注释？" class="headerlink" title="14.如何给变量加注释？"></a>14.如何给变量加注释？</h4><h4 id="15-Python-代码缩进中是否支持-Tab-键和空格混用。"><a href="#15-Python-代码缩进中是否支持-Tab-键和空格混用。" class="headerlink" title="15.Python 代码缩进中是否支持 Tab 键和空格混用。"></a>15.Python 代码缩进中是否支持 Tab 键和空格混用。</h4><h4 id="16-是否可以在一句-import-中导入多个库"><a href="#16-是否可以在一句-import-中导入多个库" class="headerlink" title="16.是否可以在一句 import 中导入多个库?"></a>16.是否可以在一句 import 中导入多个库?</h4><h4 id="17-在给-Py-文件命名的时候需要注意什么"><a href="#17-在给-Py-文件命名的时候需要注意什么" class="headerlink" title="17.在给 Py 文件命名的时候需要注意什么?"></a>17.在给 Py 文件命名的时候需要注意什么?</h4><h4 id="18-例举几个规范-Python-代码风格的工具"><a href="#18-例举几个规范-Python-代码风格的工具" class="headerlink" title="18.例举几个规范 Python 代码风格的工具"></a>18.例举几个规范 Python 代码风格的工具</h4><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><h2 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h2><h4 id="19-列举-Python-中的基本数据类型？"><a href="#19-列举-Python-中的基本数据类型？" class="headerlink" title="19.列举 Python 中的基本数据类型？"></a>19.列举 Python 中的基本数据类型？</h4><h4 id="20-如何区别可变数据类型和不可变数据类型"><a href="#20-如何区别可变数据类型和不可变数据类型" class="headerlink" title="20.如何区别可变数据类型和不可变数据类型"></a>20.如何区别可变数据类型和不可变数据类型</h4><h4 id="21-将”hello-world”转换为首字母大写”Hello-World”"><a href="#21-将”hello-world”转换为首字母大写”Hello-World”" class="headerlink" title="21.将”hello world”转换为首字母大写”Hello World”"></a>21.将”hello world”转换为首字母大写”Hello World”</h4><h4 id="22-如何检测字符串中只含有数字"><a href="#22-如何检测字符串中只含有数字" class="headerlink" title="22.如何检测字符串中只含有数字?"></a>22.如何检测字符串中只含有数字?</h4><h4 id="23-将字符串”ilovechina”进行反转"><a href="#23-将字符串”ilovechina”进行反转" class="headerlink" title="23.将字符串”ilovechina”进行反转"></a>23.将字符串”ilovechina”进行反转</h4><h4 id="24-Python-中的字符串格式化方式你知道哪些？"><a href="#24-Python-中的字符串格式化方式你知道哪些？" class="headerlink" title="24.Python 中的字符串格式化方式你知道哪些？"></a>24.Python 中的字符串格式化方式你知道哪些？</h4><h4 id="25-有一个字符串开头和末尾都有空格，比如“-adabdw-”-要求写一个函数把这个字符串的前后空格都去掉。"><a href="#25-有一个字符串开头和末尾都有空格，比如“-adabdw-”-要求写一个函数把这个字符串的前后空格都去掉。" class="headerlink" title="25.有一个字符串开头和末尾都有空格，比如“ adabdw ”,要求写一个函数把这个字符串的前后空格都去掉。"></a>25.有一个字符串开头和末尾都有空格，比如“ adabdw ”,要求写一个函数把这个字符串的前后空格都去掉。</h4><h4 id="26-获取字符串”123456“最后的两个字符。"><a href="#26-获取字符串”123456“最后的两个字符。" class="headerlink" title="26.获取字符串”123456“最后的两个字符。"></a>26.获取字符串”123456“最后的两个字符。</h4><h4 id="27-一个编码为-GBK-的字符串-S，要将其转成-UTF-8-编码的字符串，应如何操作？"><a href="#27-一个编码为-GBK-的字符串-S，要将其转成-UTF-8-编码的字符串，应如何操作？" class="headerlink" title="27.一个编码为 GBK 的字符串 S，要将其转成 UTF-8 编码的字符串，应如何操作？"></a>27.一个编码为 GBK 的字符串 S，要将其转成 UTF-8 编码的字符串，应如何操作？</h4><h4 id="28-1-s-quot-info：xiaoZhang-33-shandong-quot-，用正则切分字符串输出-39-info-39-39-xiaoZhang-39-39-33-39-39-shandong-39-2-a-quot-你好-中国-quot-，去除多余空格只留一个空格。"><a href="#28-1-s-quot-info：xiaoZhang-33-shandong-quot-，用正则切分字符串输出-39-info-39-39-xiaoZhang-39-39-33-39-39-shandong-39-2-a-quot-你好-中国-quot-，去除多余空格只留一个空格。" class="headerlink" title="28. (1)s=&quot;info：xiaoZhang 33 shandong&quot;，用正则切分字符串输出[&#39;info&#39;, &#39;xiaoZhang&#39;, &#39;33&#39;, &#39;shandong&#39;](2) a = &quot;你好 中国 &quot;，去除多余空格只留一个空格。"></a>28. <code>(1)s=&quot;info：xiaoZhang 33 shandong&quot;，用正则切分字符串输出[&#39;info&#39;, &#39;xiaoZhang&#39;, &#39;33&#39;, &#39;shandong&#39;](2) a = &quot;你好 中国 &quot;</code>，去除多余空格只留一个空格。</h4><h4 id="29-1-怎样将字符串转换为小写-2-单引号、双引号、三引号的区别？"><a href="#29-1-怎样将字符串转换为小写-2-单引号、双引号、三引号的区别？" class="headerlink" title="29. (1)怎样将字符串转换为小写 (2)单引号、双引号、三引号的区别？"></a>29. (1)怎样将字符串转换为小写 (2)单引号、双引号、三引号的区别？</h4><h2 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h2><h4 id="30-已知-AList-1-2-3-1-2-对-AList-列表元素去重，写出具体过程。"><a href="#30-已知-AList-1-2-3-1-2-对-AList-列表元素去重，写出具体过程。" class="headerlink" title="30.已知 AList = [1,2,3,1,2],对 AList 列表元素去重，写出具体过程。"></a>30.已知 AList = [1,2,3,1,2],对 AList 列表元素去重，写出具体过程。</h4><h4 id="31-如何实现-“1-2-3”-变成-“1”-”2”-”3”"><a href="#31-如何实现-“1-2-3”-变成-“1”-”2”-”3”" class="headerlink" title="31.如何实现 “1,2,3” 变成 [“1”,”2”,”3”]"></a>31.如何实现 “1,2,3” 变成 [“1”,”2”,”3”]</h4><h4 id="32-给定两个-list，A-和-B，找出相同元素和不同元素"><a href="#32-给定两个-list，A-和-B，找出相同元素和不同元素" class="headerlink" title="32.给定两个 list，A 和 B，找出相同元素和不同元素"></a>32.给定两个 list，A 和 B，找出相同元素和不同元素</h4><h4 id="33-1-2-3-4-5-6-一行代码展开该列表，得出-1-2-3-4-5-6"><a href="#33-1-2-3-4-5-6-一行代码展开该列表，得出-1-2-3-4-5-6" class="headerlink" title="33.[[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]"></a>33.[[1,2],[3,4],[5,6]]一行代码展开该列表，得出[1,2,3,4,5,6]</h4><h4 id="34-合并列表-1-5-7-9-和-2-2-6-8"><a href="#34-合并列表-1-5-7-9-和-2-2-6-8" class="headerlink" title="34.合并列表[1,5,7,9]和[2,2,6,8]"></a>34.合并列表[1,5,7,9]和[2,2,6,8]</h4><h4 id="35-如何打乱一个列表的元素？"><a href="#35-如何打乱一个列表的元素？" class="headerlink" title="35.如何打乱一个列表的元素？"></a>35.如何打乱一个列表的元素？</h4><h2 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h2><h4 id="36-字典操作中-del-和-pop-有什么区别"><a href="#36-字典操作中-del-和-pop-有什么区别" class="headerlink" title="36.字典操作中 del 和 pop 有什么区别"></a>36.字典操作中 del 和 pop 有什么区别</h4><h4 id="37-按照字典的内的年龄排序"><a href="#37-按照字典的内的年龄排序" class="headerlink" title="37.按照字典的内的年龄排序"></a>37.按照字典的内的年龄排序</h4><img src="/2018/02/25/a-id-26/v2-f0c87fcad0839af06187a4def1706f51_hd.jpg">
+
+<h4 id="38-请合并下面两个字典-a-“A”-1-”B”-2-b-“C”-3-”D”-4"><a href="#38-请合并下面两个字典-a-“A”-1-”B”-2-b-“C”-3-”D”-4" class="headerlink" title="38.请合并下面两个字典 a = {“A”:1,”B”:2},b = {“C”:3,”D”:4}"></a>38.请合并下面两个字典 a = {“A”:1,”B”:2},b = {“C”:3,”D”:4}</h4><h4 id="39-如何使用生成式的方式生成一个字典，写一段功能代码。"><a href="#39-如何使用生成式的方式生成一个字典，写一段功能代码。" class="headerlink" title="39.如何使用生成式的方式生成一个字典，写一段功能代码。"></a>39.如何使用生成式的方式生成一个字典，写一段功能代码。</h4><h4 id="40-如何把元组-“a”-”b”-和元组-1-2-，变为字典-“a”-1-”b”-2"><a href="#40-如何把元组-“a”-”b”-和元组-1-2-，变为字典-“a”-1-”b”-2" class="headerlink" title="40.如何把元组(“a”,”b”)和元组(1,2)，变为字典{“a”:1,”b”:2}"></a>40.如何把元组(“a”,”b”)和元组(1,2)，变为字典{“a”:1,”b”:2}</h4><h2 id="综合"><a href="#综合" class="headerlink" title="综合"></a>综合</h2><h4 id="41-Python-常用的数据结构的类型及其特性？"><a href="#41-Python-常用的数据结构的类型及其特性？" class="headerlink" title="41.Python 常用的数据结构的类型及其特性？"></a>41.Python 常用的数据结构的类型及其特性？</h4><img src="/2018/02/25/a-id-26/v2-3774e05a878688a01233e58eedd189a4_hd.jpg">
+
+<h4 id="42-如何交换字典-“A”：1-”B”：2-的键和值？"><a href="#42-如何交换字典-“A”：1-”B”：2-的键和值？" class="headerlink" title="42.如何交换字典 {“A”：1,”B”：2}的键和值？"></a>42.如何交换字典 {“A”：1,”B”：2}的键和值？</h4><h4 id="43-Python-里面如何实现-tuple-和-list-的转换？"><a href="#43-Python-里面如何实现-tuple-和-list-的转换？" class="headerlink" title="43.Python 里面如何实现 tuple 和 list 的转换？"></a>43.Python 里面如何实现 tuple 和 list 的转换？</h4><h4 id="44-我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何对生成器类型的对象实现相同的功能呢？"><a href="#44-我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何对生成器类型的对象实现相同的功能呢？" class="headerlink" title="44.我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何对生成器类型的对象实现相同的功能呢？"></a>44.我们知道对于列表可以使用切片操作进行部分元素的选择，那么如何对生成器类型的对象实现相同的功能呢？</h4><h4 id="45-请将-i-for-i-in-range-3-改成生成器"><a href="#45-请将-i-for-i-in-range-3-改成生成器" class="headerlink" title="45.请将[i for i in range(3)]改成生成器"></a>45.请将[i for i in range(3)]改成生成器</h4><h4 id="46-a-”hello”和-b-”你好”编码成-bytes-类型"><a href="#46-a-”hello”和-b-”你好”编码成-bytes-类型" class="headerlink" title="46.a=”hello”和 b=”你好”编码成 bytes 类型"></a>46.a=”hello”和 b=”你好”编码成 bytes 类型</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a=&quot;hello&quot;</span><br><span class="line">c=a.encode(encoding=&apos;utf-8&apos;)</span><br><span class="line">a = b&apos;hello&apos;</span><br><span class="line"></span><br><span class="line">b=&quot;世界&quot;</span><br><span class="line">b = b.encode(encoding=&apos;utf-8&apos;)</span><br><span class="line"></span><br><span class="line">print(a,b,c)</span><br></pre></td></tr></table></figure>
+
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">b&apos;hello&apos; b&apos;\xe4\xb8\x96\xe7\x95\x8c&apos; b&apos;hello&apos;</span><br><span class="line">[Program finished]</span><br></pre></td></tr></table></figure>
+
+<h4 id="47-下面的代码输出结果是什么？"><a href="#47-下面的代码输出结果是什么？" class="headerlink" title="47.下面的代码输出结果是什么？"></a>47.下面的代码输出结果是什么？</h4><img src="/2018/02/25/a-id-26/v2-9ece529b1810bbd9052e929e4dbb760a_hd.jpg">
+
+<h4 id="48-下面的代码输出的结果是什么"><a href="#48-下面的代码输出的结果是什么" class="headerlink" title="48.下面的代码输出的结果是什么?"></a>48.下面的代码输出的结果是什么?</h4><img src="/2018/02/25/a-id-26/v2-e8e5e086d9e9c7b45861717d33de5986_hd.jpg">
+
+<h2 id="操作类题目"><a href="#操作类题目" class="headerlink" title="操作类题目"></a>操作类题目</h2><h4 id="49-Python-交换两个变量的值"><a href="#49-Python-交换两个变量的值" class="headerlink" title="49.Python 交换两个变量的值"></a>49.Python 交换两个变量的值</h4><p>a = b </p>
+<p>b = a </p>
+<h4 id="50-在读文件操作的时候会使用-read、readline-或者-readlines，简述它们各自的作用"><a href="#50-在读文件操作的时候会使用-read、readline-或者-readlines，简述它们各自的作用" class="headerlink" title="50.在读文件操作的时候会使用 read、readline 或者 readlines，简述它们各自的作用"></a>50.在读文件操作的时候会使用 read、readline 或者 readlines，简述它们各自的作用</h4><h4 id="51-json-序列化时，可以处理的数据类型有哪些？如何定制支持-datetime-类型？"><a href="#51-json-序列化时，可以处理的数据类型有哪些？如何定制支持-datetime-类型？" class="headerlink" title="51.json 序列化时，可以处理的数据类型有哪些？如何定制支持 datetime 类型？"></a>51.json 序列化时，可以处理的数据类型有哪些？如何定制支持 datetime 类型？</h4><h4 id="52-json-序列化时，默认遇到中文会转换成-unicode，如果想要保留中文怎么办？"><a href="#52-json-序列化时，默认遇到中文会转换成-unicode，如果想要保留中文怎么办？" class="headerlink" title="52.json 序列化时，默认遇到中文会转换成 unicode，如果想要保留中文怎么办？"></a>52.json 序列化时，默认遇到中文会转换成 unicode，如果想要保留中文怎么办？</h4><h4 id="53-有两个磁盘文件-A-和-B，各存放一行字母，要求把这两个文件中的信息合并-按字母顺序排列-，输出到一个新文件-C-中。"><a href="#53-有两个磁盘文件-A-和-B，各存放一行字母，要求把这两个文件中的信息合并-按字母顺序排列-，输出到一个新文件-C-中。" class="headerlink" title="53.有两个磁盘文件 A 和 B，各存放一行字母，要求把这两个文件中的信息合并(按字母顺序排列)，输出到一个新文件 C 中。"></a>53.有两个磁盘文件 A 和 B，各存放一行字母，要求把这两个文件中的信息合并(按字母顺序排列)，输出到一个新文件 C 中。</h4><h4 id="54-如果当前的日期为-20190530，要求写一个函数输出-N-天后的日期，-比如-N-为-2，则输出-20190601-。"><a href="#54-如果当前的日期为-20190530，要求写一个函数输出-N-天后的日期，-比如-N-为-2，则输出-20190601-。" class="headerlink" title="54.如果当前的日期为 20190530，要求写一个函数输出 N 天后的日期，(比如 N 为 2，则输出 20190601)。"></a>54.如果当前的日期为 20190530，要求写一个函数输出 N 天后的日期，(比如 N 为 2，则输出 20190601)。</h4><h4 id="55-写一个函数，接收整数参数-n，返回一个函数，函数的功能是把函数的参数和-n-相乘并把结果返回。"><a href="#55-写一个函数，接收整数参数-n，返回一个函数，函数的功能是把函数的参数和-n-相乘并把结果返回。" class="headerlink" title="55.写一个函数，接收整数参数 n，返回一个函数，函数的功能是把函数的参数和 n 相乘并把结果返回。"></a>55.写一个函数，接收整数参数 n，返回一个函数，函数的功能是把函数的参数和 n 相乘并把结果返回。</h4><h4 id="56-下面代码会存在什么问题，如何改进？"><a href="#56-下面代码会存在什么问题，如何改进？" class="headerlink" title="56.下面代码会存在什么问题，如何改进？"></a>56.下面代码会存在什么问题，如何改进？</h4><img src="/2018/02/25/a-id-26/v2-474f556cb8cd7d2ea7a47b0cba51c9cd_hd.jpg">
+
+<h4 id="57-一行代码输出-1-100-之间的所有偶数。"><a href="#57-一行代码输出-1-100-之间的所有偶数。" class="headerlink" title="57.一行代码输出 1-100 之间的所有偶数。"></a>57.一行代码输出 1-100 之间的所有偶数。</h4><h4 id="58-with-语句的作用，写一段代码？"><a href="#58-with-语句的作用，写一段代码？" class="headerlink" title="58.with 语句的作用，写一段代码？"></a>58.with 语句的作用，写一段代码？</h4><h4 id="59-python-字典和-json-字符串相互转化方法"><a href="#59-python-字典和-json-字符串相互转化方法" class="headerlink" title="59.python 字典和 json 字符串相互转化方法"></a>59.python 字典和 json 字符串相互转化方法</h4><h4 id="60-请写一个-Python-逻辑，计算一个文件中的大写字母数量"><a href="#60-请写一个-Python-逻辑，计算一个文件中的大写字母数量" class="headerlink" title="60.请写一个 Python 逻辑，计算一个文件中的大写字母数量"></a>60.请写一个 Python 逻辑，计算一个文件中的大写字母数量</h4><h4 id="61-请写一段-Python连接-Mongo-数据库，然后的查询代码。"><a href="#61-请写一段-Python连接-Mongo-数据库，然后的查询代码。" class="headerlink" title="61. 请写一段 Python连接 Mongo 数据库，然后的查询代码。"></a>61. 请写一段 Python连接 Mongo 数据库，然后的查询代码。</h4><h4 id="62-说一说-Redis-的基本类型。"><a href="#62-说一说-Redis-的基本类型。" class="headerlink" title="62.说一说 Redis 的基本类型。"></a>62.说一说 Redis 的基本类型。</h4><h4 id="63-请写一段-Python连接-Redis-数据库的代码。"><a href="#63-请写一段-Python连接-Redis-数据库的代码。" class="headerlink" title="63. 请写一段 Python连接 Redis 数据库的代码。"></a>63. 请写一段 Python连接 Redis 数据库的代码。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">r = redis.Redis(host = &apos;localhost&apos; ,post = 6379 ,db = 0)</span><br></pre></td></tr></table></figure>
+
+<h4 id="64-请写一段-Python-连接-MySQL-数据库的代码。"><a href="#64-请写一段-Python-连接-MySQL-数据库的代码。" class="headerlink" title="64. 请写一段 Python 连接 MySQL 数据库的代码。"></a>64. 请写一段 Python 连接 MySQL 数据库的代码。</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db = MySQLdb.connect(&quot;localhost&quot;,&quot;codecloud&quot;,&quot;test123&quot;,&quot;TESTDB&quot; )</span><br></pre></td></tr></table></figure>
+
+<h4 id="65-了解-Redis-的事务么？"><a href="#65-了解-Redis-的事务么？" class="headerlink" title="65.了解 Redis 的事务么？"></a>65.了解 Redis 的事务么？</h4><p>MULTI 、 EXEC 、 DISCARD 和 WATCH 是 Redis 事务的基础。<br>事务可以一次执行多个命令， 并且带有以下两个重要的保证：</p>
+<ul>
+<li>事务是一个单独的隔离操作：事务中的所有命令都会序列化、按顺序地执行。事务在执行的过程中，不会被其他客户端发送来的命令请求所打断。</li>
+<li>事务是一个原子操作：事务中的命令要么全部被执行，要么全部都不执行。<br>EXEC 命令负责触发并执行事务中的所有命令：</li>
+</ul>
+<p>当使用 AOF 方式做持久化的时候， Redis 会使用单个 write(2) 命令将事务写入到磁盘中。<br>然而，如果 Redis 服务器因为某些原因被管理员杀死，或者遇上某种硬件故障，那么可能只有部分事务命令会被成功写入到磁盘中。<br>如果 Redis 在重新启动时发现 AOF 文件出了这样的问题，那么它会退出，并汇报一个错误。<br>使用 redis-check-aof 程序可以修复这一问题：它会移除 AOF 文件中不完整事务的信息，确保服务器可以顺利启动。</p>
+<ul>
+<li>如果客户端在使用 MULTI 开启了一个事务之后，却因为断线而没有成功执行 EXEC ，那么事务中的所有命令都不会被执行。</li>
+<li>另一方面，如果客户端成功在开启事务之后执行 EXEC ，那么事务中的所有命令都会被执行。</li>
+</ul>
+<p>从 2.2 版本开始，Redis 还可以通过乐观锁（optimistic lock）实现 CAS （check-and-set）操作，具体信息请参考文档的后半部分。</p>
+<p><strong>用法：</strong></p>
+<p>MULTI 命令用于开启一个事务，它总是返回 OK 。<br>MULTI 执行之后， 客户端可以继续向服务器发送任意多条命令， 这些命令不会立即被执行， 而是被放到一个队列中， 当 EXEC 命令被调用时， 所有队列中的命令才会被执行。<br>另一方面， 通过调用 DISCARD ， 客户端可以清空事务队列， 并放弃执行事务。<br>以下是一个事务例子， 它原子地增加了 foo 和 bar 两个键的值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&gt; MULTI</span><br><span class="line">OK</span><br><span class="line"> </span><br><span class="line">&gt; INCR foo</span><br><span class="line">QUEUED</span><br><span class="line"> </span><br><span class="line">&gt; INCR bar</span><br><span class="line">QUEUED</span><br><span class="line"> </span><br><span class="line">&gt; EXEC</span><br><span class="line">1) (integer) 1</span><br><span class="line">2) (integer) 1</span><br></pre></td></tr></table></figure>
+
+<p>EXEC 命令的回复是一个数组， 数组中的每个元素都是执行事务中的命令所产生的回复。 其中， 回复元素的先后顺序和命令发送的先后顺序一致。<br>当客户端处于事务状态时， 所有传入的命令都会返回一个内容为 QUEUED 的状态回复（status reply）， 这些被入队的命令将在 EXEC 命令被调用时执行。</p>
+<p><strong>事务中的错误:</strong></p>
+<p>使用事务时可能会遇上以下两种错误：</p>
+<ul>
+<li>事务在执行 EXEC 之前，入队的命令可能会出错。比如说，命令可能会产生语法错误（参数数量错误，参数名错误，等等），或者其他更严重的错误，比如内存不足（如果服务器使用 maxmemory 设置了最大内存限制的话）。</li>
+<li>命令可能在 EXEC 调用之后失败。举个例子，事务中的命令可能处理了错误类型的键，比如将列表命令用在了字符串键上面，诸如此类。<br>对于发生在 EXEC 执行之前的错误，客户端以前的做法是检查命令入队所得的返回值：如果命令入队时返回 QUEUED ，那么入队成功；否则，就是入队失败。如果有命令在入队时失败，那么大部分客户端都会停止并取消这个事务。</li>
+</ul>
+<p>不过，从 Redis 2.6.5 开始，服务器会对命令入队失败的情况进行记录，并在客户端调用 EXEC 命令时，拒绝执行并自动放弃这个事务。<br>在 Redis 2.6.5 以前， Redis 只执行事务中那些入队成功的命令，而忽略那些入队失败的命令。 而新的处理方式则使得在流水线（pipeline）中包含事务变得简单，因为发送事务和读取事务的回复都只需要和服务器进行一次通讯。<br>至于那些在 EXEC 命令执行之后所产生的错误， 并没有对它们进行特别处理： 即使事务中有某个/某些命令在执行时产生了错误， 事务中的其他命令仍然会继续执行。<br>从协议的角度来看这个问题，会更容易理解一些。 以下例子中， LPOP 命令的执行将出错， 尽管调用它的语法是正确的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Trying 127.0.0.1...</span><br><span class="line">Connected to localhost.</span><br><span class="line">Escape character is &apos;^]&apos;.</span><br><span class="line"> </span><br><span class="line">MULTI</span><br><span class="line">+OK</span><br><span class="line"> </span><br><span class="line">SET a 3</span><br><span class="line">abc</span><br><span class="line"> </span><br><span class="line">+QUEUED</span><br><span class="line">LPOP a</span><br><span class="line"> </span><br><span class="line">+QUEUED</span><br><span class="line">EXEC</span><br><span class="line"> </span><br><span class="line">*2</span><br><span class="line">+OK</span><br><span class="line">-ERR Operation against a key holding the wrong kind of value</span><br></pre></td></tr></table></figure>
+
+<p>EXEC 返回两条批量回复（bulk reply）： 第一条是 OK ，而第二条是 -ERR 。 至于怎样用合适的方法来表示事务中的错误， 则是由客户端自己决定的。<br>最重要的是记住这样一条， 即使事务中有某条/某些命令执行失败了， 事务队列中的其他命令仍然会继续执行 —— Redis 不会停止执行事务中的命令。<br>以下例子展示的是另一种情况， 当命令在入队时产生错误， 错误会立即被返回给客户端:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MULTI</span><br><span class="line">+OK</span><br><span class="line"> </span><br><span class="line">INCR a b c</span><br><span class="line">-ERR wrong number of arguments for &apos;incr&apos; command</span><br></pre></td></tr></table></figure>
+
+<p>因为调用 INCR 命令的参数格式不正确， 所以这个 INCR 命令入队失败。</p>
+<p><strong>为什么 Redis 不支持回滚（roll back）</strong></p>
+<p>如果你有使用关系式数据库的经验， 那么 “Redis 在事务失败时不进行回滚，而是继续执行余下的命令”这种做法可能会让你觉得有点奇怪。<br>以下是这种做法的优点：</p>
+<ul>
+<li>Redis 命令只会因为错误的语法而失败（并且这些问题不能在入队时发现），或是命令用在了错误类型的键上面：这也就是说，从实用性的角度来说，失败的命令是由编程错误造成的，而这些错误应该在开发的过程中被发现，而不应该出现在生产环境中。</li>
+<li>因为不需要对回滚进行支持，所以 Redis 的内部可以保持简单且快速。<br>有种观点认为 Redis 处理事务的做法会产生 bug ， 然而需要注意的是， 在通常情况下， 回滚并不能解决编程错误带来的问题。 举个例子， 如果你本来想通过 INCR 命令将键的值加上 1 ， 却不小心加上了 2 ， 又或者对错误类型的键执行了 INCR ， 回滚是没有办法处理这些情况的。</li>
+</ul>
+<p>鉴于没有任何机制能避免程序员自己造成的错误， 并且这类错误通常不会在生产环境中出现， 所以 Redis 选择了更简单、更快速的无回滚方式来处理事务。</p>
+<p><strong>放弃事务</strong></p>
+<p>当执行 DISCARD 命令时， 事务会被放弃， 事务队列会被清空， 并且客户端会从事务状态中退出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; SET foo 1OK redis&gt; MULTIOK redis&gt; INCR fooQUEUED redis&gt; DISCARDOK redis&gt; GET foo&quot;1&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>使用 check-and-set 操作实现乐观锁</strong></p>
+<p>WATCH 命令可以为 Redis 事务提供 check-and-set （CAS）行为。<br>被 WATCH 的键会被监视，并会发觉这些键是否被改动过了。 如果有至少一个被监视的键在 EXEC 执行之前被修改了， 那么整个事务都会被取消， EXEC 返回空多条批量回复（null multi-bulk reply）来表示事务已经失败。<br>举个例子， 假设我们需要原子性地为某个值进行增 1 操作（假设 INCR 不存在）。<br>首先我们可能会这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">val = GET mykeyval = val + 1SET mykey $val</span><br></pre></td></tr></table></figure>
+
+<p>上面的这个实现在只有一个客户端的时候可以执行得很好。 但是， 当多个客户端同时对同一个键进行这样的操作时， 就会产生竞争条件。<br>举个例子， 如果客户端 A 和 B 都读取了键原来的值， 比如 10 ， 那么两个客户端都会将键的值设为 11 ， 但正确的结果应该是 12 才对。<br>有了 WATCH ， 我们就可以轻松地解决这类问题了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WATCH mykey val = GET mykeyval = val + 1 MULTISET mykey $valEXEC</span><br></pre></td></tr></table></figure>
+
+<p>使用上面的代码， 如果在 WATCH 执行之后， EXEC 执行之前， 有其他客户端修改了 mykey 的值， 那么当前客户端的事务就会失败。 程序需要做的， 就是不断重试这个操作， 直到没有发生碰撞为止。<br>这种形式的锁被称作乐观锁， 它是一种非常强大的锁机制。 并且因为大多数情况下， 不同的客户端会访问不同的键， 碰撞的情况一般都很少， 所以通常并不需要进行重试。</p>
+<p><strong>了解 WATCH</strong></p>
+<p>WATCH 使得 EXEC 命令需要有条件地执行： 事务只能在所有被监视键都没有被修改的前提下执行， 如果这个前提不能满足的话，事务就不会被执行。<br>如果你使用 WATCH 监视了一个带过期时间的键， 那么即使这个键过期了， 事务仍然可以正常执行， 关于这方面的详细情况，请看这个帖子： <a href="http://code.google.com/p/redis/issues/detail?id=270" target="_blank" rel="noopener">http://code.google.com/p/redis/issues/detail?id=270</a><br>WATCH 命令可以被调用多次。 对键的监视从 WATCH 执行之后开始生效， 直到调用 EXEC 为止。<br>用户还可以在单个 WATCH 命令中监视任意多个键， 就像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis&gt; WATCH key1 key2 key3OK</span><br></pre></td></tr></table></figure>
+
+<p>当 EXEC 被调用时， 不管事务是否成功执行， 对所有键的监视都会被取消。<br>另外， 当客户端断开连接时， 该客户端对键的监视也会被取消。<br>使用无参数的 UNWATCH 命令可以手动取消对所有键的监视。 对于一些需要改动多个键的事务， 有时候程序需要同时对多个键进行加锁， 然后检查这些键的当前值是否符合程序的要求。 当值达不到要求时， 就可以使用 UNWATCH 命令来取消目前对键的监视， 中途放弃这个事务， 并等待事务的下次尝试。</p>
+<p><strong>使用 WATCH 实现 ZPOP</strong></p>
+<p>WATCH 可以用于创建 Redis 没有内置的原子操作。<br>举个例子， 以下代码实现了原创的 ZPOP 命令， 它可以原子地弹出有序集合中分值（score）最小的元素：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WATCH zsetelement = ZRANGE zset 0 0MULTI    ZREM zset elementEXEC</span><br></pre></td></tr></table></figure>
+
+<p>程序只要重复执行这段代码， 直到 EXEC 的返回值不是空多条回复（null multi-bulk reply）即可。</p>
+<p><strong>Redis 脚本和事务</strong></p>
+<p>从定义上来说， Redis 中的脚本本身就是一种事务， 所以任何在事务里可以完成的事， 在脚本里面也能完成。 并且一般来说， 使用脚本要来得更简单，并且速度更快。<br>因为脚本功能是 Redis 2.6 才引入的， 而事务功能则更早之前就存在了， 所以 Redis 才会同时存在两种处理事务的方法。<br>不过我们并不打算在短时间内就移除事务功能， 因为事务提供了一种即使不使用脚本， 也可以避免竞争条件的方法， 而且事务本身的实现并不复杂。<br>不过在不远的将来， 可能所有用户都会只使用脚本来实现事务也说不定。 如果真的发生这种情况的话， 那么我们将废弃并最终移除事务功能。</p>
+<h4 id="66-了解数据库的三范式么？"><a href="#66-了解数据库的三范式么？" class="headerlink" title="66.了解数据库的三范式么？"></a>66.了解数据库的三范式么？</h4><p>什么是范式：简言之就是，数据库设计对数据的存储性能，还有开发人员对数据的操作都有莫大的关系。所以建立科学的，规范的的数据库是需要满足一些</p>
+<p>规范的来优化数据数据存储方式。在关系型数据库中这些规范就可以称为范式。</p>
+<p>什么是三大范式：</p>
+<p>第一范式：当关系模式R的所有属性都不能在分解为更基本的数据单位时，称R是满足第一范式的，简记为1NF。满足第一范式是关系模式规范化的最低要</p>
+<p>求，否则，将有很多基本操作在这样的关系模式中实现不了。</p>
+<p>第二范式：如果关系模式R满足第一范式，并且R得所有非主属性都完全依赖于R的每一个候选关键属性，称R满足第二范式，简记为2NF。</p>
+<p>第三范式：设R是一个满足第一范式条件的关系模式，X是R的任意属性集，如果X非传递依赖于R的任意一个候选关键字，称R满足第三范式，简记为3NF.</p>
+<h4 id="67-了解分布式锁么？"><a href="#67-了解分布式锁么？" class="headerlink" title="67.了解分布式锁么？"></a>67.了解分布式锁么？</h4><p><strong>什么是锁</strong></p>
+<ul>
+<li>在单进程的系统中，当存在多个线程可以同时改变某个变量（可变共享变量）时，就需要对变量或代码块做同步，使其在修改这种变量时能够线性执行消除并发修改变量。</li>
+<li>而同步的本质是通过锁来实现的。为了实现多个线程在一个时刻同一个代码块只能有一个线程可执行，那么需要在某个地方做个标记，这个标记必须每个线程都能看到，当标记不存在时可以设置该标记，其余后续线程发现已经有标记了则等待拥有标记的线程结束同步代码块取消标记后再去尝试设置标记。这个标记可以理解为锁。</li>
+<li>不同地方实现锁的方式也不一样，只要能满足所有线程都能看得到标记即可。如java中synchronize是在对象头设置标记，Lock接口的实现类基本上都只是某一个volitile修饰的int型变量其保证灭个线程都能拥有对该int的可见性和原子修改，linux内核中也是利用互斥量或信号量等内存数据做标记。</li>
+<li>除了利用内存数据做锁其实任何互斥的都能做锁（只考虑互斥情况），如流水表中流水号与时间结合做幂等校验可以看作是一个不会释放的锁，或者使用某个文件是否存在作为锁等。只需要满足在对标记进行修改能保证原子性和内存可见性即可。</li>
+</ul>
+<p><strong>分布式</strong></p>
+<p><strong>分布式情况</strong></p>
+<blockquote>
+<p>此处主要指集群模式下，多个相同服务同时开启.</p>
+</blockquote>
+<ul>
+<li>分布式与单机情况下最大的不同在于其不是多线程而是多进程。</li>
+<li>多线程由于可以共享堆内存，因此可以简单的采取内存作为标记存储位置。而进程之间甚至可能都不在同一台物理机上，因此需要将标记存储在一个所有进程都能看到的地方。</li>
+</ul>
+<p><strong>分布式锁</strong></p>
+<ul>
+<li>当在分布式模型下，数据只有一份（或有限制），此时需要利用锁的技术控制某一时刻修改数据的进程数。</li>
+<li>与单机模式下的锁不仅需要保证进程可见，还需要考虑进程与锁之间的网络问题。（我觉得分布式情况下之所以问题变得复杂，主要就是需要考虑到网络的延时和不可靠。。。一个大坑）</li>
+<li>分布式锁还是可以将标记存在内存，只是该内存不是某个进程分配的内存而是公共内存如Redis、Memcache。至于利用数据库、文件等做锁与单机的实现是一样的，只要保证标记能互斥就行。</li>
+</ul>
+<hr>
+<p><strong>单机Redis锁</strong></p>
+<p><strong>基本锁</strong></p>
+<ul>
+<li>原理：利用Redis的setnx如果不存在某个key则设置值，设置成功则表示取得锁成功。</li>
+<li>缺点：如果获取锁后的进程，在还没执行完的时候挂调了，则锁永远不会释放。</li>
+</ul>
+<p><strong>改进型</strong></p>
+<ul>
+<li>改进：在基本型是锁上的setnx后设置expire，保证即使获取锁的进程不主动释放锁，过一段时间后也能自动释放。</li>
+<li>缺点：<ol>
+<li>setnx与expire不是一个原子操作，可能执行完setnx该进程就挂了。</li>
+<li>当锁过期后，该进程还没执行完，可能造成同时多个进程取得锁。（貌似这个问题目前还没有很优雅的解决方案）</li>
+</ol>
+</li>
+</ul>
+<p><strong>再改进</strong></p>
+<ul>
+<li>改进：利用Lua脚本，将setnx与expire变成一个原子操作，可解决一部分问题。</li>
+<li>缺点：还是锁过期的问题。</li>
+</ul>
+<p><strong>步骤</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 直接调用Lua脚本原子setnx同时expire，设置一个随机值。</span><br><span class="line">2. 获取到锁则执行同步代码块，没获取则根据业务场景可以选择自旋、休眠、或做一个等待队列等拥有锁进程来唤醒（类似Synchronize的同步队列）。</span><br><span class="line">3. 当同步代码块执行完成，先判断锁的key是否是自己设置的，如果是则删除key（可利用Lua做成原子操作），不是则表明自己的锁已经过期，不需要删除。（这时候就出现了多进程同时有锁的问题了）</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结</strong></p>
+<p>一般情况下直接用setnx加expire就够了，但从安全性的角度看还是存在一下几个问题：</p>
+<ol>
+<li>单点问题。单机Redis只在单机上，如果单机down了，那么所有需要用分布式锁的地方均获取不到锁，全部阻塞。需要做好降级的处理。</li>
+<li>可能出现多进程同时拥有锁。</li>
+</ol>
+<hr>
+<p><strong>Redlock</strong></p>
+<p>Redlock是Redis的作者antirez给出的集群模式的Redis分布式锁，它基于N个完全独立的Redis节点（通常情况下N可以设置成5）。</p>
+<p><strong>步骤</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 获取当前时间（毫秒数）。</span><br><span class="line">2. 按顺序依次向N个Redis节点执行获取锁的操作。获取锁的操作与单机锁一样。</span><br><span class="line">3. 如果获取锁成功的节点数&gt;=N/2+1，则再计算获取锁的时间有没有超过锁过期时间（可考虑设置一个必须留多长的时间给代码块执行），如果超过了则认为取锁失败。</span><br><span class="line">4. 如果取锁失败则应该对所有节点进行释放锁的操作。</span><br></pre></td></tr></table></figure>
+
+<p><strong>优化</strong></p>
+<ul>
+<li>当有5个节点，某次上锁对a,b,c三个节点上锁成功，而后c马上down了，此时还没通过AOF或RDB写入磁盘。而后c又马上恢复，此时c没有上锁数据，因此此时可能出现c,d,e三个节点被别的进程上锁。所以在节点恢复时应该延时起码一个锁的过期时间。</li>
+</ul>
+<hr>
+<p><strong>Zookeeper锁</strong></p>
+<p><strong>zookeeper锁相关基础知识</strong></p>
+<ul>
+<li>zk一般由多个节点构成（单数），采用zab一致性协议。因此可以将zk看成一个单点结构，对其修改数据其内部自动将所有节点数据进行修改而后才提供查询服务。</li>
+<li>zk的数据以目录树的形式，每个目录称为 znode， znode中可存储数据（一般不超过1M），还可以在其中增加子节点。</li>
+<li>子节点有三种类型。序列化节点，每在该节点下增加一个节点自动给该节点的名称上自增。临时节点，一旦创建这个 znode 的客户端与服务器失去联系，这个 znode 也将自动删除。最后就是普通节点。</li>
+<li>Watch机制，client可以监控每个节点的变化，当产生变化会给client产生一个事件。</li>
+</ul>
+<p><strong>zk基本锁</strong></p>
+<ul>
+<li>原理：利用临时节点与watch机制。每个锁占用一个普通节点/lock，当需要获取锁时在/lock下创建一个临时节点，创建成功则表示获取锁成功，失败则watch/lock节点，有删除操作后再去争锁。临时节点好处在于当进程挂掉后能自动上锁的节点自动删除即取消锁。</li>
+<li>缺点：所有取锁失败的进程都监听父节点，很容易发生羊群效应，即当释放锁后所有等待进程一起来创建节点，并发量很大。</li>
+</ul>
+<p><strong>zk锁 优化</strong></p>
+<ul>
+<li>原理：上锁改为创建临时有序节点，每个上锁的节点均能创建节点成功，知识其序号不同。只有序号最小的可以拥有锁，当需要不是最小的则watch序号排在前面的一个节点(公平锁)。</li>
+<li>步骤：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 在/lock节点下创建一个有序临时节点(EPHEMERAL_SEQUENTIAL)。</span><br><span class="line">2. 判断创建的节点序号是否最小，如果是最小则获取锁成功。不是则取锁失败，然后watch序号比本身小的前一个节点。</span><br><span class="line">3. 当取锁失败，设置watch后则等待watch事件到来后，再次判断是否序号最小。</span><br><span class="line">4. 取锁成功则执行代码，最后删除本身节点，释放了锁。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<p><strong>分布式锁总结</strong></p>
+<p><strong>分布式锁存在的问题</strong></p>
+<ol>
+<li>均可能存在多进程拥有锁的情况。redis锁主要是expire时间与代码执行时间的问题，zk锁的问题在于zk是通过心跳监控进程存活状态，如果进程进行GC pause或者因为网络原因导致很长时间没与zk联系，则将导致zk认为进程已挂，而后锁自动释放，而此时进程并未挂任然在执行。</li>
+<li>Redlock锁的时间问题。由于redis的expire的实现是通过pexpireat，如果某个节点发生时钟跳跃，则该节点可能过早释放锁导致一系列问题。</li>
+</ol>
+<p><strong>解决方案</strong></p>
+<ol>
+<li>获取锁时提供一个fencing token(两种说法，一种说需要有序，一种说随机值就可以，我觉得随机值就可以)，在进程获取锁后对数据进行操作时，数据所在的资源服务器需要去锁中查看当前token，如果token对的才执行，不对则放弃执行。</li>
+<li>我觉得对于放弃执行的应该在我们的代码块中增加类似事物的rollback的操作。因此如果资源服务器拒绝了我们的操作则表明此时起码已经存在了另外一个进程拥有锁了，为了保证数据安全性不能继续执行，因此需要回滚到执行代码块之前而继续去竞争锁。</li>
+<li>至于Redis锁的时间问题，Antirez说在运维层面是可以控制时钟跳跃的区间的，只要能控制跳跃区间与expire的比例就没问题，详细可看《基于Redis的分布式锁真的安全吗？》</li>
+</ol>
+<p><strong>总结</strong></p>
+<ol>
+<li>大多数时候采用zk锁就好了，没必要再考虑安全性的问题。其实也可以通过zk锁+幂等校验来达到双层保障。</li>
+<li>fencing 机制需要对数据服务进行修改适配，个人觉得没这个必要吧。。。</li>
+</ol>
+<blockquote>
+<p>目前就这些了。。。。后面想到再补充吧。</p>
+</blockquote>
+<h4 id="68-用-Python-实现一个-Reids-的分布式锁的功能。"><a href="#68-用-Python-实现一个-Reids-的分布式锁的功能。" class="headerlink" title="68.用 Python 实现一个 Reids 的分布式锁的功能。"></a>68.用 Python 实现一个 Reids 的分布式锁的功能。</h4><p>用 Python 实现一个 Reids 的分布式锁的功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SETNX lock.foo &lt;current Unix time + lock timeout + 1&gt;</span><br></pre></td></tr></table></figure>
+
+<p>如果 SETNX 返回1，说明该进程获得锁，SETNX将键 lock.foo 的值设置为锁的超时时间（当前时间 + 锁的有效时间）。 如果 SETNX 返回0，说明其他进程已经获得了锁，进程不能进入临界区。进程可以在一个循环中不断地尝试 SETNX 操作，以获得锁。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">import time</span><br><span class="line">import redis</span><br><span class="line">from conf.config import REDIS_HOST, REDIS_PORT, REDIS_PASSWORD  #从配置文件加载redis配置</span><br><span class="line"> </span><br><span class="line">class RedisLock:</span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=1) #redis数据库的连接</span><br><span class="line">        self._lock = 0         #获取redis锁的标记，1是已经获取</span><br><span class="line">        self.lock_key = &quot;&quot;     #key的名字</span><br><span class="line">    @staticmethod   #讲方法设置为静态方法，可以直接类引用</span><br><span class="line">    def my_float(timestamp):  #传入参数，输出float的方法</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        Args:</span><br><span class="line">            timestamp:</span><br><span class="line">        Returns:</span><br><span class="line">            float或者0</span><br><span class="line">            如果取出的是None，说明原本锁并没人用，getset已经写入，返回0，可以继续操作。</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        if timestamp:</span><br><span class="line">            return float(timestamp)</span><br><span class="line">        else:</span><br><span class="line">            #防止取出的值为None，转换float报错</span><br><span class="line">            return 0</span><br><span class="line"> </span><br><span class="line">    @staticmethod</span><br><span class="line">    def get_lock(cls, key, timeout=10):</span><br><span class="line">        cls.lock_key = f&quot;&#123;key&#125;_dynamic_lock&quot;</span><br><span class="line">        while cls._lock != 1:</span><br><span class="line">            timestamp = time.time() + timeout + 1</span><br><span class="line">            cls._lock = cls.conn.setnx(cls.lock_key, timestamp)</span><br><span class="line">            # if 条件中，可能在运行到or之后被释放，也可能在and之后被释放</span><br><span class="line">            # 将导致 get到一个None，float失败。</span><br><span class="line">            if cls._lock == 1 or (</span><br><span class="line">                            time.time() &gt; cls.my_float(cls.conn.get(cls.lock_key)) and</span><br><span class="line">                            time.time() &gt; cls.my_float(cls.conn.getset(cls.lock_key, timestamp))):</span><br><span class="line">                break</span><br><span class="line">            else:</span><br><span class="line">                time.sleep(0.3)</span><br><span class="line"> </span><br><span class="line">    @staticmethod</span><br><span class="line">    def release(cls):</span><br><span class="line">        if cls.conn.get(cls.lock_key) and time.time() &lt; cls.conn.get(cls.lock_key):</span><br><span class="line">            cls.conn.delete(cls.lock_key)</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">def redis_lock_deco(cls):  #闭包</span><br><span class="line">    def _deco(func):</span><br><span class="line">        def __deco(*args, **kwargs):</span><br><span class="line">            cls.get_lock(cls, args[1])</span><br><span class="line">            try:</span><br><span class="line">                return func(*args, **kwargs)</span><br><span class="line">            finally:</span><br><span class="line">                cls.release(cls)</span><br><span class="line">        return __deco</span><br><span class="line">    return _deco</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">@redis_lock_deco(RedisLock()) #生成器</span><br><span class="line">def my_func():</span><br><span class="line">    print(&quot;myfunc() called.&quot;)</span><br><span class="line">    time.sleep(20)</span><br><span class="line"> </span><br><span class="line">if __name__ == &quot;__main__&quot;:</span><br><span class="line">    my_func()</span><br></pre></td></tr></table></figure>
+
+<h4 id="69-写一段-Python-使用-Mongo-数据库创建索引的代码。"><a href="#69-写一段-Python-使用-Mongo-数据库创建索引的代码。" class="headerlink" title="69.写一段 Python 使用 Mongo 数据库创建索引的代码。"></a>69.写一段 Python 使用 Mongo 数据库创建索引的代码。</h4><p><strong>初始话链接</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import pymongo</span><br><span class="line">import datetime</span><br><span class="line"></span><br><span class="line">#mongodbUrl = &apos;mongodb://test:123456@192.168.1.2:27018,192.168.1.3:27018,192.168.1.3:27018&apos;</span><br><span class="line">mongodbUrl=&quot;mongodb://localhost:27017/&quot;</span><br><span class="line">dbName = &quot;test&quot;</span><br><span class="line">myclient = pymongo.MongoClient(mongodbUrl)</span><br><span class="line">mydb = myclient[dbName]</span><br></pre></td></tr></table></figure>
+
+<p><strong>创建表并初始话索引</strong></p>
+<p>如果不指定索引名称，默认使用index语句为索引名称，如果索引过长会报</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pymongo.errors.OperationFailure: exception: namespace name generated from index name &quot;test.table01.$&#123;&quot;imei&quot;:1,&quot;vin&quot;:1,&quot;startTime&quot;:1,&quot;startTime&quot;:-1,&quot;endTime&quot;:1,&quot;endTime&quot;:-1,&quot;channelld&quot;:1,&quot;status&quot;:1&#125;_1&quot; is too long (127 byte max)</span><br></pre></td></tr></table></figure>
+
+<p><strong>脚本</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">table01= mydb[&quot;table01&quot;]</span><br><span class="line">table01.create_index(&apos;&#123;&quot;imei&quot;:1,&quot;vin&quot;:1,&quot;startTime&quot;:1,&quot;startTime&quot;:-1,&quot;endTime&quot;:1,&quot;endTime&quot;:-1,&quot;channelld&quot;:1,&quot;status&quot;:1&#125;&apos;, name=&apos;table01_index&apos;)</span><br></pre></td></tr></table></figure>
+
+<h2 id="高级特性"><a href="#高级特性" class="headerlink" title="高级特性"></a>高级特性</h2><h4 id="70-函数装饰器有什么作用？请列举说明？"><a href="#70-函数装饰器有什么作用？请列举说明？" class="headerlink" title="70.函数装饰器有什么作用？请列举说明？"></a>70.函数装饰器有什么作用？请列举说明？</h4><h4 id="71-Python-垃圾回收机制？"><a href="#71-Python-垃圾回收机制？" class="headerlink" title="71.Python 垃圾回收机制？"></a>71.Python 垃圾回收机制？</h4><h4 id="72-魔法函数-call怎么使用"><a href="#72-魔法函数-call怎么使用" class="headerlink" title="72.魔法函数 call怎么使用?"></a>72.魔法函数 <strong>call</strong>怎么使用?</h4><h4 id="73-如何判断一个对象是函数还是方法？"><a href="#73-如何判断一个对象是函数还是方法？" class="headerlink" title="73.如何判断一个对象是函数还是方法？"></a>73.如何判断一个对象是函数还是方法？</h4><h4 id="74-classmethod-和-staticmethod-用法和区别"><a href="#74-classmethod-和-staticmethod-用法和区别" class="headerlink" title="74.@classmethod 和@staticmethod 用法和区别"></a>74.@classmethod 和@staticmethod 用法和区别</h4><h4 id="75-Python-中的接口如何实现？"><a href="#75-Python-中的接口如何实现？" class="headerlink" title="75.Python 中的接口如何实现？"></a>75.Python 中的接口如何实现？</h4><h4 id="76-Python-中的反射了解么"><a href="#76-Python-中的反射了解么" class="headerlink" title="76.Python 中的反射了解么?"></a>76.Python 中的反射了解么?</h4><h4 id="77-metaclass-作用？以及应用场景？"><a href="#77-metaclass-作用？以及应用场景？" class="headerlink" title="77.metaclass 作用？以及应用场景？"></a>77.metaclass 作用？以及应用场景？</h4><h4 id="78-hasattr-getattr-setattr-的用法"><a href="#78-hasattr-getattr-setattr-的用法" class="headerlink" title="78.hasattr() getattr() setattr()的用法"></a>78.hasattr() getattr() setattr()的用法</h4><h4 id="79-请列举你知道的-Python-的魔法方法及用途。"><a href="#79-请列举你知道的-Python-的魔法方法及用途。" class="headerlink" title="79.请列举你知道的 Python 的魔法方法及用途。"></a>79.请列举你知道的 Python 的魔法方法及用途。</h4><h4 id="80-如何知道一个-Python-对象的类型？"><a href="#80-如何知道一个-Python-对象的类型？" class="headerlink" title="80.如何知道一个 Python 对象的类型？"></a>80.如何知道一个 Python 对象的类型？</h4><h4 id="81-Python-的传参是传值还是传址？"><a href="#81-Python-的传参是传值还是传址？" class="headerlink" title="81.Python 的传参是传值还是传址？"></a>81.Python 的传参是传值还是传址？</h4><h4 id="82-Python-中的元类-metaclass-使用举例"><a href="#82-Python-中的元类-metaclass-使用举例" class="headerlink" title="82.Python 中的元类(metaclass)使用举例"></a>82.Python 中的元类(metaclass)使用举例</h4><h4 id="83-简述-any-和-all-方法"><a href="#83-简述-any-和-all-方法" class="headerlink" title="83.简述 any()和 all()方法"></a>83.简述 any()和 all()方法</h4><h4 id="84-filter-方法求出列表所有奇数并构造新列表，a-1-2-3-4-5-6-7-8-9-10"><a href="#84-filter-方法求出列表所有奇数并构造新列表，a-1-2-3-4-5-6-7-8-9-10" class="headerlink" title="84.filter 方法求出列表所有奇数并构造新列表，a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"></a>84.filter 方法求出列表所有奇数并构造新列表，a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]</h4><h4 id="85-什么是猴子补丁？"><a href="#85-什么是猴子补丁？" class="headerlink" title="85.什么是猴子补丁？"></a>85.什么是猴子补丁？</h4><h4 id="86-在-Python-中是如何管理内存的？"><a href="#86-在-Python-中是如何管理内存的？" class="headerlink" title="86.在 Python 中是如何管理内存的？"></a>86.在 Python 中是如何管理内存的？</h4><h4 id="87-当退出-Python-时是否释放所有内存分配？"><a href="#87-当退出-Python-时是否释放所有内存分配？" class="headerlink" title="87.当退出 Python 时是否释放所有内存分配？"></a>87.当退出 Python 时是否释放所有内存分配？</h4><h2 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h2><h4 id="88-使用正则表达式匹配出-lt-html-gt-lt-h1-gt-百度一下，你就知道-https-link-zhihu-com-target-http-3A-www-baidu-com-lt-html-gt-中的地址-a-”张明-98-分”，用-re-sub，将-98-替换为-100"><a href="#88-使用正则表达式匹配出-lt-html-gt-lt-h1-gt-百度一下，你就知道-https-link-zhihu-com-target-http-3A-www-baidu-com-lt-html-gt-中的地址-a-”张明-98-分”，用-re-sub，将-98-替换为-100" class="headerlink" title="88.使用正则表达式匹配出&lt;html&gt;&lt;h1&gt;[百度一下，你就知道](https://link.zhihu.com/?target=http%3A//www.baidu.com)&lt;/html&gt;中的地址    a=”张明 98 分”，用 re.sub，将 98 替换为 100"></a>88.使用正则表达式匹配出<code>&lt;html&gt;&lt;h1&gt;[百度一下，你就知道](https://link.zhihu.com/?target=http%3A//www.baidu.com)&lt;/html&gt;</code>中的地址    a=”张明 98 分”，用 re.sub，将 98 替换为 100</h4><h4 id="89-正则表达式匹配中-和-匹配区别？"><a href="#89-正则表达式匹配中-和-匹配区别？" class="headerlink" title="89.正则表达式匹配中(.)和(.?)匹配区别？"></a>89.正则表达式匹配中(.<em>)和(.</em>?)匹配区别？</h4><h4 id="90-写一段匹配邮箱的正则表达式"><a href="#90-写一段匹配邮箱的正则表达式" class="headerlink" title="90.写一段匹配邮箱的正则表达式"></a>90.写一段匹配邮箱的正则表达式</h4><h2 id="其他内容"><a href="#其他内容" class="headerlink" title="其他内容"></a>其他内容</h2><h4 id="91-解释一下-python-中-pass-语句的作用？"><a href="#91-解释一下-python-中-pass-语句的作用？" class="headerlink" title="91.解释一下 python 中 pass 语句的作用？"></a>91.解释一下 python 中 pass 语句的作用？</h4><h4 id="92-简述你对-input-函数的理解"><a href="#92-简述你对-input-函数的理解" class="headerlink" title="92.简述你对 input()函数的理解"></a>92.简述你对 input()函数的理解</h4><h4 id="93-python-中的-is-和"><a href="#93-python-中的-is-和" class="headerlink" title="93.python 中的 is 和=="></a>93.python 中的 is 和==</h4><h4 id="94-Python-中的作用域"><a href="#94-Python-中的作用域" class="headerlink" title="94.Python 中的作用域"></a>94.Python 中的作用域</h4><h4 id="95-三元运算写法和应用场景？"><a href="#95-三元运算写法和应用场景？" class="headerlink" title="95.三元运算写法和应用场景？"></a>95.三元运算写法和应用场景？</h4><h4 id="96-了解-enumerate-么？"><a href="#96-了解-enumerate-么？" class="headerlink" title="96.了解 enumerate 么？"></a>96.了解 enumerate 么？</h4><h4 id="97-列举-5-个-Python-中的标准模块"><a href="#97-列举-5-个-Python-中的标准模块" class="headerlink" title="97.列举 5 个 Python 中的标准模块"></a>97.列举 5 个 Python 中的标准模块</h4><h4 id="98-如何在函数中设置一个全局变量"><a href="#98-如何在函数中设置一个全局变量" class="headerlink" title="98.如何在函数中设置一个全局变量"></a>98.如何在函数中设置一个全局变量</h4><h4 id="99-pathlib-的用法举例"><a href="#99-pathlib-的用法举例" class="headerlink" title="99.pathlib 的用法举例"></a>99.pathlib 的用法举例</h4><h4 id="100-Python-中的异常处理，写一个简单的应用场景"><a href="#100-Python-中的异常处理，写一个简单的应用场景" class="headerlink" title="100.Python 中的异常处理，写一个简单的应用场景"></a>100.Python 中的异常处理，写一个简单的应用场景</h4><h4 id="101-Python-中递归的最大次数，那如何突破呢？"><a href="#101-Python-中递归的最大次数，那如何突破呢？" class="headerlink" title="101.Python 中递归的最大次数，那如何突破呢？"></a>101.Python 中递归的最大次数，那如何突破呢？</h4><h4 id="102-什么是面向对象的-mro"><a href="#102-什么是面向对象的-mro" class="headerlink" title="102.什么是面向对象的 mro"></a>102.什么是面向对象的 mro</h4><h4 id="103-isinstance-作用以及应用场景？"><a href="#103-isinstance-作用以及应用场景？" class="headerlink" title="103.isinstance 作用以及应用场景？"></a>103.isinstance 作用以及应用场景？</h4><h4 id="104-什么是断言？应用场景？"><a href="#104-什么是断言？应用场景？" class="headerlink" title="104.什么是断言？应用场景？"></a>104.什么是断言？应用场景？</h4><h4 id="105-lambda-表达式格式以及应用场景？"><a href="#105-lambda-表达式格式以及应用场景？" class="headerlink" title="105.lambda 表达式格式以及应用场景？"></a>105.lambda 表达式格式以及应用场景？</h4><h4 id="106-新式类和旧式类的区别"><a href="#106-新式类和旧式类的区别" class="headerlink" title="106.新式类和旧式类的区别"></a>106.新式类和旧式类的区别</h4><h4 id="107-dir-是干什么用的？"><a href="#107-dir-是干什么用的？" class="headerlink" title="107.dir()是干什么用的？"></a>107.dir()是干什么用的？</h4><h4 id="108-一个包里有三个模块，demo1-py-demo2-py-demo3-py，但使用-from-tools-import-导入模块时，如何保证只有-demo1、demo3-被导入了。"><a href="#108-一个包里有三个模块，demo1-py-demo2-py-demo3-py，但使用-from-tools-import-导入模块时，如何保证只有-demo1、demo3-被导入了。" class="headerlink" title="108.一个包里有三个模块，demo1.py, demo2.py, demo3.py，但使用 from tools import *导入模块时，如何保证只有 demo1、demo3 被导入了。"></a>108.一个包里有三个模块，<a href="https://link.zhihu.com/?target=http%3A//demo1.py" target="_blank" rel="noopener">demo1.py</a>, <a href="https://link.zhihu.com/?target=http%3A//demo2.py" target="_blank" rel="noopener">demo2.py</a>, <a href="https://link.zhihu.com/?target=http%3A//demo3.py" target="_blank" rel="noopener">demo3.py</a>，但使用 from tools import *导入模块时，如何保证只有 demo1、demo3 被导入了。</h4><h4 id="109-列举-5-个-Python-中的异常类型以及其含义"><a href="#109-列举-5-个-Python-中的异常类型以及其含义" class="headerlink" title="109.列举 5 个 Python 中的异常类型以及其含义"></a>109.列举 5 个 Python 中的异常类型以及其含义</h4><h4 id="110-copy-和-deepcopy-的区别是什么？"><a href="#110-copy-和-deepcopy-的区别是什么？" class="headerlink" title="110.copy 和 deepcopy 的区别是什么？"></a>110.copy 和 deepcopy 的区别是什么？</h4><h4 id="111-代码中经常遇到的args-kwargs-含义及用法。"><a href="#111-代码中经常遇到的args-kwargs-含义及用法。" class="headerlink" title="111.代码中经常遇到的args, *kwargs 含义及用法。"></a>111.代码中经常遇到的<em>args, *</em>kwargs 含义及用法。</h4><h4 id="112-Python-中会有函数或成员变量包含单下划线前缀和结尾，和双下划线前缀结尾，区别是什么"><a href="#112-Python-中会有函数或成员变量包含单下划线前缀和结尾，和双下划线前缀结尾，区别是什么" class="headerlink" title="112.Python 中会有函数或成员变量包含单下划线前缀和结尾，和双下划线前缀结尾，区别是什么?"></a>112.Python 中会有函数或成员变量包含单下划线前缀和结尾，和双下划线前缀结尾，区别是什么?</h4><h4 id="113-w、a-、wb-文件写入模式的区别"><a href="#113-w、a-、wb-文件写入模式的区别" class="headerlink" title="113.w、a+、wb 文件写入模式的区别"></a>113.w、a+、wb 文件写入模式的区别</h4><h4 id="114-举例-sort-和-sorted-的区别"><a href="#114-举例-sort-和-sorted-的区别" class="headerlink" title="114.举例 sort 和 sorted 的区别"></a>114.举例 sort 和 sorted 的区别</h4><h4 id="115-什么是负索引？"><a href="#115-什么是负索引？" class="headerlink" title="115.什么是负索引？"></a>115.什么是负索引？</h4><h4 id="116-pprint-模块是干什么的？"><a href="#116-pprint-模块是干什么的？" class="headerlink" title="116.pprint 模块是干什么的？"></a>116.pprint 模块是干什么的？</h4><h4 id="117-解释一下-Python-中的赋值运算符"><a href="#117-解释一下-Python-中的赋值运算符" class="headerlink" title="117.解释一下 Python 中的赋值运算符"></a>117.解释一下 Python 中的赋值运算符</h4><h4 id="118-解释一下-Python-中的逻辑运算符"><a href="#118-解释一下-Python-中的逻辑运算符" class="headerlink" title="118.解释一下 Python 中的逻辑运算符"></a>118.解释一下 Python 中的逻辑运算符</h4><h4 id="119-讲讲-Python-中的位运算符"><a href="#119-讲讲-Python-中的位运算符" class="headerlink" title="119.讲讲 Python 中的位运算符"></a>119.讲讲 Python 中的位运算符</h4><h4 id="120-在-Python-中如何使用多进制数字？"><a href="#120-在-Python-中如何使用多进制数字？" class="headerlink" title="120.在 Python 中如何使用多进制数字？"></a>120.在 Python 中如何使用多进制数字？</h4><h4 id="121-怎样声明多个变量并赋值？"><a href="#121-怎样声明多个变量并赋值？" class="headerlink" title="121.怎样声明多个变量并赋值？"></a>121.怎样声明多个变量并赋值？</h4><h2 id="算法和数据结构"><a href="#算法和数据结构" class="headerlink" title="算法和数据结构"></a>算法和数据结构</h2><h4 id="122-已知："><a href="#122-已知：" class="headerlink" title="122.已知："></a>122.已知：</h4><img src="/2018/02/25/a-id-26/v2-f78e20b47b593dc30d2892c34e1c5a7b_hd.jpg">
+
+<h5 id="1-从-AList-和-BSet-中-查找-4，最坏时间复杂度那个大？"><a href="#1-从-AList-和-BSet-中-查找-4，最坏时间复杂度那个大？" class="headerlink" title="(1) 从 AList 和 BSet 中 查找 4，最坏时间复杂度那个大？"></a>(1) 从 AList 和 BSet 中 查找 4，最坏时间复杂度那个大？</h5><h5 id="2-从-AList-和-BSet-中-插入-4，最坏时间复杂度那个大？"><a href="#2-从-AList-和-BSet-中-插入-4，最坏时间复杂度那个大？" class="headerlink" title="(2) 从 AList 和 BSet 中 插入 4，最坏时间复杂度那个大？"></a>(2) 从 AList 和 BSet 中 插入 4，最坏时间复杂度那个大？</h5><h4 id="123-用-Python-实现一个二分查找的函数"><a href="#123-用-Python-实现一个二分查找的函数" class="headerlink" title="123.用 Python 实现一个二分查找的函数"></a>123.用 Python 实现一个二分查找的函数</h4><h4 id="124-python-单例模式的实现方法"><a href="#124-python-单例模式的实现方法" class="headerlink" title="124.python 单例模式的实现方法"></a>124.python 单例模式的实现方法</h4><h4 id="125-使用-Python-实现一个斐波那契数列"><a href="#125-使用-Python-实现一个斐波那契数列" class="headerlink" title="125.使用 Python 实现一个斐波那契数列"></a>125.使用 Python 实现一个斐波那契数列</h4><h4 id="126-找出列表中的重复数字"><a href="#126-找出列表中的重复数字" class="headerlink" title="126.找出列表中的重复数字"></a>126.找出列表中的重复数字</h4><h4 id="127-找出列表中的单个数字"><a href="#127-找出列表中的单个数字" class="headerlink" title="127.找出列表中的单个数字"></a>127.找出列表中的单个数字</h4><h4 id="128-写一个冒泡排序"><a href="#128-写一个冒泡排序" class="headerlink" title="128.写一个冒泡排序"></a>128.写一个冒泡排序</h4><h4 id="129-写一个快速排序"><a href="#129-写一个快速排序" class="headerlink" title="129.写一个快速排序"></a>129.写一个快速排序</h4><h4 id="130-写一个拓扑排序"><a href="#130-写一个拓扑排序" class="headerlink" title="130.写一个拓扑排序"></a>130.写一个拓扑排序</h4><h4 id="131-python-实现一个二进制计算"><a href="#131-python-实现一个二进制计算" class="headerlink" title="131.python 实现一个二进制计算"></a>131.python 实现一个二进制计算</h4><h4 id="132-有一组“-”和“-”符号，要求将“-”排到左边，“-”排到右边，写出具体的实现方法。"><a href="#132-有一组“-”和“-”符号，要求将“-”排到左边，“-”排到右边，写出具体的实现方法。" class="headerlink" title="132.有一组“+”和“-”符号，要求将“+”排到左边，“-”排到右边，写出具体的实现方法。"></a>132.有一组“+”和“-”符号，要求将“+”排到左边，“-”排到右边，写出具体的实现方法。</h4><h4 id="133-单链表反转"><a href="#133-单链表反转" class="headerlink" title="133.单链表反转"></a>133.单链表反转</h4><h4 id="134-交叉链表求交点"><a href="#134-交叉链表求交点" class="headerlink" title="134.交叉链表求交点"></a>134.交叉链表求交点</h4><h4 id="135-用队列实现栈"><a href="#135-用队列实现栈" class="headerlink" title="135.用队列实现栈"></a>135.用队列实现栈</h4><h4 id="136-找出数据流的中位数"><a href="#136-找出数据流的中位数" class="headerlink" title="136.找出数据流的中位数"></a>136.找出数据流的中位数</h4><h4 id="137-二叉搜索树中第-K-小的元素"><a href="#137-二叉搜索树中第-K-小的元素" class="headerlink" title="137.二叉搜索树中第 K 小的元素"></a>137.二叉搜索树中第 K 小的元素</h4><h2 id="爬虫相关"><a href="#爬虫相关" class="headerlink" title="爬虫相关"></a>爬虫相关</h2><h4 id="138-在-requests-模块中，requests-content-和-requests-text-什么区别"><a href="#138-在-requests-模块中，requests-content-和-requests-text-什么区别" class="headerlink" title="138.在 requests 模块中，requests.content 和 requests.text 什么区别"></a>138.在 requests 模块中，requests.content 和 requests.text 什么区别</h4><h4 id="139-简要写一下-lxml-模块的使用方法框架"><a href="#139-简要写一下-lxml-模块的使用方法框架" class="headerlink" title="139.简要写一下 lxml 模块的使用方法框架"></a>139.简要写一下 lxml 模块的使用方法框架</h4><h4 id="140-说一说-scrapy-的工作流程"><a href="#140-说一说-scrapy-的工作流程" class="headerlink" title="140.说一说 scrapy 的工作流程"></a>140.说一说 scrapy 的工作流程</h4><h4 id="141-scrapy-的去重原理"><a href="#141-scrapy-的去重原理" class="headerlink" title="141.scrapy 的去重原理"></a>141.scrapy 的去重原理</h4><h4 id="142-scrapy-中间件有几种类，你用过哪些中间件"><a href="#142-scrapy-中间件有几种类，你用过哪些中间件" class="headerlink" title="142.scrapy 中间件有几种类，你用过哪些中间件"></a>142.scrapy 中间件有几种类，你用过哪些中间件</h4><h4 id="143-你写爬虫的时候都遇到过什么？反爬虫措施，你是怎么解决的？"><a href="#143-你写爬虫的时候都遇到过什么？反爬虫措施，你是怎么解决的？" class="headerlink" title="143.你写爬虫的时候都遇到过什么？反爬虫措施，你是怎么解决的？"></a>143.你写爬虫的时候都遇到过什么？反爬虫措施，你是怎么解决的？</h4><h4 id="144-为什么会用到代理？"><a href="#144-为什么会用到代理？" class="headerlink" title="144.为什么会用到代理？"></a>144.为什么会用到代理？</h4><h4 id="145-代理失效了怎么处理？"><a href="#145-代理失效了怎么处理？" class="headerlink" title="145.代理失效了怎么处理？"></a>145.代理失效了怎么处理？</h4><h4 id="146-列出你知道-header-的内容以及信息"><a href="#146-列出你知道-header-的内容以及信息" class="headerlink" title="146.列出你知道 header 的内容以及信息"></a>146.列出你知道 header 的内容以及信息</h4><h4 id="147-说一说打开浏览器访问-百度一下，你就知道-获取到结果，整个流程。"><a href="#147-说一说打开浏览器访问-百度一下，你就知道-获取到结果，整个流程。" class="headerlink" title="147.说一说打开浏览器访问 百度一下，你就知道 获取到结果，整个流程。"></a>147.说一说打开浏览器访问 <a href="https://link.zhihu.com/?target=http%3A//www.baidu.com" target="_blank" rel="noopener">百度一下，你就知道</a> 获取到结果，整个流程。</h4><h4 id="148-爬取速度过快出现了验证码怎么处理"><a href="#148-爬取速度过快出现了验证码怎么处理" class="headerlink" title="148.爬取速度过快出现了验证码怎么处理"></a>148.爬取速度过快出现了验证码怎么处理</h4><h4 id="149-scrapy-和-scrapy-redis-有什么区别？为什么选择-redis-数据库？"><a href="#149-scrapy-和-scrapy-redis-有什么区别？为什么选择-redis-数据库？" class="headerlink" title="149.scrapy 和 scrapy-redis 有什么区别？为什么选择 redis 数据库？"></a>149.scrapy 和 scrapy-redis 有什么区别？为什么选择 redis 数据库？</h4><h4 id="150-分布式爬虫主要解决什么问题"><a href="#150-分布式爬虫主要解决什么问题" class="headerlink" title="150.分布式爬虫主要解决什么问题"></a>150.分布式爬虫主要解决什么问题</h4><h4 id="151-写爬虫是用多进程好？还是多线程好？-为什么？"><a href="#151-写爬虫是用多进程好？还是多线程好？-为什么？" class="headerlink" title="151.写爬虫是用多进程好？还是多线程好？ 为什么？"></a>151.写爬虫是用多进程好？还是多线程好？ 为什么？</h4><h4 id="152-解析网页的解析器使用最多的是哪几个"><a href="#152-解析网页的解析器使用最多的是哪几个" class="headerlink" title="152.解析网页的解析器使用最多的是哪几个"></a>152.解析网页的解析器使用最多的是哪几个</h4><h4 id="153-需要登录的网页，如何解决同时限制-ip，cookie-session（其中有一些是动态生成的）在不使用动态爬取的情况下？"><a href="#153-需要登录的网页，如何解决同时限制-ip，cookie-session（其中有一些是动态生成的）在不使用动态爬取的情况下？" class="headerlink" title="153.需要登录的网页，如何解决同时限制 ip，cookie,session（其中有一些是动态生成的）在不使用动态爬取的情况下？"></a>153.需要登录的网页，如何解决同时限制 ip，cookie,session（其中有一些是动态生成的）在不使用动态爬取的情况下？</h4><h4 id="154-验证码的解决（简单的：对图像做处理后可以得到的，困难的：验证码是点击，拖动等动态进行的？）"><a href="#154-验证码的解决（简单的：对图像做处理后可以得到的，困难的：验证码是点击，拖动等动态进行的？）" class="headerlink" title="154.验证码的解决（简单的：对图像做处理后可以得到的，困难的：验证码是点击，拖动等动态进行的？）"></a>154.验证码的解决（简单的：对图像做处理后可以得到的，困难的：验证码是点击，拖动等动态进行的？）</h4><h4 id="155-使用最多的数据库（mysql，mongodb，redis-等），对他的理解？"><a href="#155-使用最多的数据库（mysql，mongodb，redis-等），对他的理解？" class="headerlink" title="155.使用最多的数据库（mysql，mongodb，redis 等），对他的理解？"></a>155.使用最多的数据库（mysql，mongodb，redis 等），对他的理解？</h4><h2 id="网络编程"><a href="#网络编程" class="headerlink" title="网络编程"></a>网络编程</h2><h4 id="156-TCP-和-UDP-的区别？"><a href="#156-TCP-和-UDP-的区别？" class="headerlink" title="156.TCP 和 UDP 的区别？"></a>156.TCP 和 UDP 的区别？</h4><h4 id="157-简要介绍三次握手和四次挥手"><a href="#157-简要介绍三次握手和四次挥手" class="headerlink" title="157.简要介绍三次握手和四次挥手"></a>157.简要介绍三次握手和四次挥手</h4><h4 id="158-什么是粘包？-socket-中造成粘包的原因是什么？-哪些情况会发生粘包现象？"><a href="#158-什么是粘包？-socket-中造成粘包的原因是什么？-哪些情况会发生粘包现象？" class="headerlink" title="158.什么是粘包？ socket 中造成粘包的原因是什么？ 哪些情况会发生粘包现象？"></a>158.什么是粘包？ socket 中造成粘包的原因是什么？ 哪些情况会发生粘包现象？</h4><h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h4 id="159-举例说明-conccurent-future-的中线程池的用法"><a href="#159-举例说明-conccurent-future-的中线程池的用法" class="headerlink" title="159.举例说明 conccurent.future 的中线程池的用法"></a>159.举例说明 conccurent.future 的中线程池的用法</h4><h4 id="160-说一说多线程，多进程和协程的区别。"><a href="#160-说一说多线程，多进程和协程的区别。" class="headerlink" title="160.说一说多线程，多进程和协程的区别。"></a>160.说一说多线程，多进程和协程的区别。</h4><h4 id="161-简述-GIL"><a href="#161-简述-GIL" class="headerlink" title="161.简述 GIL"></a>161.简述 GIL</h4><h4 id="162-进程之间如何通信"><a href="#162-进程之间如何通信" class="headerlink" title="162.进程之间如何通信"></a>162.进程之间如何通信</h4><h4 id="163-IO-多路复用的作用？"><a href="#163-IO-多路复用的作用？" class="headerlink" title="163.IO 多路复用的作用？"></a><a href="https://link.zhihu.com/?target=http%3A//163.IO" target="_blank" rel="noopener">163.IO</a> 多路复用的作用？</h4><h4 id="164-select、poll、epoll-模型的区别？"><a href="#164-select、poll、epoll-模型的区别？" class="headerlink" title="164.select、poll、epoll 模型的区别？"></a><a href="https://link.zhihu.com/?target=http%3A//164.select" target="_blank" rel="noopener">164.select</a>、poll、epoll 模型的区别？</h4><h4 id="165-什么是并发和并行？"><a href="#165-什么是并发和并行？" class="headerlink" title="165.什么是并发和并行？"></a>165.什么是并发和并行？</h4><h4 id="166-一个线程-1-让线程-2-去调用一个函数怎么实现？"><a href="#166-一个线程-1-让线程-2-去调用一个函数怎么实现？" class="headerlink" title="166.一个线程 1 让线程 2 去调用一个函数怎么实现？"></a>166.一个线程 1 让线程 2 去调用一个函数怎么实现？</h4><h4 id="167-解释什么是异步非阻塞？"><a href="#167-解释什么是异步非阻塞？" class="headerlink" title="167.解释什么是异步非阻塞？"></a>167.解释什么是异步非阻塞？</h4><h4 id="168-threading-local-的作用？"><a href="#168-threading-local-的作用？" class="headerlink" title="168.threading.local 的作用？"></a>168.threading.local 的作用？</h4><h2 id="Git-面试题"><a href="#Git-面试题" class="headerlink" title="Git 面试题"></a>Git 面试题</h2><h4 id="169-说说你知道的-git-命令"><a href="#169-说说你知道的-git-命令" class="headerlink" title="169.说说你知道的 git 命令"></a>169.说说你知道的 git 命令</h4><h4 id="170-git-如何查看某次提交修改的内容"><a href="#170-git-如何查看某次提交修改的内容" class="headerlink" title="170.git 如何查看某次提交修改的内容"></a>170.git 如何查看某次提交修改的内容</h4>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/面试/"># 面试</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2018/04/30/a-id-64/">WebDriver-定位元素的8种方式</a>
+            
+            
+            <a class="next" rel="next" href="/2018/01/25/a-id-65/">老夫整理的1000行MySQL学习笔记传授有缘人</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

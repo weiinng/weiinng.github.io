@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>GitHub的使用方法 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">GitHub的使用方法</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 3, 2019&nbsp;&nbsp;8:15:53</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>即使作为编程新手，刚刚接触GitHub，也建议你从最简单的项目入手，而不是单纯研究大量理论。</p>
+<p>这个3000+ starts的优（宅）秀（男）项目：<a href="https://link.zhihu.com/?target=https%3A//github.com/komeiji-satori" target="_blank" rel="noopener">komeiji-satori</a>/<a href="https://link.zhihu.com/?target=https%3A//github.com/komeiji-satori/Dress" target="_blank" rel="noopener">Dress</a>就非常适合初学者Pick。</p>
+<p>作为全球最大同性交友平台，这个项目里集结了大量的女装大佬。</p>
+<p>而且，这应该是 <strong>GitHub 最低准入门槛项目</strong>了，就算不会写代码也都可以参加。你可以在这里学习 GitHub 的用法，从克隆项目、创建分支、提交和同步修改，到合并分支请求的整套流程，只需一次即可熟悉 Git/GitHub 的使用。 </p>
+<p><strong>当然，你还要事先准备至少一张普通照。</strong></p>
+<img src="/2019/09/03/a-id-44/v2-897b5d9f2c72c024ef0e2472b36b961a_hd.jpg">
+
+<p>好了，接下来分享一些正经的。</p>
+<p>基于这个项目，你就可以马上开始你的实践了。</p>
+<p><strong>第一步：打开官网</strong>：<a href="https://link.zhihu.com/?target=https%3A//github.com/" target="_blank" rel="noopener">https://github.com</a></p>
+<p>注册一个帐户。</p>
+<img src="/2019/09/03/a-id-44/v2-b7cb598e7a1b6b929f757959c70a80f4_hd.jpg">
+
+<p><strong>第二步：创建仓库</strong></p>
+<p>填写仓库的名字和描述。</p>
+<img src="/2019/09/03/a-id-44/v2-d02ba79b0e3c4f8e34194f3bdaa1bf9c_hd.jpg">
+
+<p>创建好了之后，点击“Branch master”，创建分支——在文本框中输入分支名称和描述，然后点击蓝色部分确认。</p>
+<img src="/2019/09/03/a-id-44/v2-9648bbe199fd171d9b89f982339e67b2_hd.jpg">
+
+<h3 id="第三步：点击创建一个新文件"><a href="#第三步：点击创建一个新文件" class="headerlink" title="第三步：点击创建一个新文件"></a><strong>第三步：点击创建一个新文件</strong></h3><img src="/2019/09/03/a-id-44/v2-6f51257caba2df5622c04f6d7283a2a3_hd.jpg">
+
+<p>输入想要提交的代码以及下方的文件名和描述后，点击最下方的Commit new file即可。</p>
+<img src="/2019/09/03/a-id-44/v2-813805d13e45415f00ed140c26775f52_hd.jpg">
+
+<h3 id="第四步：修改-amp-保存修改"><a href="#第四步：修改-amp-保存修改" class="headerlink" title="第四步：修改&amp;保存修改"></a><strong>第四步：修改&amp;保存修改</strong></h3><p>在github上，提交&amp;保存修改的操作是commits。每一次的commit都会被记录，可以被其他用户查看。</p>
+<img src="/2019/09/03/a-id-44/v2-64e1f45857fd4a7d0a833465067983af_hd.jpg">
+
+<h3 id="第五步：提交Pull-request"><a href="#第五步：提交Pull-request" class="headerlink" title="第五步：提交Pull request"></a><strong>第五步：提交Pull request</strong></h3><img src="/2019/09/03/a-id-44/v2-b4fa837b14d5959aecdfc8f6885c8ac9_hd.jpg">
+
+<p>点击New pull request，选择你所做的分支，编辑你想修改的内容，经过与原来内容的对比，确认后提交请求。然后@特定的人或者团队，请求他们review，并反馈给你（还可以请求把你的代码加入他们的分支）。</p>
+<h3 id="第六步：合并修改历史"><a href="#第六步：合并修改历史" class="headerlink" title="第六步：合并修改历史"></a><strong>第六步：合并修改历史</strong></h3><img src="/2019/09/03/a-id-44/v2-c954c9c0d688facdfe2f30436d5bbae5_hd.jpg">
+
+<p>点击绿色按钮，将自述编辑合并到Branch master。</p>
+<img src="/2019/09/03/a-id-44/v2-ccbc24606048f98eb5eb55c0e3286fef_hd.jpg">
+
+<p>合并成功后可以删除该分支。</p>
+<h2 id="应用："><a href="#应用：" class="headerlink" title="应用："></a><strong>应用：</strong></h2><p><strong>1、查看别人的代码or项目，给其点赞评论或关注</strong></p>
+<p>点击“gist”</p>
+<img src="/2019/09/03/a-id-44/v2-ff51ac5b42c20a004dfc5dfdb67914b6_hd.jpg">
+
+<p>然后选择“All gists”，可以查看别人写的代码。</p>
+<img src="/2019/09/03/a-id-44/v2-fd0d17d7527621091cc5081027551524_hd.jpg">
+
+<p>蓝色框“commonts”、“stars”，可以评论或跟踪关注别人的代码。</p>
+<p><strong>2、clone别人的代码，修修改改，然后变成自己的代码</strong></p>
+<p>点击别人代码右上方的”forks”，然后点击“Embed”，选择Clone，即可克隆保存别人的代码。点击Download，可以下载他人代码到本地。</p>
+<img src="/2019/09/03/a-id-44/v2-81683d557c93fd2818680cae62006e67_hd.jpg">
+
+
+
+<p><strong>3、查看别人代码的修改历史</strong></p>
+<img src="/2019/09/03/a-id-44/v2-be5cf0f28c948ab4573b966afccbce1c_hd.jpg">
+
+<p>点击“Revisions”即可查看修改历史，以及修改前和修改后的对比。</p>
+<p>当然，除了这些基础的功能之外，GitHub 更是一个强大的宝库，怎么发现宝藏，是有诀窍的。</p>
+<h3 id="寻找-Demo-节省时间"><a href="#寻找-Demo-节省时间" class="headerlink" title="寻找 Demo 节省时间"></a><strong>寻找 Demo 节省时间</strong></h3><p>当我们在工作中需要快速掌握和使用新的技术，又没有太多精力从头开始学习，我们就可以在 GitHub 上寻找相应的 Demo，在简单了解原理、稍作尝试之后，引入到项目中。</p>
+<p>你可以按照<strong>技术栈的关键字搜索，并根据更新时间进行排序</strong>，以查找是否有合适的 Demo。</p>
+<h3 id="寻找脚手架：加快前期开发"><a href="#寻找脚手架：加快前期开发" class="headerlink" title="寻找脚手架：加快前期开发"></a>寻找脚手架：加快前期开发</h3><p>有时候，我们需要寻找一个合适的脚手架来帮助我们做出想要的东西，</p>
+<p>这时候我们可以，直接使用技术栈 + boilerplate 或者 starter 等关键词进行搜索，如 react boilerplate。如果其中找到的组合技术栈不大符合自己的要求，那么再加上相应技术栈的关键字，如 react redux boilerplate 即可。</p>
+<h3 id="寻找-awesome-xxx：探索可能性"><a href="#寻找-awesome-xxx：探索可能性" class="headerlink" title="寻找 awesome-xxx：探索可能性"></a>寻找 awesome-xxx：探索可能性</h3><p>在Github上，有一些前人总结整理好的宝库，比如Awesome-xxx 系列。</p>
+<p>只要有一定知识广度的领域、语言、框架等，都有自己的 awesome-xxx 系列的项目，如 awesome-python, awesome-iot, awesome-react 等等。在这样的项目里，都以一定的知识体系整理出来的，从索引和查阅上也相应的更为方便。如果你想学习一些新的东西，进入一个新的领域，那就搜索 awesome xxx 吧。</p>
+<h3 id="学习资源"><a href="#学习资源" class="headerlink" title="学习资源"></a>学习资源</h3><p>GitHub 上拥有大量的学习资源，从各类文章到各种笔记，还有各式各样的电子书。如：</p>
+<ul>
+<li>搜索： 类型 + 笔记，如 操作系统 笔记 就能找到一些操作系统相关的笔记。</li>
+<li>搜索： 书名 就能找到一些和这本书相关的资源，如 重构 改善既有代码的设计。</li>
+</ul>
+<p>GitHub 上还可以搜索到各种 <strong>未经授权</strong> 的英文书籍的翻译，或是各种电子书的 PDF 版。还有一些库，可以提供相应的学习资源，如 free-programming-books-zh_CN，即免费的编程中文书籍索引。</p>
+<p>与此同时，Github上不乏简单的新手项目，实践练手再好不过</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/SeriaWei/ZKEACMS" target="_blank" rel="noopener">ZKEACMS</a>：一个可视化设计的CMS系统（内容管理系统）。页面布局是可以直接在线设计，页面也是可以在线设计，编辑的，模板是可以直接在线编辑的，样式还可以可视化直接编辑，内容板块可以直接从现有板块中快速添加。是一个非常适合新手跟进的优质项目。</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/minimaxir/textgenrnn" target="_blank" rel="noopener"> textgenrnn</a>：一款基于 Keras/TensorFlow 的 Python 3 模块，可以用来创建字符级的循环神经网络。</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//github.com/zchuanzhao/jeesns/" target="_blank" rel="noopener">JEESNS</a>：一款基于JAVA企业级平台研发的社交管理系统，依托企业级JAVA的高效、安全、稳定等优势，开创国内JAVA版开源SNS先河。数据库使用MYSQL，全部源代码开放。</p>
+<p> 最后，祝你寻宝愉快~~</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/git/"># git</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/03/a-id-41/">思考mysql主从部署</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/01/a-id-25/">使用python3和高性能全文检索引擎Redisearch进行交互</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

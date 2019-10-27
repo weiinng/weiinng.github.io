@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>哪吒 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">哪吒</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 10, 2019&nbsp;&nbsp;8:23:53</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/影评/">影评</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/09/10/a-id-35/20190910083614.png">
+
+<p>愿你成为不服输的小哪吒！</p>
+<h3 id="我们看《哪吒-·-魔童降世》，到底在看什么？"><a href="#我们看《哪吒-·-魔童降世》，到底在看什么？" class="headerlink" title="我们看《哪吒 · 魔童降世》，到底在看什么？"></a>我们看《哪吒 · 魔童降世》，到底在看什么？</h3><p>中国的神话不能单纯当故事来看，小小的陈塘关里，也包罗着人生百态。就像是给我们的生活加了特效。</p>
+<img src="/2019/09/10/a-id-35/v2-7db618456a4762947f6e52f7bbc8d400_hd.jpg">
+
+<p>太乙真人，也可以称他为太二真人，或者太乙真二。二和可爱是公认的，但也就适合在电影里，放在现实中试试？上班睡觉，喝酒误事，把领导交办的重要任务办成惨剧。肚子吃得溜圆，大脑经常缺弦，关键时刻掉线。</p>
+<p>上面的仙官稀里糊涂，下面的小仙也就稀里哗啦。两个看守哪吒的结界兽，推卸责任熟练，内讧搞得热烈，就是守不住结界。全片<strong>平均每十分钟放哪吒逃跑一次</strong>，闹得百姓生无可恋。</p>
+<img src="/2019/09/10/a-id-35/v2-a27a635812f05632e22a77032302a309_b.webp">
+
+<p>谁是陈塘关最大的定时炸弹？</p>
+<p>龙王。</p>
+<p>人最怕的就是不知足。已经拥有了大海，还想着上天。自己仕途到头，就寄希望于儿子，利用职务非法谋取各种资源，帮助儿子往天庭发展。</p>
+<p>这类人手握重权，身处要职，却政治野心不小，和申公豹结成小圈子，成天琢磨些不阳光的事情。这才是真正的魔，<strong>不怕一百个哪吒大闹街巷，就怕一个龙王兴风作浪。</strong></p>
+<p>龙王三太子敖丙，全村人的希望之星。天生有神丸加持，颜值武功双高，有爱心有节操，还有最硬龙鳞外套。他勤学苦熬，只为了直上云霄，把龙族带出苦沼。</p>
+<p>可惜，他建功立业执念太深，为了家族荣耀，朋友、百姓皆可抛。这么冰雪剔透的一个人，白惹得一身污糟。</p>
+<img src="/2019/09/10/a-id-35/v2-5e8bcc7511743fd87ec336cac88ec011_hd.jpg">
+
+<p>有人觉得敖丙黑化得太突然，其实他本就如此，骨子里光宗耀祖的包袱太重，蜕变自然也就在一念之间。</p>
+<p>这对龙王父子，深刻诠释了家风家教是多么重要。</p>
+<p>不过，<strong>人生不是一登场就能当主角</strong>，或许只能像李府的小吏和接生婆那样，串个剧情跑个龙套。就怕定力不行还想加戏，被坏人贴上傀儡符利用一下，做了恶事还什么都不知道。</p>
+<p>做恶的那么多，但有一个人最该被问责——主要领导元始天尊。想他当初降服了魔丸，一掌劈碎不就全剧终了么，偏要等三年后才引天雷把它毁掉。三年间无端惹出那么多事情，老爷子自己倒不知躲到哪逍遥去了。</p>
+<p>作为一把手，必须养成好习惯：发现问题，迅速解决，抓早抓小，把小妖小魔都扼杀于丸子状态。</p>
+<p>那么这么看来，陈塘关就没有好人了？</p>
+<img src="/2019/09/10/a-id-35/v2-f172a0a80f0d967fea5987f6109ace09_hd.jpg">
+
+<p>李靖夫妇，是经典的好人。整日里扫黑除恶，降妖伏魔。不过他们家最厉害的还是家风，把哪吒这棵歪草，硬是吹到了正道上。</p>
+<p>哪吒想出去干坏事的时候，李府是制约他的笼子，他被嘲笑排挤的时候，李府是包容他的港湾。如果我们人生迷茫无知的时候，都能遇到这样的领路人和好组织，那就幸甚至哉了。</p>
+<p>不过，有人幸运，也就有人悲哀。</p>
+<p>申公豹，是全片最可悲的仔。他生来就是个豹子精，处于鄙视链的最底端。他靠着自己打拼，从低微小妖修炼成高级上仙。</p>
+<p>他努力工作一百年，法术不比太乙真人差，身材也比太乙真人好。但是领导就不器重他，把重大任务留给太乙，把嫉妒恨留给申公豹。</p>
+<img src="/2019/09/10/a-id-35/v2-81ee9c751946ec243919e632169cb6f1_hd.jpg">
+
+<p>申公豹觉得，别人瞧不起他，就因为他是妖。他悲伤成四十五度，说了一句经典台词：“成见是一座大山，任你如何努力，也没法搬开。”</p>
+<p>讲真，我们没看到别人的成见，却满屏都是申公豹内心的阴暗。他把名利看得太重，为达目的不择手段，结果自己做的事却越来越妖。</p>
+<p>一个人如果自己觉得自己是妖，就没有人能帮他做人。</p>
+<p>申公豹生来是妖，哪吒生来是魔，底子都不好。他俩之间，差了一句“我命由我不由天”，<strong>认了命，就成了中年危机的申公豹，精神迷茫，方向错乱；拼了命，就是永远童真的哪吒，活得火热，死得明亮。</strong></p>
+<img src="/2019/09/10/a-id-35/v2-cb0fa8c1085008b1c20960eddec0080c_hd.jpg">
+
+<p>更多时候，我们只是陈塘关的群众。转发谣言，人云亦云，被成见牵着鼻子走，用键盘侠的武功伤人。但也爱憎分明，对李靖这样的好官，衷心爱戴，虽然怕哪吒怕到要死，还是看在李靖的情面上，来参加小魔头的惊悚生日趴。</p>
+<p>当哪吒从敖丙手中救下陈塘关，我们也会感激一跪。正印证了哪吒母亲那句话：“人心都是肉长的，如果你善用自己的神力替他们斩妖除魔，百姓又岂会把你当妖怪？”</p>
+<p><strong>得了人心，才算得上完美大结局。</strong></p>
+<p>话说初出茅庐时，谁还不是个哪吒呢？急切想得到认可，却免不了被怀疑和刁难；想为别人做点好事，却掌握不好方式方法，造成许多麻烦。善良又暴躁，激情又玻璃心。连那对黑眼圈，都像极了我们熬夜加班的容颜。</p>
+<p>那么，你在里面看到了谁的影子，又活成了谁的样子呢？</p>
+<p><strong>欢迎在评论区分享你的感悟和故事。我们将选出3条精彩留言，送上精美礼品。</strong></p>
+<p><strong>©图片：</strong>图片来源于网络，如有侵权请联系删除。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/影评/"># 影评</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/12/a-id-11/">彻底理解cookie，session，token</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/09/a-id-73/">基于Docker-compose搭建Redis高可用集群-哨兵模式（Redis-Sentinel）</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

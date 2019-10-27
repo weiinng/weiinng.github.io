@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Vue原理 - 主要Render | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vue原理 - 主要Render</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 2, 2018&nbsp;&nbsp;17:39:54</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2018/05/02/a-id-30/v2-8e3f551934559cf5861fdae4a7865b8d_1200x500.jpg">
+
+<p>今天就来给自己记录下渲染三部曲的第二部，render，咦，render 内容不多的。</p>
+<p>render 的作用大家应该清楚</p>
+<p>就是 执行 compile 生成的 render函数，然后得到返回的 vnode 节点</p>
+<p>比如现在存在这个简单的模板</p>
+<img src="/2018/05/02/a-id-30/v2-6128ab421e59e117f3f0c8deefe4be3a_hd.png">
+
+<p>经过 compile 之后，解析成了对应的 render 函数，如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">function render() &#123;    </span><br><span class="line"></span><br><span class="line">    with(this) &#123;        </span><br><span class="line"></span><br><span class="line">        return _c(&apos;div&apos;, &#123;            </span><br><span class="line"></span><br><span class="line">            attrs: &#123;                </span><br><span class="line"></span><br><span class="line">                &quot;data&quot;: 111</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        [_v(111)])</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看着这个莫名其妙的 render 函数，里面都是些什么东西？</p>
+<p>不怕，主要是出现了两个函数，我们要探索的就是这两个东西</p>
+<p>_c , _v</p>
+<p>这个两个函数的作用，都是创建 Vnode，但是创建的过程不一样</p>
+<p>并且 render 函数执行的时候，会绑定上 模板对应的实例 为上下文对象</p>
+<p>模板是属于哪个实例的，就绑定哪个实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">render.call(实例)</span><br></pre></td></tr></table></figure>
+
+<p>再通过 with 的作用</p>
+<p>调用 _c 和 _v 就相当于 vm._c 和 vm._v</p>
+<h2 id="什么是-vm-v"><a href="#什么是-vm-v" class="headerlink" title="什么是 vm._v"></a>什么是 vm._v</h2><p>现在就来看看 vm._v 是哪里来的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function installRenderHelpers(target) &#123;</span><br><span class="line">    target._v = createTextVNode;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">installRenderHelpers(Vue.prototype);</span><br></pre></td></tr></table></figure>
+
+<p>由上面可知，每个Vue 实例都会继承有 _v 这个方法，所以可以通过 vm._v 直接调用</p>
+<p>再来看看 _v 对应的 createTextVNode 的作用是什么</p>
+<p>创建文本节点！！</p>
+<p>看下源码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function createTextVNode(val) &#123;    </span><br><span class="line"></span><br><span class="line">    return new VNode(        </span><br><span class="line"></span><br><span class="line">        undefined, undefined,        </span><br><span class="line"></span><br><span class="line">        undefined, String(val)</span><br><span class="line"></span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如这个模板</p>
+<img src="/2018/05/02/a-id-30/v2-3078f3679124de843d58b571d62b5298_hd.png">
+
+
+
+ 虽然是字符串，但是也要作为一个子节点存在，所以就当做是 文本节点
+
+<p>而 data 的值是 111</p>
+<p>然后 上面的模板就会得到这样的 Vnode 结构如下</p>
+<img src="/2018/05/02/a-id-30/v2-43b8ed0a0be21444112c2b25c273177a_hd.jpg">
+
+<h2 id="什么是-vm-c"><a href="#什么是-vm-c" class="headerlink" title="什么是 vm._c"></a>什么是 vm._c</h2><p>_c 是一个大头，render 的重中之重，先来看看他是怎么来的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function initRender(vm) &#123;</span><br><span class="line">    vm._c = function(a, b, c, d) &#123;        </span><br><span class="line"></span><br><span class="line">        return createElement(vm, a, b, c, d);</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Vue.prototype._init = function(options) &#123;</span><br><span class="line">    initRender(this)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在实例初始化的时候，就会给实例绑定上 _c 方法</p>
+<p>所以，vm 可以直接调用到 _c</p>
+<p>看了上面的源码，看到 _c 内部调用了 createElement</p>
+<p>那就来看看createElement 的源码吧</p>
+<p>个人已经简化得非常简单，觉得不偏离我们的主题就可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">function createElement(</span><br><span class="line">    context, tag, data, children</span><br><span class="line"></span><br><span class="line">) &#123;    </span><br><span class="line"></span><br><span class="line">    return _createElement(</span><br><span class="line"></span><br><span class="line">        context, tag, data, children</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">function _createElement(</span><br><span class="line"></span><br><span class="line">    context, tag, data, children</span><br><span class="line"></span><br><span class="line">) &#123;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    var vnode;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    if (如果tag是正常html标签) &#123;</span><br><span class="line"></span><br><span class="line">        vnode = new VNode(</span><br><span class="line">            tag, data, children,</span><br><span class="line">            undefined, undefined,</span><br><span class="line">            context</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">    .....如果tag是组件名，就特殊处理 ，处理流程已经省略</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    if (Array.isArray(vnode))</span><br><span class="line"></span><br><span class="line">        return vnode    </span><br><span class="line"></span><br><span class="line">    else &#123;      </span><br><span class="line"></span><br><span class="line">        // ...动态绑定 style ，class，代码已经省略</span><br><span class="line"></span><br><span class="line">        return vnode</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>你一看就可以看到，createElement 主要就是调用了 new VNode，当然了，render 就是为了创建 vnode 的嘛</p>
+<p>你在前面也看到了 render 函数，有传了很多参数给 _c，如下，_c 再把这些参数传给构造函数 VNode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">_c(&apos;div&apos;,</span><br><span class="line">    &#123;            </span><br><span class="line"></span><br><span class="line">        attrs: &#123;&quot;data&quot;: 111&#125;</span><br><span class="line"></span><br><span class="line">    &#125;,</span><br><span class="line">    [_v(111)]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>上面这些参数都会传给 Vnode，并保存在创建的 Vnode 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function VNode(</span><br><span class="line">    tag, data, children, text</span><br><span class="line"></span><br><span class="line">) &#123;    </span><br><span class="line"></span><br><span class="line">    this.tag = tag;</span><br><span class="line"></span><br><span class="line">    this.data = data;    </span><br><span class="line"></span><br><span class="line">    this.children = children;</span><br><span class="line"></span><br><span class="line">    this.text = text;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后得到这么一个 Vnode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;    </span><br><span class="line"></span><br><span class="line">    tag:&quot;div&quot;,    </span><br><span class="line"></span><br><span class="line">    data:&#123;        </span><br><span class="line"></span><br><span class="line">        attrs: &#123;&quot;data&quot;: 111&#125;</span><br><span class="line"></span><br><span class="line">    &#125;,    </span><br><span class="line"></span><br><span class="line">    children:[&#123;        </span><br><span class="line"></span><br><span class="line">        tag:undefined,        </span><br><span class="line"></span><br><span class="line">        data:undefined,        </span><br><span class="line"></span><br><span class="line">        text:111</span><br><span class="line"></span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>说到这里，已经能很清楚 render 内部是如何创建Vnode 了</p>
+<p>但是这里只是其中一种小小的简单 render</p>
+<p>要是项目中的render，数据是很多，很复杂的</p>
+<p>而我们主要要把握的是主要流程就可以了</p>
+<p>不过，还有必要记录其他 render，那就是遍历</p>
+<hr>
+<h2 id="遍历相关"><a href="#遍历相关" class="headerlink" title="遍历相关"></a>遍历相关</h2><p>看下面这个 template</p>
+<img src="/2018/05/02/a-id-30/v2-c367d8e4e41f1205a8642d8f6927ae97_hd.png">
+
+<p>解析成下面的render</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">function render() &#123;    </span><br><span class="line"></span><br><span class="line">    with(this) &#123;        </span><br><span class="line"></span><br><span class="line">        return _c(&apos;div&apos;,</span><br><span class="line"></span><br><span class="line">            _l(2,function(item, index) &#123;                </span><br><span class="line"></span><br><span class="line">                return _c(&apos;span&apos;)</span><br><span class="line"></span><br><span class="line">            &#125;)</span><br><span class="line">        )</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到一个 _l， 他必定就是遍历生成 Vnode 的幕后黑手了</p>
+<p>同样的，_l 和 _v 在同一个地方 installRenderHelpers 注册的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">function installRenderHelpers(target) &#123;    </span><br><span class="line">    target._l = renderList;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不客气地搜出 renderList 源码出来</p>
+<p>先跳到后面的分析啊，源码有点长了，虽然很简单</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">function renderList(val, _render) &#123;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    var ret, i, l, keys, key;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 遍历数组</span><br><span class="line"></span><br><span class="line">    if ( Array.isArray(val) ) &#123;</span><br><span class="line"></span><br><span class="line">        ret = new Array(val.length);  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        // 调用传入的函数，把值传入，数组保存结果</span><br><span class="line">        for (i = 0, l = val.length; i &lt; l; i++) &#123;</span><br><span class="line">            ret[i] = _render(val[i], i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 遍历数字</span><br><span class="line"></span><br><span class="line">    else if (typeof val === &apos;number&apos;) &#123;</span><br><span class="line"></span><br><span class="line">        ret = new Array(val);        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        // 调用传入的函数，把值传入，数组保存结果</span><br><span class="line"></span><br><span class="line">        for (i = 0; i &lt; val; i++) &#123;</span><br><span class="line">            ret[i] = _render(i + 1, i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 遍历对象</span><br><span class="line"></span><br><span class="line">    else if (typeof val ==&quot;object&quot;) &#123;</span><br><span class="line"></span><br><span class="line">        keys = Object.keys(val);</span><br><span class="line">        ret = new Array(keys.length);        </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        // 调用传入的函数，把值传入，数组保存结果</span><br><span class="line"></span><br><span class="line">        for (i = 0, l = keys.length; i &lt; l; i++) &#123;</span><br><span class="line">            key = keys[i];</span><br><span class="line">            ret[i] = _render(val[key], key, i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;    </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    // 返回 vnode 数组</span><br><span class="line">    return ret</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>看到 renderList 接收两个参数，val 和 render，而 _l 调用的时候，也就是传入的这两个参数，比如下面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">_l(2,function(item, index) &#123;                </span><br><span class="line">    return _c(&apos;span&apos;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>val 就是 2，_render 就是上面的函数</p>
+<h3 id="1-遍历的数据-val"><a href="#1-遍历的数据-val" class="headerlink" title="1 遍历的数据 val"></a>1 遍历的数据 val</h3><p>遍历的数据分为三种类型，一种是对象，一种是数字，一种是数组</p>
+<h3 id="2-单个-vnode-渲染回调-render"><a href="#2-单个-vnode-渲染回调-render" class="headerlink" title="2 单个 vnode 渲染回调 _render"></a>2 单个 vnode 渲染回调 _render</h3><p>重要是这个回调</p>
+<p>1、renderList 每次遍历都会执行回调，并把的每一项 item 和 index 都传入 回调中</p>
+<p>2、回调执行完毕，会返回 vnode</p>
+<p>3、使用数组保存 vnode，然后 遍历完毕就返回 数组</p>
+<p>于是可以看上面的 render 函数 ，传入了 数字2，和 创建 span 的回调</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">_l(2,function(item, index) &#123;    </span><br><span class="line"></span><br><span class="line">    return _c(&apos;span&apos;)</span><br><span class="line"></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>_l 执行完毕，内部遍历两次，最后返回 两个 span vnode 的数组，然后传给外层的 _c ，作为 vnode.children 保存</p>
+<p>render 执行完毕，得到这样的 vnode</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;    </span><br><span class="line"></span><br><span class="line">    tag:&quot;div&quot;,    </span><br><span class="line"></span><br><span class="line">    data:undefined,    </span><br><span class="line"></span><br><span class="line">    children:[&#123;        </span><br><span class="line"></span><br><span class="line">        tag:&quot;span&quot;,        </span><br><span class="line"></span><br><span class="line">        data:undefined</span><br><span class="line"></span><br><span class="line">    &#125;,&#123;        </span><br><span class="line"></span><br><span class="line">        tag:&quot;span&quot;,        </span><br><span class="line"></span><br><span class="line">        data:undefined</span><br><span class="line"></span><br><span class="line">    &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>都灰常简单啊，没写之前，我还觉得内容应该挺多的，写完发现还可以</p>
+<p>当然还有其他的 render ，但是我都已经在其他文章中有详细的记录了，可以直接点连接观看</p>
+<p>比如要模板含有 filter</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxNjQ1NjMwNw%3D%3D%26mid%3D2247484073%26idx%3D1%26sn%3D638efd7cd9277b4b9baced6ebb2dc99b%26chksm%3Df9a668b5ced1e1a322f9e719f4078a7c25606f797b3fd772526b03e8caa37d3fdef481507049%26token%3D112338562%26lang%3Dzh_CN%26scene%3D21%23wechat_redirect" target="_blank" rel="noopener">Filters - 源码版</a></p>
+<p>比如要模板含有 普通 slot <a href="https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxNjQ1NjMwNw%3D%3D%26mid%3D2247484140%26idx%3D1%26sn%3D59958bf93d9a16a2687adcad600142e4%26chksm%3Df9a668f0ced1e1e65337720c332730dbd4666a911b90873222fcd3c425185838f9cbb8b5d458%26token%3D112338562%26lang%3Dzh_CN%26scene%3D21%23wechat_redirect" target="_blank" rel="noopener">Slot - 源码版之普通插槽</a></p>
+<p>比如要模板含有 作用域 slot</p>
+<p><a href="https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxNjQ1NjMwNw%3D%3D%26mid%3D2247484166%26idx%3D1%26sn%3D0e244d39a2e0814764c87b72a0c1f338%26chksm%3Df9a6691aced1e00c5ea5dec93d63ac2efba245a207817c0e61fcc9538312fbc7d4965e8f48d6%26token%3D112338562%26lang%3Dzh_CN%26scene%3D21%23wechat_redirect" target="_blank" rel="noopener">Slot - 源码版之作用域插槽</a></p>
+<p>现在我们来解决一个问题</p>
+<p>render 什么时候开始执行？</p>
+<p>可以参考另一篇文章： <a href="https://link.zhihu.com/?target=https%3A//mp.weixin.qq.com/s%3F__biz%3DMzUxNjQ1NjMwNw%3D%3D%26mid%3D2247484316%26idx%3D1%26sn%3D89e7212535b7aa0251d6a5825c1ab4ff%26chksm%3Df9a66980ced1e096d58093e2bfff49e0301eef684039d28be5b55737fd4bb931f4afdcd83b56%26token%3D112338562%26lang%3Dzh_CN%26scene%3D21%23wechat_redirect" target="_blank" rel="noopener">从模板到DOM的简要流程</a></p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>每个模板经过 compile 都会生成一个 render 函数</p>
+<p>render 作为 渲染三部曲的第二部，主要作用就是 执行 render，生成 Vnode</p>
+<p>把 template 上绑定的数据，都保存到 vnode 中</p>
+<p>然后，生成 Vnode，就是为了给 渲染三部曲的 第三部 Diff 提供源动力</p>
+<p>从而完成 DOM 挂载</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/前端/"># 前端</a>
+                    
+                        <a href="/tags/VUE/"># VUE</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2018/05/26/a-id-63/">Scrapy-redis介绍</a>
+            
+            
+            <a class="next" rel="next" href="/2018/04/30/a-id-64/">WebDriver-定位元素的8种方式</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

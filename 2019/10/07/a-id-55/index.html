@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Docker常用命令 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Docker常用命令</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 7, 2019&nbsp;&nbsp;10:46:41</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/10/07/a-id-55/640.webp">
+
+<p>除了基本的<code>docker pull</code>，<code>docker image</code>，<code>docker ps</code>，还有一些命令及参数也很重要，在此记录下来避免遗忘。</p>
+<h1 id="环境信息"><a href="#环境信息" class="headerlink" title="环境信息"></a>环境信息</h1><p>以下是本次操作的环境：</p>
+<p>操作都基于这两个容器进行：</p>
+<ul>
+<li>操作系统：CentOS Linux release 7.7.1908</li>
+<li>Docker：19.03.2</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@vostro harbor]# docker ps</span><br><span class="line">CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line">11548ac31116        tomcat:9.0.26-jdk8-openjdk   "catalina.sh run"        6 seconds ago       Up 5 seconds        8080/tcp            inspiring_ardinghelli</span><br><span class="line">21c0499ccc76        nginx                        "nginx -g 'daemon of…"   29 minutes ago      Up 29 minutes       80/tcp              strange_zhukovsky</span><br></pre></td></tr></table></figure>
+
+<h1 id="整体信息"><a href="#整体信息" class="headerlink" title="整体信息"></a>整体信息</h1><p><code>docker info</code>用来看整体信息：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[root@vostro harbor]# docker info</span><br><span class="line">Client:</span><br><span class="line"> Debug Mode: false</span><br><span class="line"> </span><br><span class="line">Server:</span><br><span class="line"> Containers: 0</span><br><span class="line">  Running: 0</span><br><span class="line">  Paused: 0</span><br><span class="line">  Stopped: 0</span><br><span class="line"> Images: 19</span><br><span class="line"> Server Version: 19.03.2</span><br><span class="line"> Storage Driver: overlay</span><br><span class="line">  Backing Filesystem: xfs</span><br><span class="line">  Supports d_type: true</span><br></pre></td></tr></table></figure>
+
+<h1 id="释放空间"><a href="#释放空间" class="headerlink" title="释放空间"></a>释放空间</h1><p><code>docker system prune</code>会删除以下内容：</p>
+<ul>
+<li>已经停止的容器；</li>
+<li>未被使用的网络；</li>
+<li>所有未打标签的镜像；</li>
+<li>构建镜像时产生的缓存；</li>
+</ul>
+<p><strong>注意：此命令删除的东西过多，所以要慎用</strong></p>
+<ul>
+<li>删除已经停止的容器：<code>docker container prune</code></li>
+<li>删除未被使用的网络：<code>docker network prune</code></li>
+<li>删除没有Tag的镜像：<code>docker image prune</code></li>
+<li>删除没有容器的镜像：<code>docker image prune -a</code></li>
+<li>删除未被使用的数据卷：<code>docker volume prune</code></li>
+</ul>
+<h1 id="过滤"><a href="#过滤" class="headerlink" title="过滤"></a>过滤</h1><p>执行<code>docker ps</code>的时候会列出所有运行状态的容器，有时我们只想看自己关注的，这时可以对结果做过滤：</p>
+<ol>
+<li>按容器ID过滤：</li>
+</ol>
+<p><code>docker ps -f id=11548ac31116</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@vostro harbor]# docker ps -f id=11548ac31116</span><br><span class="line">CONTAINER ID        IMAGE                        COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">11548ac31116        tomcat:9.0.26-jdk8-openjdk   "catalina.sh run"   4 minutes ago       Up 4 minutes        8080/tcp            inspiring_ardinghelli</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>按容器名称过滤：</li>
+</ol>
+<p><code>docker ps -f name=inspiring_ardinghelli</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">[root@vostro harbor]# docker ps -f name=inspiring_ardinghelli</span><br><span class="line">CONTAINER ID        IMAGE                        COMMAND             CREATED             STATUS              PORTS               NAMES</span><br><span class="line">11548ac31116        tomcat:9.0.26-jdk8-openjdk   "catalina.sh run"   7 minutes ago       Up 7 minutes        8080/tcp            inspiring_ardinghelli</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>按镜像过滤，这种过滤再细分有三种：</p>
+<ul>
+<li><p>按镜像名和TAG过滤：<code>docker ps -f ancestor=tomcat:9.0.26-jdk8-openjdk</code></p>
+</li>
+<li><p>按镜像ID过滤：<code>docker ps -f ancestor=4965bfab1881</code></p>
+</li>
+<li><p>按照镜像摘要信息过滤<code>docker ps -f ancestor=tomcat@sha256:67a9904e3ceb03abc50db7b374db7362f7e44d08a41488dd24c2bb14df8989a3</code></p>
+</li>
+</ul>
+<p>镜像的摘要信息如何获取呢？执行命令<code>docker inspect tomcat:9.0.26-jdk8-openjdk</code>可以获取镜像的详情，如下图所示，红框中就是摘要信息：</p>
+<img src="/2019/10/07/a-id-55/6401.webp">
+</li>
+<li><p>按容器状态过滤：<code>docker ps -f status=running</code>，状态有这些：<code>created, restarting, running, removing, paused, exited, dead</code></p>
+</li>
+<li><p>还有其他的过滤条件，不过不常用到，如下图：</p>
+<img src="/2019/10/07/a-id-55/640asd.webp">
+
+</li>
+</ol>
+<h1 id="信息获取"><a href="#信息获取" class="headerlink" title="信息获取"></a>信息获取</h1><ol>
+<li><p>查看容器所占硬盘空间：</p>
+<p><code>docker ps -s</code></p>
+<p>上图红框中就是容器资源占用情况，508MB表示：镜像大小+容器自身大小，40KB表示容器自身所占资源大小。</p>
+</li>
+<li><p>查看容器信息时只看某些字段，例如只看容器ID、镜像、容器名称这三列：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker ps --format “table &#123;&#123;.ID&#125;&#125;: &#123;&#123;.Image&#125;&#125;: &#123;&#123;.Names&#125;&#125;”</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@vostro harbor]# docker ps --format "table &#123;&#123;.ID&#125;&#125;: &#123;&#123;.Image&#125;&#125;: &#123;&#123;.Names&#125;&#125;"</span><br><span class="line">CONTAINER ID: IMAGE: NAMES</span><br><span class="line"><span class="number">11548</span>ac31116: tomcat:<span class="number">9.0</span><span class="number">.26</span>-jdk8-openjdk: inspiring_ardinghelli</span><br><span class="line"><span class="number">21</span>c0499ccc76: nginx: strange_zhukovsky</span><br></pre></td></tr></table></figure>
+
+<p>下图展示了所有的列的名称：</p>
+  <img src="/2019/10/07/a-id-55/64123.webp">  
+</li>
+<li><p>如下图红框所示，当字段内容过长时，展示的是部分内容，如果想查看完整信息请使用</p>
+<p><code>docker ps --no-trunc</code></p>
+<img src="/2019/10/07/a-id-55/642222.webp">
+</li>
+<li><p>在使用docker history命令查看镜像的构建信息时，也会因为内容过长而被省略，如下图，此时也能用–no-trunc参数看到被省略的信息：</p>
+<img src="/2019/10/07/a-id-55/640111111111111111.webp">
+
+</li>
+</ol>
+<h1 id="组合使用"><a href="#组合使用" class="headerlink" title="组合使用"></a>组合使用</h1><ol>
+<li><p>只显示Tomcat容器的ID字段：</p>
+<p><code>docker ps -f ancestor=tomcat:9.0.26-jdk8-openjdk -q</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@vostro harbor]# docker ps -f ancestor=tomcat:9.0.26-jdk8-openjdk -q</span><br><span class="line"><span class="number">11548</span>ac31116</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>上面的命令可以得到Tomcat容器的ID字段，如果我们想停止该容器，将上述命令和<code>docker stop</code>组合起来使用即可：</p>
+<p><code>docker stop $(docker ps -f ancestor=tomcat:9.0.26-jdk8-openjdk -q)</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@vostro harbor]# docker stop $(docker ps -f ancestor=tomcat:9.0.26-jdk8-openjdk -q)</span><br><span class="line"><span class="number">11548</span>ac31116</span><br><span class="line">[root@vostro harbor]# docker ps -a</span><br><span class="line">CONTAINER ID        IMAGE                        COMMAND                  CREATED             STATUS                        PORTS               NAMES</span><br><span class="line"><span class="number">11548</span>ac31116        tomcat:<span class="number">9.0</span><span class="number">.26</span>-jdk8-openjdk   <span class="string">"catalina.sh run"</span>        About an hour ago   Exited (<span class="number">143</span>) <span class="number">43</span> seconds ago                       inspiring_ardinghelli</span><br><span class="line"><span class="number">21</span>c0499ccc76        nginx                        <span class="string">"nginx -g 'daemon of…"</span>   <span class="number">2</span> hours ago         Up <span class="number">2</span> hours                    <span class="number">80</span>/tcp              strange_zhukovsky</span><br></pre></td></tr></table></figure>
+
+<p>可见tomcat容器已经停止。</p>
+</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Docker/"># Docker</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/07/a-id-54/">让程序员崩溃的瞬间</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/27/a-id-56/">如何给老婆解释什么是RPC</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

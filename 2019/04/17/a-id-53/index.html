@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>知乎调研他的四个象限、两个对手 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">知乎调研他的四个象限、两个对手</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">April 17, 2019&nbsp;&nbsp;10:41:31</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="知乎的四个象限、两个对手"><a href="#知乎的四个象限、两个对手" class="headerlink" title="知乎的四个象限、两个对手"></a>知乎的四个象限、两个对手</h1><p>在过去，我们常常把知乎定义为知识问答社区。不过，在我眼中，历经8年之后，知乎已不仅仅只是问答社区，它的实质早已发生变化。</p>
+<img src="/2019/04/17/a-id-53/20191009104432.png">
+
+<p>许知远在《一个意外的预言家》这篇文章中提到过我们这个年代的知识状态：</p>
+<blockquote>
+<p>人人都想抓住一些更确定的东西，渴望用一种简明的方式来了解所处的时代。它还有一种显著的紧迫感，一切都在加速，倘若不抓住新潮流，就会被迅速抛弃。这些情绪催生出一种速成的知识潮流，它是TED式的，你要在18分钟内对一个重大问题做出诠释，给出解决方案，还要夹带适当的俏皮话，还要让听众与读者认为他们抓住了问题的本质。</p>
+</blockquote>
+<p>是的，在知识快速迭代的今天，企业需要对用户的这种诉求做出迅速反应。得到、微博、今日头条，这些平台几乎都具备知识分享的功能。</p>
+<p><strong>在过去，我们常常把知乎定义为知识问答社区。不过，在我眼中，历经8年之后，知乎已不仅仅只是问答社区，它的实质早已发生变化。</strong></p>
+<p>可以说，当下的知乎被严重低估了。</p>
+<h2 id="象限"><a href="#象限" class="headerlink" title="象限"></a>象限</h2><p>我打算用“四象限”的方式来解读知乎的平台架构。</p>
+<p>如果从内容分发、内容体系、用户维度、平台维度四个点去展开讨论，会发现知乎的结构非常清晰。再把知乎的竞争对手放进四个象限中，更能找到知乎自身的长短板。</p>
+<img src="/2019/04/17/a-id-53/U1Q3mpwK4mJOGYWIorUA.jpg!v.jpg">
+
+<p><strong>从内容分发来看，</strong>知乎的分发是平台和用户共同决定的。</p>
+<p>平台通过“搜索+信息流”的方式把优质内容、兴趣热点分发给用户，而用户可以根据自己手中的“赞同、反对、收藏、举报”去评价不同的内容。用户的“赞同、反对”又会反馈给平台，通过算法重新在信息流之中进行流量分配。</p>
+<p><strong>从内容体系来看，</strong>知乎的内容体系也是用户和平台共同生成的。</p>
+<p>用户可以自由在社区中发布想法、问答、文章，而平台发掘优质作者，通过平台包装产生电子书、课程等更高阶的内容。这种内容体系比较有层次和梯度。轻快的见解分享和重度的分析解构都有，用户可以自由选择感兴趣的内容。</p>
+<img src="/2019/04/17/a-id-53/vH4eJjZ3Q7A0tBucgR4V.jpg!v.jpg">
+
+<p><strong>从用户维度来看，</strong>他在知乎可以形成很强的参与感。</p>
+<p>用户既可以成为内容生产者，也可以成为内容消费者。作为内容消费者的时候，用户具有“投票权”，他们可以通过自己手中的“赞同、反对、收藏、举报”去影响内容分发。作为内容生产者的时候，用户可以把自己所知道的知识、经验分享给他人。</p>
+<p><strong>从平台维度来看，</strong>知乎是一个相对公平，流量集中程度没那么高的平台。</p>
+<p>很多平台形成了金字塔形的作者评价体系，头部KOL不管是生产优质内容还是生产垃圾内容都占据顶端话语权，处在中层的优质作者可能会因为流量集中给头部造成作者流失。但是，在知乎，平台形成了相对健康的网状结构。哪怕你是第一天开账号的小白，只要在一个问题下写下了优质的回答，就可能获得其他用户的点赞和收藏。</p>
+<p>这样的平台具有良好的社区机制。如果打个比方的话，知乎可以看成是一个议会大厅，议员们需要有序发言、讲事实摆道理才能参与进讨论，获得其他议员的认可。</p>
+<p>先由用户发问提出问题，然后邀请相关人士回答，在社交分发的机制下，回答被更多用户看到、赞同、收藏、反对。赞同数越多在回答排序中靠前的几率越大，从而增加回答的曝光率，用户在较快的时间里回答出高质量的答案就可能获取较多赞同。</p>
+<p>知乎的“四象限”体系是在一个相对民主的机制下建立的，容易构建起一个相对理性、有序的平台氛围。</p>
+<h2 id="两个“对手”"><a href="#两个“对手”" class="headerlink" title="两个“对手”"></a>两个“对手”</h2><p>如果把知乎比喻成一个人，目前的知乎是一个以“搜索+信息流”为脊柱，以知识为骨骼，以用户互动为血肉的内容平台。</p>
+<img src="/2019/04/17/a-id-53/JYHTr90QEBk9MOYk14h6.jpg!v.jpg">
+
+<p><strong>这使得知乎不可避免地遭遇了“对手”。一个是社交资讯类产品。一个是知识付费类产品。</strong></p>
+<p>社交资讯类产品，典型的就是微博、今日头条等。知乎推荐页全面信息流之后，知乎不可避免地和微博、今日头条进入了同一个赛道。</p>
+<p>知识付费类产品，典型的就是喜马拉雅、得到等。2016年知乎进入知识付费赛道后，和喜马拉雅、得到等产品同样形成了竞争关系。</p>
+<p>甚至，知乎不是主动进入这些赛场的，知乎是深思熟虑，充分考虑用户需求和社区进化这些问题之后才慢慢跟进了这些产品变化。但是有意思的是，你很容易发现知乎在赛道跨界过程中形成的独特性。</p>
+<p>我们可以继续从“四象限”的维度让知乎和社交资讯赛道的微博、今日头条进行对比，和知识付费赛道的喜马拉雅、得到展开对撞。</p>
+<img src="/2019/04/17/a-id-53/s13aJJOsFVYcHJymH3wO.jpg!v.jpg">
+
+<p><strong>社交资讯产品本质上是一门信息分发的生意。</strong></p>
+<p>知乎、微博、今日头条都有一套内容分发的机制。不过，今日头条、微博、知乎三者内容分发过程中，用户介入程度是逐渐加深的。</p>
+<p>今日头条是纯算法推荐，用户兴趣决定了内容分发，也是用户阅读欲望的直接反馈，这和今日头条“你关心的才是头条”的slogan是高度贴合的。</p>
+<p>微博用户决定了内容体系的生产，而且内容分发以用户转发、点赞、账号权重为考量，更像信息传播广度的直接反馈。我常常说，微博是广场上的喇叭，广场喇叭声音一定要大，重要的事情要让所有人知道。</p>
+<p>知乎更强调的是“赞同、反对、收藏、举报”这些维度的考量，在这样的氛围中更强调信息的精确度。毕竟这是一个知识社区，在这个社区之中知识必须尽可能地避免谬误。</p>
+<p><strong>知乎的内容沉淀和用户体系同样值得重视。</strong></p>
+<p>社交媒体有一个很大的问题，内容没办法沉淀，刷过了就刷过了，一般不会有人回头再看，内容也没办法在几个月后重新浮出水面。因为强搜索属性，知乎规避了这个问题。知乎的内容沉淀更完善，我们常常可以看到，用户对某一个问题感兴趣时，会在知乎搜索框中寻找自己想要的答案。</p>
+<p>资讯类产品则是缺乏社交体系，很难建立社区感。但是知乎这种问答社区，很早就形成了很强的社区互动。</p>
+<p><strong>知识付费产品则是更像一门内容出版的生意。</strong></p>
+<p>知乎、喜马拉雅、得到都在做知识付费。不过在做知识付费的过程中，得到、喜马拉雅、知乎的用户参与度同样是逐渐加深的。</p>
+<p>得到的内容制作非常精英化，罗振宇团队筛选的主讲人团队对内容生产有着非常强的控制力，最后在内容分发时，平台介入也非常深。得到就像是一个书店，每一本书都被老板放在了老板认为合适的位置上。得到的内容相对小众，更契合高端用户。</p>
+<p>喜马拉雅的内容生产则是相对更面向大众市场，高中低档的内容都有，建立了一整套完整的内容体系，平台也会为用户推荐相对比较适合的内容。</p>
+<p>当然，前两者的内容更多是单向度的内容传播，由平台和主讲人确定主题，用户购买内容。</p>
+<p>知乎的内容生产则是有着非常强的用户参与度，比如在知乎Live这样的产品中，更像是群内聊天，用户可以随时提问。这种知识付费有用户的参与，可以形成很强的互动关系，这就像是一个课堂，老师在讲课的同时学生也在其中与老师展开交互。</p>
+<p>我们不能说知乎一定就比喜马拉雅和得到更好，但是，知乎比较独特的产品定位没有任何一个平台可以取代。</p>
+<h2 id="外生流量和内生流量"><a href="#外生流量和内生流量" class="headerlink" title="外生流量和内生流量"></a>外生流量和内生流量</h2><p>我一直认为，如今的中国互联网行业有两种流量：<strong>一种是内生流量，一种是外生流量。</strong></p>
+<p>像微信、微博、知乎这类产品是典型的内生流量产品。</p>
+<ul>
+<li><strong>内生流量的特点是，</strong>构建了比较强的社交或社区壁垒，用户在里面具有主动性，这就像是一个天然湖，里面的鱼会自己生长繁衍，产品主要是靠用户自己驱动活跃度。</li>
+<li><strong>外生流量的特点是，</strong>靠运营和广告驱动，一般运营力度大，激励费用多，广告铺得广，用户活跃度就高。但由于产品机制问题，缺乏外力之后，流量自然会下滑。</li>
+</ul>
+<p>运营说白了就是拉人头，让自家编辑来提问，让平台作者来回答。拉人头本质上就是一种自上而下、老板意志的产物，它很难具备持久性。运营很多时候是编辑驱动，编辑掌握了作者的生杀予夺权。</p>
+<p>广告说白了就是买流量，四处刷地铁、刷公交，买应用商店的位置。</p>
+<p>但是互联网流量是有获取成本的，从这份表格我们可以看到2006年-2018年的移动互联网流量价格变化趋势。</p>
+<img src="/2019/04/17/a-id-53/8egIbkq7pqkWodi5QI2X.jpeg!v.jpg">
+
+<p>有时候成本下降并不意味着是好事。互联网的流量价格趋势带有一定的“反身性”，互联网广告的增量主要来自互联网公司自身，尤其是新兴创业公司。每当完成一轮融资，便会迅速将VC/PE的钱投向互联网广告渠道以获取用户。</p>
+<p>这其实也是很多新兴问答社区、知识付费平台所面临的问题——2016-2017年曾出现一波高峰，2018年之后，地主家余量都不多了，没有太多钱拿去砸广告。流量价格回落，基本新兴的问答社区也走向沉寂，唯有知乎依旧保持着活力。</p>
+<p><strong>事实上，仅从广告商业价值来看，知乎也有无法取代的价值。知乎已经形成了较为完善的产品矩阵，能够提供多样化的广告产品来满足不同品牌主的需求。</strong></p>
+<ul>
+<li>在覆盖曝光的层面上，开屏广告、信息流广告、大图展示广告和焦点图广告等；</li>
+<li>在内容灌输层面，可以将品牌通过知乎平台对目标客群进行持续的专业内容灌输，具体产品包括知乎电子书以及原生文章等；</li>
+<li>在深度互动层面，品牌圆桌、品牌提问及Live特别现场等，可以帮助品牌主与用户形成更具价值的深度交互。</li>
+</ul>
+<p>2018年8月，知乎完成了2.7亿美元的E轮融资，估值约25亿美元，但25亿美元绝对不是知乎的终点。</p>
+<p><strong>知乎可能正是投资的价值洼地——内生流量企业有着不可衡量的价值。</strong></p>
+<p>我一直认为，每一个企业都会面临枯水期和丰水期。丰水期内，每一条河流似乎都波涛汹涌。但是在枯水期，那些缺乏内生水源的河流往往会干涸，只有那些保持开放，具备自我补给能力的水域才会体现出强劲的活力。</p>
+<p>国内管理学研究者李践在《无条件增长》中提到：</p>
+<blockquote>
+<p>企业增长有两重概念，一重是外部增长，一重是内部增长。外部增长来自企业外部的边际销售增长，但是外部增长会伴随市场饱和出现天花板，如何实现外部增长扩大则依靠内部增长。</p>
+</blockquote>
+<p>在互联网的低潮期，具备内生流量的企业，才能真正实现“无条件增长”。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/04/18/a-id-69/">Django2.0.4+kindeditor4.11跨域上传文件问题</a>
+            
+            
+            <a class="next" rel="next" href="/2019/04/09/a-id-62/">Python3.7.2 + Django2.0.4项目集成最新版支付宝支付接口</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

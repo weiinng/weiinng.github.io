@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Docker容器及Spring Boot微服务应用 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Docker容器及Spring Boot微服务应用</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 25, 2019&nbsp;&nbsp;11:50:47</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><strong>Docker容器及Spring Boot微服务应用</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108225528121-374096771.png"> 
+
+<blockquote>
+<p>作者原创，转载注明出处.</p>
+</blockquote>
+<p><strong>1 什么是Docker</strong></p>
+<h1 id="1-1-Docker的出现"><a href="#1-1-Docker的出现" class="headerlink" title="1.1 Docker的出现"></a>1.1 Docker的出现</h1><ul>
+<li><strong>问题一：项目实施环境复杂问题</strong></li>
+</ul>
+<p>　　传统项目实施过程中经常会出现“程序在我这跑得好好的，在你那怎么就不行呢？！ ”</p>
+<p>　　这是一个典型的应用场景，Docker image中包含了程序需要的所有的运行时依赖，比如java的程序，肯定要在image中包含jdk；比如Python的程序，肯定要在image中包含对应版本的Python解释器。Docker把整个运行时环境打包放到image中，所以搞定了环境依赖问题！</p>
+<p>　　<strong>Docker解决了运行环境和配置问题，方便发布，也就方便做持续集成。</strong></p>
+<ul>
+<li><strong>问题二：系统多用户的资源隔离问题</strong></li>
+</ul>
+<p>　　Linux本身就是个多租户的操作系统，可以多人共用，但是如果某个程序狂吃内存和CPU，占用了太多系统资源，这就会影响其他程序的运行。</p>
+<p>　　所以虚拟机出现了，做了良好的资源隔离，不同用户之间不会相互影响。但是，虚拟机有缺点：创建速度慢，迁移起来麻烦，因为中间加了一层guest os，有了性能损耗，很牛的物理机也就创建几十个虚拟机，太浪费了……</p>
+<p>　　相对虚拟机的重量级虚拟化方案， Docker出现了，让虚拟化变得轻量了起来，创建一个container瞬间完成，秒级！ </p>
+<p>　　<strong>Docker是更轻量的虚拟化，节省了虚拟机的性能损耗。</strong></p>
+<h2 id="1-2-Docker概述"><a href="#1-2-Docker概述" class="headerlink" title="1.2 Docker概述"></a>1.2 Docker概述</h2><p>　　Docker 项目的目标是实现轻量级的操作系统虚拟化解决方案。Docker 的基础是 Linux 容器（LXC-Linux Container）等技术。</p>
+<p>　　在 LXC 的基础上 Docker 进行了进一步的封装，让用户不需要去关心容器的管理，使得操作更为简便。用户操作 Docker 的容器就像操作一个快速轻量级的虚拟机一样简单。</p>
+<p>　　下面的图片比较了 Docker 和传统虚拟化方式的不同之处，可见容器是在操作系统层面上实现虚拟化，直接复用本地主机的操作系统，而传统方式则是在硬件层面实现。</p>
+ <img src="/2019/10/25/a-id-74/299741-20160108225752012-156024098.png">
+
+<p>(每个虚拟机都将拥有自己的操作系统以及应用程序必须的运行时环境)</p>
+ <img src="/2019/10/25/a-id-74/299741-20160108225815700-509160956.png">
+
+<p>(多个容器公用宿主机操作系统，每个容器拥有独立的应用程序运行时环境)</p>
+<h2 id="1-3-Docker的优势"><a href="#1-3-Docker的优势" class="headerlink" title="1.3 Docker的优势"></a>1.3 Docker的优势</h2><p>　　Docker 容器的启动可以在秒级实现，这相比传统的虚拟机方式要快得多。 其次，Docker 对系统资源的利用率很高，一台主机上可以同时运行数千个 Docker 容器。</p>
+<p>　　容器除了运行其中应用外，基本不消耗额外的系统资源，使得应用的性能很高，同时系统的开销尽量小。传统虚拟机方式运行 10 个不同的应用就要起 10 个虚拟机，而Docker 只需要启动 10 个隔离的应用即可。</p>
+<p>　　具体说来，Docker 在如下几个方面具有较大的优势。</p>
+<ul>
+<li><strong>更快速的交付和部署</strong></li>
+</ul>
+<p>　　对开发和运维（devop）人员来说，最希望的就是一次创建或配置，可以在任意地方正常运行。</p>
+<p>开发者可以使用一个标准的镜像来构建一套开发容器，开发完成之后，运维人员可以直接使用这个容器来部署代码。 Docker 容器很轻很快！容器的启动时间是秒级的，大量地节约开发、测试、部署的时间。</p>
+<ul>
+<li><strong>更高效的虚拟化</strong></li>
+</ul>
+<p>　　Docker 容器的运行不需要额外的 hypervisor(虚拟化管理程序)支持，它是内核级的虚拟化，因此可以实现更高的性能和效率。</p>
+<ul>
+<li><strong>更轻松的迁移和扩展</strong></li>
+</ul>
+<p>　　Docker 容器几乎可以在任意的平台上运行，包括物理机、虚拟机、公有云、私有云、个人电脑、服务器等。 这种兼容性可以让用户把一个应用程序从一个平台直接迁移到另外一个。</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>容器(Docker)</th>
+<th>虚拟机(VM)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>启动</td>
+<td>秒级</td>
+<td>分钟级</td>
+</tr>
+<tr>
+<td>硬盘使用</td>
+<td>MB级</td>
+<td>GB级</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>接近原生</td>
+<td>弱于</td>
+</tr>
+<tr>
+<td>系统支持量</td>
+<td>单机支持上千个容器</td>
+<td>单机支持几十个</td>
+</tr>
+</tbody></table>
+<h2 id="1-4-Docker的局限"><a href="#1-4-Docker的局限" class="headerlink" title="1.4 Docker的局限"></a>1.4 Docker的局限</h2><p>Docker并不是全能的，设计之初也不是KVM之类虚拟化手段的替代品，简单总结几点：</p>
+<ul>
+<li>Docker是基于Linux 64bit的，无法在windows/unix或32bit的linux环境下使用</li>
+<li>LXC是基于linux kernel的，因此container的guest系统只能是linux base的</li>
+<li>隔离性比KVM虚拟化方案还是有些欠缺，所有container公用一部分的运行库</li>
+<li>网络管理相对简单，主要是基于namespace隔离</li>
+<li>cgroup的cpu功能相比KVM的等虚拟化方案相比难以度量</li>
+<li>docker对disk的管理比较有限</li>
+<li>container随着用户进程的停止而销毁，container中的log等用户数据不便收集</li>
+</ul>
+<p>　　1-2，有windows base应用的是不能使用Docker的 </p>
+<p>　　3-5主要是看用户的需求，到底是需要一个container还是一个VM, 同时也决定了docker作为 IaaS 不太可行</p>
+<p>　　6-7虽然是docker本身不支持的功能，但是可以通过其他手段解决(disk quota, mount –bind)。总之，选用container还是vm, 就是在隔离性和资源复用性上做权衡</p>
+<h2 id="1-5-Docker-VS-VM"><a href="#1-5-Docker-VS-VM" class="headerlink" title="1.5 Docker VS VM"></a>1.5 Docker VS VM</h2> <img src="/2019/10/25/a-id-74/299741-20160108230018262-840519499.png">
+
+
+
+<ul>
+<li><strong>传统虚拟化中分为两个类型</strong></li>
+</ul>
+<p>　　Type-1型是指在服务器的硬件平台上先部署虚拟机管理层（Hypervisor），再在Hypervisor之上生成虚拟机，每个虚拟机再安装操作系统、运行库与相关的应用.Type-1虚拟化比较常见的是VMware的vSphere、微软的Hyper-V、Linux的KVM以及Xen.</p>
+<p>　　Type-2型则在裸机之上先安装操作系统（比如Linux或Windows），再安装Hypervisor。Type-2的典型代表是VMware的Workstation以及Oracle的VirtualBOX。</p>
+<p>　　由于Type-1型Hypervisor更接近硬件底层，所以可以降低更多的系统开销，但就Hypervisor本身来说，仍然要有一层基本的OS“垫底”，这也是其仍然会有系统开销的原因。</p>
+<p>　　而对于容器技术来说，由于本身就源于操作系统的内核（Linux Kernel）,所以也就基本不存在Hypervisor所带来的开销</p>
+<ul>
+<li><strong>容器虚拟化技术</strong></li>
+</ul>
+<p>　　与传统的服务器虚拟化相比，Docker的一重要特点就是在实现应用间隔离的同时，没有了对于传统虚拟化来说是必须的Hypervisor虚拟化管理层，因为从本质上来讲Docker的内核与Linux是一体的。Docker的根基——LXC就是一个将Linux运行时、库以及其他软件运行支撑环境与相关应用进行封闭的技术。从Linux的内核来看，LXC就相当于系统的一个本地进程，实质上与一个裸机（无虚拟化）应用没有什么区别，从而无需额外的虚拟化指令以及相应的系统虚拟化开销。因为在传统的虚拟化平台中，无论Hypervisor做得再轻薄，虚拟机都要先经过本地的OS再透过Hypervisor调用服务器的物理硬件资源，这与直接以系统进程出现的LXC相比，肯定会造成额外的性能影响。</p>
+<h2 id="1-6-Docker生命体系"><a href="#1-6-Docker生命体系" class="headerlink" title="1.6 Docker生命体系"></a>1.6 Docker生命体系</h2><img src="/2019/10/25/a-id-74/299741-20160108230135825-741364763.png">
+
+<p>　　从Docker的应用封装架构中，可以看出其最基础的运行内核与底层镜像就源于Linux的内核，用户可以将利用Dockerfile生成好的应用镜像，上传至远端的Docker Registry（比如Docker公司自己运营的云服务，或是私建的Docker Registry），也可以从Docker Registry里下拉一个别人已经建立好的镜像直接投入到容器中进行运行，相比之下Docker显然带给了LXC更灵活的部署与快速应变的能力</p>
+<p>　　在Docker体系中，最关键的就是两个——Docker Registry（通过Docker Hub进行索引）以及Docker Engine，前者在远端（或称云端）负责收集与分发Docker的应用镜像（Images），后者则在客户端负责构建Docker应用容器，这明显就是一个云服务的AAS理念，当然用户也可以在自己的数据中心内部建立私有的Docker Registry，以方便在私有云内迅速生成自己的Docker集群，以应对灵活的、大规模的应用扩展需求。此时，也相当于在企业数据中心内部形成了一个云+端的Docker架构。</p>
+<p>　　<em>Docker在英语里的意思为“码头工人”，而其Logo就好似一艘酷似鲸鱼的大船运送一堆集装箱前往各地的码头。而从其理论上看，Docker就像是一个集装箱，利用LXC技术来整合不同规模、类型、层级的应用镜像，先通过集中汇总再有序的分发——每个码头就是一台服务器（或VM），大船就是Registry，码头的工人就是核心Engine，进行集装箱的装配，当然它还需要一系列的外围的支持（比如最重要的管理）。但从总体的 场景来说，Docker的名字还是非常贴切的。</em></p>
+<h2 id="1-7-Docker-关键字解析"><a href="#1-7-Docker-关键字解析" class="headerlink" title="1.7 Docker 关键字解析"></a>1.7 Docker 关键字解析</h2><p><strong>Docker Image:</strong></p>
+<p>　　Docker image是一个只读模板，用于创建Docker容器。Image中可以包含linux操作系统、Apache或者Web应用程序等等，用户可以下载已经创建好的Docker image，也可以创建Docker image给其他用户使用。每个image是由很多层组成，Docker通过Union File Systems将这些层绑定在一个image中。每个image都以一个初级image做为基础，然后通过操作指令在这些初级image上添加新层，操作指令可以是运行的命令、添加文件或目录或者创建可用操作环境等。这些操作指令都被保存在“Dockerfile”文件中。</p>
+<p><strong>Docker Container:</strong></p>
+<p>　　Docker image的运行实例。Docker Containers可以运行、启动、停止或者被删除，每个container都是隔离的安全应用平台。</p>
+<p><strong>Docker registries:</strong></p>
+<p>　　Docker registries用于保存Docker image，也分公用和私用二种。公用的Docker registry就是Docker Hub，用户也可以创建私有的Docker registry，为其他用户提供Docker images下载。</p>
+<p><strong>Dockerfiles:</strong></p>
+<p>　　Dockerfile是对Docker Container创建过程的描述脚本。每个Dockerfile详细说明了开始的基础镜像，以及随后一系列在容器中运行的命令和添加到容器中的文件。Dockerfile也可以说明容器对外的端口，启动时的工作目录和缺省执行的命令。</p>
+<p><strong>LXC:(Linux Container)</strong></p>
+<p>　　Linux Container容器是一种内核虚拟化技术，可以提供轻量级的虚拟化，以便隔离进程和资源，而且不需要提供指令解释机制以及全虚拟化的其他复杂性。相当于C++中的NameSpace。容器有效地将由单个操作系统管理的资源划分到孤立的组中，以更好地在孤立的组之间平衡有冲突的资源使用需求。</p>
+<p><strong>VM:(Virtual Machines)</strong></p>
+<p>　　指通过软件模拟的具有完整硬件系统功能的、运行在一个完全隔离环境中的完整计算机系统。</p>
+<p><strong>Host OS:</strong></p>
+<p>　　指物理存在的计算机上运行的操作系统。宿主机操作系统。</p>
+<p><strong>Guest OS:</strong></p>
+<p>　　指运行在VM上的操作系统。例如在一台安装了Windows NT的计算机上安装了Vmware，那么，HOST指的是安装Windows NT的这台计算机，其Host′s OS为Windows NT。VM上运行的是Linux，那么Linux即为Guest OS。</p>
+<p><strong>Hypervisor:</strong></p>
+<p>　　Hypervisor是一种运行在物理服务器和操作系统之间的中间软件层,可允许多个操作系统和应用共享一套基础物理硬件，因此也可以看作是虚拟环境中的“元”操作系统，它可以协调访问服务器上的所有物理设备和虚拟机，也叫虚拟机监视器。当服务器启动并执行Hypervisor时，它会给每一台虚拟机分配适量的内存、CPU、网络和磁盘，并加载所有虚拟机的客户操作系统。</p>
+<p>　　目前市场主要厂商及产品：VMware vSphere、微软Hyper-V、Citrix XenServer 、IBM PowerVM、Red Hat Enterprise Virtulization、Huawei FusionSphere、开源的KVM、Xen、VirtualBSD等。</p>
+<p><strong>Bootfs:(Boot File System)</strong></p>
+<p>　　主要包含 bootloader 和 kernel, bootloader主要是引导加载kernel, 当boot成功后 kernel 被加载到内存中后 bootfs就被卸载了. </p>
+<p><strong>Rootfx:(Root File System)</strong></p>
+<p>　　rootfs包含的就是典型 Linux 系统中的 /dev(外设访问接口信息),/proc(系统设备信息),/bin(系统工具集), /etc(APP配置信息) 等标准目录和文件。对于不同的linux发行版, bootfs基本是一致的, 但rootfs会有差别, 因此不同的发行版可以公用bootfs。</p>
+<h1 id="2-Docker及微服务架构"><a href="#2-Docker及微服务架构" class="headerlink" title="2 Docker及微服务架构"></a>2 Docker及微服务架构</h1><h2 id="2-1-微服务概念"><a href="#2-1-微服务概念" class="headerlink" title="2.1 微服务概念"></a>2.1 微服务概念</h2><p>微服务架构风格是一种使用一套小服务来开发单个应用的方式途径，每个服务运行在自己的进程中，通过轻量的通讯机制联系，经常是基于HTTP资源API，这些服务基于业务能力构建，能够通过自动化部署方式独立部署，这些服务自己有一些小型集中化管理，可以是使用不同的编程语言编写，正如不同的数据存储技术一样。</p>
+<h2 id="2-2-基于Docker的微服务架构"><a href="#2-2-基于Docker的微服务架构" class="headerlink" title="2.2 基于Docker的微服务架构"></a>2.2 基于Docker的微服务架构</h2><p>Docker的细粒度松耦合能够让我们用一个Docker容器装载一个场景功能，也就是按照功能角色分类，每个Docker里面装一个服务或应用，一个服务器上可以运行多个Docker，或者多个Docker分散到多个服务器上运行。整个项目架构可以按照业务逻辑的规划以细粒度的方式分散在各个Docker容器中，并根据HTTP REST API的方式进行整合联动。 </p>
+ <img src="/2019/10/25/a-id-74/299741-20160108230412559-2127155510.png">
+
+<p>（Docker为基础的微服务架构）</p>
+<p>　　本图由上到下分别由：Nginx负载均衡层，综合业务服务层，单业务服务层，数据库层等共同组成Docker为基础的微服务架构。图中每个服务节点均装载入单独的Docker Container中运行，并对外暴露基于Http协议的Port供外界访问（数据库容器仍然是基于JDBC的数据库连接池方式对其访问）。</p>
+<ul>
+<li>负载均衡及反向代理层：可采用Nginx作为负载均衡及反向代理服务器，并且作为静态资源（HTML，图像文件，JS/CSS等静态资源）访问的服务器。Nginx的反向代理配置功能强大，可以根据用户访问路径或访问的服务资源进行路由转发，将用户的请求映射到其下的综合业务服务层对应的REST API接口中。</li>
+<li>综合业务服务层：综合业务服务层是根据项目具体业务需求划分的多个单业务服务节点的整合。对访问者提供一组综合性业务逻辑REST API接口。其特点是只通过HTTP REST API方式调用其下的单业务服务层接口，而不与数据库通信。</li>
+<li>单业务服务层：单业务服务层中每个服务节点都是对业务逻辑相对独立，功能相对集中一组REST API的封装。其特点是业务功能相对独立，与其他兄弟节点的功能耦合度低，并直接访问其下的数据库存储层。</li>
+<li>数据库存储层：以Docker Contain为单位的数据存储层。</li>
+</ul>
+<p>　　此框架实现重点为，在项目前期通过详细的功能需求分析并按业务逻辑的耦合度划分成多个服务节点，依靠Docker的独立且低耦合特性在物理层面上实现项目的细粒度分解。</p>
+<p>　　其优点是：</p>
+<ul>
+<li>1.可以根据用户的访问并发量在每个层次进行水平动态扩充，实现访问压力负载均衡。</li>
+<li>2.对业务逻辑的多层次划分可很大程度上提高项目的复用性。</li>
+<li>3.一旦将业务抽象成产品后，即可实现“用户按功能选购”的能力。</li>
+<li>4.由于Docker的开发环境封装特性，可以简化项目部署成本，减少运维人员工作负担。</li>
+<li>5.由于服务节点采用HTTP REST API的通讯方式，节点的实现可以采用不同运行时环境不同语言不同架构，比如可采用Spring，Play等多种架构方式。</li>
+</ul>
+<p>　　缺点为，在项目设计前期，需要花费较多的时间进行详细的业务逻辑划分及系统分析。</p>
+<p>　　接下来，我们将实现该架构图中的每个Docker节点的关键技术。</p>
+<h1 id="3-Docker-与-Spring-Boot"><a href="#3-Docker-与-Spring-Boot" class="headerlink" title="3 Docker 与 Spring Boot"></a>3 Docker 与 Spring Boot</h1><h2 id="3-1-Spring-Boot-简介"><a href="#3-1-Spring-Boot-简介" class="headerlink" title="3.1 Spring Boot 简介"></a>3.1 Spring Boot 简介</h2><p>Spring Boot充分利用了JavaConfig的配置模式以及“约定优于配置”的理念，能够极大的简化基于Spring MVC的Web应用和REST服务开发。</p>
+<p>Spring 4倡导微服务的架构，微服务架构倡导将功能拆分到离散的服务中，独立地进行部署，Spring Boot能够很方便地将应用打包成独立可运行的JAR包，因此在开发模式上很契合这一理念。</p>
+<p>特点：</p>
+<p><strong>• 创建独立Spring应用程序</strong></p>
+<p><strong>• 嵌入式Tomcat，Jetty容器，无需部署WAR包</strong></p>
+<p><strong>• 简化Maven及Gradle配置</strong></p>
+<p><strong>• 尽可能的自动化配置Spring</strong></p>
+<p><strong>• 直接植入产品环境下的实用功能，比如度量指标、健康检查及扩展配置等</strong></p>
+<p><strong>• 无需代码生成及XML配置</strong></p>
+<h2 id="3-2-Spring-Boot在Docker中运行"><a href="#3-2-Spring-Boot在Docker中运行" class="headerlink" title="3.2 Spring Boot在Docker中运行"></a>3.2 Spring Boot在Docker中运行</h2><p>在Eclipse中利用Maven的Spring boot+Docker模板搭建项目框架，实现步骤：</p>
+<p><strong>1.下载Eclipse的Maven插件。</strong></p>
+<p><strong>2.在Eclipse中选择SpringBoot-Docker模板。</strong></p>
+<img src="/2019/10/25/a-id-74/299741-20160108230602903-2083187903.png">
+
+
+
+<p><strong>3.创建SpringBoot-Docker项目</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108230636262-93219296.png">
+
+<p>　　基于该模板创建SpringBoot项目后，目录结构如上图，编译后会生成Dockerfile文件及&lt;项目名&gt;.jar文件。</p>
+<p><strong>4.在Docker环境下生成Docker Image镜像文件</strong></p>
+<p>　　由于已经有了Dockerfile文件及本项目的.jar文件，可以将其拷贝到虚拟机Docker环境中，并运行例如：docker build -t <example-service> . 指令，将Dockerfile描述编译成镜像文件，并进入本地Docker registries仓库中。</example-service></p>
+<p><strong>5.运行Docker Image文件，形成Container实例，与宿主机建立端口映射。</strong></p>
+<p>　　运行例如：docker run -p 48080:8080 -d <example-service> 指令，启动该项目的Container实例。</example-service></p>
+<p><strong>6.在浏览器上访问宿主机的48080端口，通过REST API访问业务接口。</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108230747871-1343224040.png">
+
+<img src="/2019/10/25/a-id-74/299741-20160108230758418-520669417.png">
+
+<img src="/2019/10/25/a-id-74/299741-20160108230806825-58009724.png">
+
+<p>　　至此，基于Docker Container的Spring boot项目启动完毕，并可在浏览器中访问。</p>
+<h1 id="4-Docker与Nginx"><a href="#4-Docker与Nginx" class="headerlink" title="4 Docker与Nginx"></a>4 Docker与Nginx</h1><h2 id="4-1-Nginx简介"><a href="#4-1-Nginx简介" class="headerlink" title="4.1 Nginx简介"></a>4.1 Nginx简介</h2><p>　　Nginx (“engine x”) 是一个高性能的 HTTP 和 反向代理 服务器，也是一个 IMAP/POP3/SMTP 代理服务器。</p>
+<p>　　在高连接并发的情况下，Nginx能够支持高达 50,000 个并发连接数的响应。Nginx也可作为负载均衡服务器，Nginx 既可以在内部直接支持 Rails 和 PHP 程序对外进行服务，也可以支持作为 HTTP代理服务器对外进行服务。Nginx采用C进行编写，不论是系统资源开销还是CPU使用效率都比 Perlbal 要好很多。</p>
+<p>　　Nginx 是一个安装非常的简单，配置文件非常简洁（还能够支持perl语法），Bugs非常少的服务器：Nginx 启动特别容易，并且几乎可以做到7*24不间断运行，即使运行数个月也不需要重新启动。你还能够不间断服务的情况下进行软件版本的升级。</p>
+<h2 id="4-2-Nginx在Docker中运行"><a href="#4-2-Nginx在Docker中运行" class="headerlink" title="4.2 Nginx在Docker中运行"></a>4.2 Nginx在Docker中运行</h2><p><strong>1.先访问hub.docker.com下载Nginx的Docker Image</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108230859559-1957322124.png">
+
+<p>　　可在虚机中的Docker环境中使用指令例如：docker pull nginx下载镜像文件。</p>
+<p><strong>2.查看该镜像文件</strong></p>
+<p>可使用docker images指令查看下载后的nginx镜像文件状态。</p>
+ <img src="/2019/10/25/a-id-74/299741-20160108230940309-1436676992.png">
+
+<p><strong>3.建立nginx反向代理映射及动静资源分离映射</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108231017215-1863023715.png">
+
+<img src="/2019/10/25/a-id-74/299741-20160108231025715-1297843629.png">
+
+
+
+<p><strong>4.启动Nginx服务</strong></p>
+<p>　　可使用如下指令例如：</p>
+<p>　　docker run -d -p 8080:8080 -v /some-path/nginx.conf:/etc/nginx/nginx.conf:ro <nginx-container> 启动nginx代理服务。</nginx-container></p>
+<p>　　至此，基于Docker的Nginx与Spring Boot反向代理架构搭建完毕。</p>
+<h1 id="5-Docker-与PostgreSQL"><a href="#5-Docker-与PostgreSQL" class="headerlink" title="5 Docker 与PostgreSQL"></a>5 Docker 与PostgreSQL</h1><h2 id="5-1-PostgreSQL在Docker中运行"><a href="#5-1-PostgreSQL在Docker中运行" class="headerlink" title="5.1 PostgreSQL在Docker中运行"></a>5.1 PostgreSQL在Docker中运行</h2><p><strong>1.在Docker hub中下载Postgre Image镜像文件</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108231112465-1416716754.png">
+
+<p>可以使用tag指令有针对性下载指定版本的镜像文件。例如：</p>
+ <img src="/2019/10/25/a-id-74/299741-20160108231128856-465171257.png">
+
+<p>docker pull postgres:9.4.4</p>
+ <img src="/2019/10/25/a-id-74/299741-20160108231158106-1241255148.png">
+
+
+
+
+
+<p><strong>2.运行Postgres Container实例</strong></p>
+<p>　　例如使用指令：</p>
+<p>　　docker run -p 5432:5432 -e POSTGRES_PASSWORD=654321 -d <example-name></example-name></p>
+<p><strong>3.确认Spring Boot项目中的数据库连接配置是否正确</strong></p>
+ <img src="/2019/10/25/a-id-74/299741-20160108231222809-2014453227.png">
+
+
+
+<p>　　至此，微服务架构图中所有层次节点均在Docker容器中部署完毕。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/25/a-id-75/">RBAC权限模型由浅入深</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/24/a-id-20/">Thrift-II-网络服务模型</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

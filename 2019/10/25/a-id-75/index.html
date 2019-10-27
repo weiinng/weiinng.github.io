@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>RBAC权限模型由浅入深 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">RBAC权限模型由浅入深</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 25, 2019&nbsp;&nbsp;21:06:25</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="1-最简单的权限模型"><a href="#1-最简单的权限模型" class="headerlink" title="1. 最简单的权限模型"></a>1. 最简单的权限模型</h2><p>业务系统初期，需求简单，对于权限的内容本身并不复杂，我们假设权限部分仅有这样简单的需求：</p>
+<blockquote>
+<p>能给用户赋予数据的增、删、改、查四种权限</p>
+</blockquote>
+<p>分析此需求，权限的主体为用户，权限的内容有多种，关系为M - M，具体为：<br>用户模型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class User</span><br><span class="line">&#123;</span><br><span class="line">    public int UserId&#123; get; set; &#125;</span><br><span class="line">    public string UserName &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用户表Auth_User</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*UserId</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>UserName</td>
+<td>varchar</td>
+<td>用户名</td>
+</tr>
+<tr>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+</tbody></table>
+<p>权限枚举：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[Flags]</span><br><span class="line">public enum Permission</span><br><span class="line">&#123;</span><br><span class="line">    Add = 1,</span><br><span class="line">    Update = 2,</span><br><span class="line">    Delete = 4,</span><br><span class="line">    Select = 8</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>权限表 Auth_Permission</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*PermissionId</td>
+<td>int</td>
+<td>权限ID</td>
+</tr>
+<tr>
+<td>Permission</td>
+<td>varchar</td>
+<td>权限内容</td>
+</tr>
+</tbody></table>
+<p>用户-权限关系表 Auth_UserPermission</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*UserId</td>
+<td>int</td>
+<td>用户ID</td>
+</tr>
+<tr>
+<td>*PermissionId</td>
+<td>int</td>
+<td>权限ID</td>
+</tr>
+</tbody></table>
+<p>假如一个用户有增、改两种权限，那么关系表(Auth_UserPermission)可以存储为：</p>
+<table>
+<thead>
+<tr>
+<th>UserId</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>于是对于权限的基本操作我们可以进行归纳：</p>
+<ul>
+<li>授权：INSERT 权限表 (用户ID,权限的具体值)</li>
+<li>校权：EXISTS 权限表 UserID==用户ID AND Permission==要判断权限的具体值</li>
+</ul>
+<p>我们留意到对于Permission的枚举定义，值使用了对2的幂运算的值：</p>
+<table>
+<thead>
+<tr>
+<th>幂运算</th>
+<th>十进制</th>
+<th>二进制</th>
+<th>十六进制</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2^0</td>
+<td>1</td>
+<td>0001</td>
+<td>0x01</td>
+</tr>
+<tr>
+<td>2^1</td>
+<td>2</td>
+<td>0010</td>
+<td>0x02</td>
+</tr>
+<tr>
+<td>2^2</td>
+<td>4</td>
+<td>0100</td>
+<td>0x04</td>
+</tr>
+<tr>
+<td>2^3</td>
+<td>8</td>
+<td>1000</td>
+<td>0x08</td>
+</tr>
+</tbody></table>
+<p>这么定义是有好处的，对于Auth_UserPermission的表存储可以节省存储空间，并且程序便于处理，譬如：<br>如果UserId=1的用户拥有Add、Select权限，Auth_UserPermission表原本应该存储两条记录：</p>
+<ul>
+<li>(1,1)</li>
+<li>(1,8)</li>
+</ul>
+<p>现在，可以考虑更简单的存储方式</p>
+<ul>
+<li>(1,9)</li>
+</ul>
+<p>这表示：<br>Permission.<strong>Add</strong> | Permission.<strong>Select</strong><br>等价于<br><strong>1</strong> <strong>按位或</strong> <strong>8</strong> ( 1 | 8 )<br>等价于<br><strong>9</strong></p>
+<p>而对于权限的判断，则使用存储的权限值<strong>按位与</strong>要进行校权的值是否等于<strong>要进行校权的值</strong>来判断<br>譬如判断用户是否拥有Delete权限，则使用9<strong>按位与</strong>4是否等于4来进行判断，用C#的三目运算来表示为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">9 &amp; 4 == 4 ? &quot;有权限&quot;:&quot;无权限&quot;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>这样被标记有Flags特性的枚举在.Net框架中遍布各种基础类库，譬如反射中的BindFlags枚举。本身属于基础知识，由于不常应用所以容易被忽视，在权限中属于应用小技巧。还有人质疑这么存储会有性能问题，在后面章节讲到优化时，再行讨论。</p>
+</blockquote>
+<p>于是我们对使用了小技巧的新的权限基本控制再次进行归纳：</p>
+<ul>
+<li>授权：INSERT 权限表(用户ID,所有拥有权限的按位或值)</li>
+<li>校权：EXISTS 权限表(UserID == 用户ID AND Permission &amp; 要判断权限的具体值 == 要判断权限的具体值)</li>
+</ul>
+<h2 id="2-基于角色的基本权限控制"><a href="#2-基于角色的基本权限控制" class="headerlink" title="2. 基于角色的基本权限控制"></a>2. 基于角色的基本权限控制</h2><p>随着业务系统的发展，业务系统有了第一次升级机会，并附带了一个新的权限需求：</p>
+<blockquote>
+<p>系统需要满足一类职位的人拥有相同的权限</p>
+</blockquote>
+<p>按照第一节的内容，这个需求其实不用做任何变化一样可以满足，但是问题在于负责授权的人“太累了”，对于每一个用户，我们可能都要做一遍授权的操作。<br>为了解决这个问题，我们引入<strong>角色</strong>这一基本单元，角色是一种抽象，可以具体到业务场景的类似职位、身份等概念。</p>
+<p>角色模型设计：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class Role</span><br><span class="line">&#123;</span><br><span class="line">    public int RoleId &#123; get;set; &#125;</span><br><span class="line">    public string RoleName &#123; get;set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>角色表设计Auth_Role：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*RoleId</td>
+<td>int</td>
+<td>角色ID</td>
+</tr>
+<tr>
+<td>RoleName</td>
+<td>varchar</td>
+<td>角色名称</td>
+</tr>
+</tbody></table>
+<p>基于角色的基本权限控制的原则是：</p>
+<ol>
+<li>简化用户权限的操作；</li>
+<li>权限操作的对象从<strong>用户</strong>变更为<strong>角色</strong>；</li>
+<li>不能对单一用户做权限操作，仅对角色做权限操作，每个需要权限的用户，都拥有至少一个角色；</li>
+</ol>
+<p>角色与用户的抽象关系表现为M-M，这表示：</p>
+<ul>
+<li>一个用户可以拥有多个角色；</li>
+<li>一个角色下有多个用户；</li>
+</ul>
+<p>具体到业务可以是一个人可以有多个职位；一个职位下有多个人；<br>针对此设计，我们需要做以下操作：</p>
+<ol>
+<li>从系统中删除掉原来的Auth_UserPermission关系；</li>
+<li>新增Auth_UserRole(UserId,RoleId)的关系；</li>
+<li>新增Auth_RolePermission(RoleId,Permission)的关系；</li>
+</ol>
+<p>假定业务系统有这样的职位列表：</p>
+<table>
+<thead>
+<tr>
+<th>RoleId</th>
+<th>RoleName</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>总裁</td>
+</tr>
+<tr>
+<td>2</td>
+<td>开发总监</td>
+</tr>
+</tbody></table>
+<p>假设用户ID等于1001的用户职位为总裁兼开发总监，那么关系表Auth_UserRole可以存储为：</p>
+<table>
+<thead>
+<tr>
+<th>UserId</th>
+<th>RoleId</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1001</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<p>业务约定：总裁有增、删、改、查四个权限，开发总监则有增、查两个权限，那么关系表Auth_RolePermission可以存储为:</p>
+<table>
+<thead>
+<tr>
+<th>RoleId</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>15( = 1 | 2 | 4 | 8 )</td>
+</tr>
+<tr>
+<td>2</td>
+<td>9</td>
+</tr>
+</tbody></table>
+<p>我们对给予角色的基本权限控制操作再次归纳为：</p>
+<ul>
+<li>授权：给角色添加权限(INSERT Auth_RolePermission)，给用户添加角色(INSERT Auth_UserRole)</li>
+<li>校权：应当是拿出用户所有的角色，并再次拿出这些角色的权限做并集，并DISTINCT 权限并集为权限集合，判断权限集合是否含有需要校权的权限</li>
+</ul>
+<h2 id="3-基于角色并含有用户组概念的权限控制"><a href="#3-基于角色并含有用户组概念的权限控制" class="headerlink" title="3. 基于角色并含有用户组概念的权限控制"></a>3. 基于角色并含有用户组概念的权限控制</h2><p>春去秋来，业务系统迎来了第二次升级机会，并包含以下新的权限需求：</p>
+<blockquote>
+<p>所有部门的开发岗位拥有相同的增、查权限</p>
+</blockquote>
+<p>基于第二节的系统升级，解决此需求我们会有临时的做法：做一个角色，给所有开发岗的同事赋予这个角色。</p>
+<p>这样的临时做法的确解决了我们的问题，但这里有几个问题，函待解决：</p>
+<ol>
+<li>系统没有部门的对应抽象；</li>
+<li>一旦其中一个部门的开发岗同事拥有的权限有变动，我们需要新建角色，并重新授权；</li>
+</ol>
+<p>针对此两个问题，我们引入一个新的模型：<strong>用户组</strong>（UserGroup），用户组的概念在业务系统中，可以具体为：部门、小组、团队等</p>
+<p>用户组模型设计：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class UserGroup</span><br><span class="line">&#123;</span><br><span class="line">    public int UserGroupId &#123; get; set; &#125;</span><br><span class="line">    public int ParentId &#123; get;set; &#125; //留意此字段，将在本节末尾阐述</span><br><span class="line">    public string UserGroupName &#123; get; set; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用户组表Auth_UserGroup设计：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*UserGroupId</td>
+<td>int</td>
+<td>部门ID</td>
+</tr>
+<tr>
+<td>ParentId</td>
+<td>int</td>
+<td>上级部门ID</td>
+</tr>
+<tr>
+<td>UserGroupName</td>
+<td>varchar</td>
+<td>部门名称</td>
+</tr>
+</tbody></table>
+<p>基于角色并含有用户组概念的权限控制有以下特点：</p>
+<ol>
+<li>再次简化了用户权限的操作；</li>
+<li>用户可以拥有角色；用户组也可以拥有角色；</li>
+<li>权限的操作对象依旧为角色，不可对用户、用户组进行权限操作；</li>
+</ol>
+<p>用户与用户组的关系表现为多对多，这表示一个用户可以属于多个用户组，一个用户组下可以有多个用户，具体到业务可以描述为：一个人可以在多个部门，一个部门下可以有多个人；</p>
+<p>用户组与角色的关系表现为多对多，这表示一个用户组的所有用户可以拥有相同的多个角色，一个角色下有多个用户组，具体到业务可以描述为：同一个部门的人可以拥有多个相同的职位；</p>
+<p>为了实现此设计，我们需要做以下新的操作：</p>
+<ol>
+<li>新增Auth_UserUserGroup关系；</li>
+<li>新增Auth_UserGroupRole关系；</li>
+</ol>
+<p>假设系统拥有这样的部门列表：</p>
+<table>
+<thead>
+<tr>
+<th>UserGroupId</th>
+<th>UserGroupName</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>总裁办</td>
+</tr>
+<tr>
+<td>2</td>
+<td>前端开发部</td>
+</tr>
+<tr>
+<td>3</td>
+<td>中台开发部</td>
+</tr>
+<tr>
+<td>4</td>
+<td>人力资源部</td>
+</tr>
+<tr>
+<td>5</td>
+<td>保安部</td>
+</tr>
+</tbody></table>
+<p>假设用户ID为1101的用户既是前端开发部的开发总监，又是中台开发部的开发总监；中台开发部、前端开发部的所有同事本质都是开发，且所有开发部的同事都有增、查的权限，那么：</p>
+<p>用户-用户组Auth_UserUserGroup关系表可以存储为：</p>
+<table>
+<thead>
+<tr>
+<th>UserId</th>
+<th>UserGroupId</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1101</td>
+<td>2</td>
+</tr>
+<tr>
+<td>1101</td>
+<td>3</td>
+</tr>
+</tbody></table>
+<p>新增角色：开发</p>
+<table>
+<thead>
+<tr>
+<th>RoleId</th>
+<th>RoleName</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>6</td>
+<td>开发</td>
+</tr>
+</tbody></table>
+<p>Auth_RolePermission新增记录：</p>
+<table>
+<thead>
+<tr>
+<th>RoleId</th>
+<th>Permission</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>6</td>
+<td>9</td>
+</tr>
+</tbody></table>
+<p>Auth_UserGroupRole关系表可以存储为：</p>
+<table>
+<thead>
+<tr>
+<th>UserGroupId</th>
+<th>RoleId</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>6</td>
+</tr>
+<tr>
+<td>3</td>
+<td>6</td>
+</tr>
+</tbody></table>
+<p>这样，我们就满足了本节提出的需求。<br>另外要注意到的是用户组的ParentId字段，不要轻视这个简单的树状设计，实际应用中根据业务场景会有各种不同的问题，譬如不良的SQL导致DB层面做了递归查询、上级部门权限与下级部门权限的继承关系，但这本质属于业务需求，不再赘述</p>
+<h2 id="4-RBAC权限模型"><a href="#4-RBAC权限模型" class="headerlink" title="4. RBAC权限模型"></a>4. RBAC权限模型</h2><p>现在，系统经过3次升级，已经有了较为完备的权限体系，我们解决了大部分问题。<br>但是我们也注意到，所有的有关于权限的定义仅仅围绕着增删改查这一类权限控制。假如系统现在需要多控制一部分权限内容，我们就有些捉襟见肘了。</p>
+<p>简单来说，我们的权限模型设计对于<strong>扩展</strong>支持不够</p>
+<p>譬如，业务系统初期对系统的菜单可见性有权限控制，随着系统迭代，可能出现对文件的可操作性也需要有权限控制，这是很正常的事，显然，依照我们的设计，系统无法满足。</p>
+<p>回顾1、2、3节的升级内容，我们的问题其实是由单一权限元素变更为多元权限元素，如果我们能重新将被控制元素变更为单一元素，我们之前的设计则不用变更。</p>
+<p>为了解决这个问题，我们对各种权限元素进行抽象，譬如文件访问权限和菜单访问权限。抽象为如下图内容：</p>
+<img src="/2019/10/25/a-id-75/193899-20191025125316306-832635872.png">
+
+<p>现在，权限的Root节点变成了Permission这个抽象，它没有具体的意义，但他将各类权限集中在了一起，使得多种权限元素重新集中在单一Permission这个抽象元素上，再次揉入到我们的系统中，如下图：</p>
+<img src="/2019/10/25/a-id-75/193899-20191025125345694-287600182.png">
+
+<p>这就是权限系统的RBAC完成模型。</p>
+<p>至此，借助RBAC模型，我们完成了权限模块的理论设计，它能满足大量权限控制场景，也是业界惯用的手段，RBAC模型是一种权限模型的总结和归纳，市面上能见到的各种权限控制，都与RBAC沾边，也就是说，掌握RBAC，就掌握了阅读各种系统权限设计的基础，有了理论支持。</p>
+<p>不过值得注意的是，虽然我们有了理论基础，但实际应用中，我们还要做一些扩展内容。</p>
+<p>譬如说权限历史，权限模块属于敏感内容，是系统的中枢所在，严谨的权限模块肯定是不会对操作进行Delete的，而是Fake Delete以保留历史。上文中这样的设计为此提供了方便，当用户的权限发生变更时，我们只需要对关系做Fake Delete即可。当然，关系本身需具备IsFakeDeleted属性。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/26/a-id-76/">基于Docker的CaaS容器云平台架构设计及市场分析</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/25/a-id-74/">Docker容器及Spring Boot微服务应用</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

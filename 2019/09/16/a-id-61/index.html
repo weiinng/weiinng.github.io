@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python魔法方法详解 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python魔法方法详解</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">September 16, 2019&nbsp;&nbsp;20:41:51</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>  据说，Python 的对象天生拥有一些神奇的方法，它们总被双下划线所包围，他们是面向对象的 Python 的一切。</p>
+<p>他们是可以给你的类增加魔力的特殊方法，如果你的对象实现（重载）了这些方法中的某一个，那么这个方法就会在特殊的情况下被 Python 所调用，你可以定义自己想要的行为，而这一切都是自动发生的。</p>
+<p>Python 的魔术方法非常强大，然而随之而来的则是责任。了解正确的方法去使用非常重要！</p>
+<h2 id="基本魔法方法"><a href="#基本魔法方法" class="headerlink" title="基本魔法方法"></a>基本魔法方法</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__new__</code>(cls[, …])</td>
+<td>1. <code>__new__</code> 是在一个对象实例化的时候所调用的第一个方法<br>2. 它的第一个参数是这个类，其他的参数是用来直接传递给 <code>__init__</code>方法 <br>3. <code>__new__</code>决定是否要使用该 <code>__init__</code>方法，因为 <code>__new__</code>可以调用其他类的构造方法或者直接返回别的实例对象来作为本类的实例，如果 <code>__new__</code>没有返回实例对象，则 <code>__init__</code>不会被调用 <br>4. <code>__new__</code>主要是用于继承一个不可变的类型比如一个 tuple 或者 string</td>
+</tr>
+<tr>
+<td><code>__init__</code>(self[, …])</td>
+<td>构造器，当一个实例被创建的时候调用的初始化方法</td>
+</tr>
+<tr>
+<td><code>__del__</code>(self)</td>
+<td>析构器，当一个实例被销毁的时候调用的方法</td>
+</tr>
+<tr>
+<td><code>__call__</code>(self[, args…])</td>
+<td>允许一个类的实例像函数一样被调用：x(a, b) 调用 x.<code>__call__</code>(a, b)</td>
+</tr>
+<tr>
+<td><code>__len__</code>(self)</td>
+<td>定义当被 len() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__repr__</code>(self)</td>
+<td>定义当被 repr() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__str__</code>(self)</td>
+<td>定义当被 str() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__bytes__</code>(self)</td>
+<td>定义当被 bytes() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__hash__</code>(self)</td>
+<td>定义当被 hash() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__bool__</code>(self)</td>
+<td>定义当被 bool() 调用时的行为，应该返回 True 或 False</td>
+</tr>
+<tr>
+<td><code>__format__</code>(self, format_spec)</td>
+<td>定义当被 format() 调用时的行为</td>
+</tr>
+</tbody></table>
+<h2 id="有关属性"><a href="#有关属性" class="headerlink" title="有关属性"></a>有关属性</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__getattr__</code>(self, name)</td>
+<td>定义当用户试图获取一个不存在的属性时的行为</td>
+</tr>
+<tr>
+<td><code>__getattribute__</code>(self, name)</td>
+<td>定义当该类的属性被访问时的行为</td>
+</tr>
+<tr>
+<td><code>__setattr__</code>(self, name, value)</td>
+<td>定义当一个属性被设置时的行为</td>
+</tr>
+<tr>
+<td><code>__delattr__</code>(self, name)</td>
+<td>定义当一个属性被删除时的行为</td>
+</tr>
+<tr>
+<td><code>__dir__</code>(self)</td>
+<td>定义当 dir() 被调用时的行为</td>
+</tr>
+<tr>
+<td><code>__get__</code>(self, instance, owner)</td>
+<td>定义当描述符的值被取得时的行为</td>
+</tr>
+<tr>
+<td><code>__set__</code>(self, instance, value)</td>
+<td>定义当描述符的值被改变时的行为</td>
+</tr>
+<tr>
+<td><code>__delete__</code>(self, instance)</td>
+<td>定义当描述符的值被删除时的行为</td>
+</tr>
+</tbody></table>
+<h2 id="比较操作符"><a href="#比较操作符" class="headerlink" title="比较操作符"></a>比较操作符</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__lt__</code>(self, other)</td>
+<td>定义小于号的行为：x &lt; y 调用 x.<code>__lt__</code>(y)</td>
+</tr>
+<tr>
+<td><code>__le__</code>(self, other)</td>
+<td>定义小于等于号的行为：x &lt;= y 调用 x.<code>__le__</code>(y)</td>
+</tr>
+<tr>
+<td><code>__eq__</code>(self, other)</td>
+<td>定义等于号的行为：x == y 调用 x.<code>__eq__</code>(y)</td>
+</tr>
+<tr>
+<td><code>__ne__</code>(self, other)</td>
+<td>定义不等号的行为：x != y 调用 x.<code>__ne__</code>(y)</td>
+</tr>
+<tr>
+<td><code>__gt__</code>(self, other)</td>
+<td>定义大于号的行为：x &gt; y 调用 x.<code>__gt__</code>(y)</td>
+</tr>
+<tr>
+<td><code>__ge__</code>(self, other)</td>
+<td>定义大于等于号的行为：x &gt;= y 调用 x.<code>__ge__</code>(y)</td>
+</tr>
+</tbody></table>
+<h2 id="算数运算符"><a href="#算数运算符" class="headerlink" title="算数运算符"></a>算数运算符</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>运算符</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__add__</code>(self, other)</td>
+<td>定义加法的行为：+</td>
+</tr>
+<tr>
+<td><code>__sub__</code>(self, other)</td>
+<td>定义减法的行为：-</td>
+</tr>
+<tr>
+<td><code>__mul__</code>(self, other)</td>
+<td>定义乘法的行为：*</td>
+</tr>
+<tr>
+<td><code>__truediv__</code>(self, other)</td>
+<td>定义真除法的行为：/</td>
+</tr>
+<tr>
+<td><code>__floordiv__</code>(self, other)</td>
+<td>定义整数除法的行为：//</td>
+</tr>
+<tr>
+<td><code>__mod__</code>(self, other)</td>
+<td>定义取模算法的行为：%</td>
+</tr>
+<tr>
+<td><code>__divmod__</code>(self, other)</td>
+<td>定义当被 divmod() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__pow__</code>(self, other[, modulo])</td>
+<td>定义当被 power() 调用或 ** 运算时的行为</td>
+</tr>
+<tr>
+<td><code>__lshift__</code>(self, other)</td>
+<td>定义按位左移位的行为：&lt;&lt;</td>
+</tr>
+<tr>
+<td><code>__rshift__</code>(self, other)</td>
+<td>定义按位右移位的行为：&gt;&gt;</td>
+</tr>
+<tr>
+<td><code>__and__</code>(self, other)</td>
+<td>定义按位与操作的行为：&amp;</td>
+</tr>
+<tr>
+<td><code>__xor__</code>(self, other)</td>
+<td>定义按位异或操作的行为：^</td>
+</tr>
+<tr>
+<td><code>__or__</code>(self, other)</td>
+<td>定义按位或操作的行为：|</td>
+</tr>
+</tbody></table>
+<h2 id="反运算"><a href="#反运算" class="headerlink" title="反运算"></a>反运算</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__radd__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rsub__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rmul__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rtruediv__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rfloordiv__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rmod__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rdivmod__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rpow__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rlshift__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rrshift__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__rxor__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+<tr>
+<td><code>__ror__</code>(self, other)</td>
+<td>（与上方相同，当左操作数不支持相应的操作时被调用）</td>
+</tr>
+</tbody></table>
+<h2 id="增量赋值运算"><a href="#增量赋值运算" class="headerlink" title="增量赋值运算"></a>增量赋值运算</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__iadd__</code>(self, other)</td>
+<td>定义赋值加法的行为：+=</td>
+</tr>
+<tr>
+<td><code>__isub__</code>(self, other)</td>
+<td>定义赋值减法的行为：-=</td>
+</tr>
+<tr>
+<td><code>__imul__</code>(self, other)</td>
+<td>定义赋值乘法的行为：*=</td>
+</tr>
+<tr>
+<td><code>__itruediv__</code>(self, other)</td>
+<td>定义赋值真除法的行为：/=</td>
+</tr>
+<tr>
+<td><code>__ifloordiv__</code>(self, other)</td>
+<td>定义赋值整数除法的行为：//=</td>
+</tr>
+<tr>
+<td><code>__imod__</code>(self, other)</td>
+<td>定义赋值取模算法的行为：%=</td>
+</tr>
+<tr>
+<td><code>__ipow__</code>(self, other[, modulo])</td>
+<td>定义赋值幂运算的行为：**=</td>
+</tr>
+<tr>
+<td><code>__ilshift__</code>(self, other)</td>
+<td>定义赋值按位左移位的行为：&lt;&lt;=</td>
+</tr>
+<tr>
+<td><code>__irshift__</code>(self, other)</td>
+<td>定义赋值按位右移位的行为：&gt;&gt;=</td>
+</tr>
+<tr>
+<td><code>__iand__</code>(self, other)</td>
+<td>定义赋值按位与操作的行为：&amp;=</td>
+</tr>
+<tr>
+<td><code>__ixor__</code>(self, other)</td>
+<td>定义赋值按位异或操作的行为：^=</td>
+</tr>
+<tr>
+<td><code>__ior__</code>(self, other)</td>
+<td>定义赋值按位或操作的行为：|=</td>
+</tr>
+</tbody></table>
+<h2 id="一元操作符"><a href="#一元操作符" class="headerlink" title="一元操作符"></a>一元操作符</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__neg__</code>(self)</td>
+<td>定义正号的行为：+x</td>
+</tr>
+<tr>
+<td><code>__pos__</code>(self)</td>
+<td>定义负号的行为：-x</td>
+</tr>
+<tr>
+<td><code>__abs__</code>(self)</td>
+<td>定义当被 abs() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__invert__</code>(self)</td>
+<td>定义按位求反的行为：~x</td>
+</tr>
+</tbody></table>
+<h2 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__complex__</code>(self)</td>
+<td>定义当被 complex() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><code>__int__</code>(self)</td>
+<td>定义当被 int() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><code>__float__</code>(self)</td>
+<td>定义当被 float() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><code>__round__</code>(self[, n])</td>
+<td>定义当被 round() 调用时的行为（需要返回恰当的值）</td>
+</tr>
+<tr>
+<td><code>__index__</code>(self)</td>
+<td>1. 当对象是被应用在切片表达式中时，实现整形强制转换 <br>2. 如果你定义了一个可能在切片时用到的定制的数值型,你应该定义 <code>__index__</code><br>3. 如果 <code>__index__</code>被定义，则 <code>__int__</code>也需要被定义，且返回相同的值</td>
+</tr>
+</tbody></table>
+<h2 id="上下文管理（with-语句）"><a href="#上下文管理（with-语句）" class="headerlink" title="上下文管理（with 语句）"></a>上下文管理（with 语句）</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__enter__</code>(self)</td>
+<td>1. 定义当使用 with 语句时的初始化行为 <br>2. <code>__enter__</code>的返回值被 with 语句的目标或者 as 后的名字绑定</td>
+</tr>
+<tr>
+<td><code>__exit__</code>(self, exc_type, exc_value, traceback)</td>
+<td>1. 定义当一个代码块被执行或者终止后上下文管理器应该做什么 2. 一般被用来处理异常，清除工作或者做一些代码块执行完毕之后的日常工作</td>
+</tr>
+</tbody></table>
+<h2 id="容器类型"><a href="#容器类型" class="headerlink" title="容器类型"></a>容器类型</h2><table>
+<thead>
+<tr>
+<th>魔法方法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>__len__</code>(self)</td>
+<td>定义当被 len() 调用时的行为（返回容器中元素的个数）</td>
+</tr>
+<tr>
+<td><code>__getitem__</code>(self, key)</td>
+<td>定义获取容器中指定元素的行为，相当于 self[key]</td>
+</tr>
+<tr>
+<td><code>__setitem__</code>(self, key, value)</td>
+<td>定义设置容器中指定元素的行为，相当于 self[key] = value</td>
+</tr>
+<tr>
+<td><code>__delitem__</code>(self, key)</td>
+<td>定义删除容器中指定元素的行为，相当于 del self[key]</td>
+</tr>
+<tr>
+<td><code>__iter__</code>(self)</td>
+<td>定义当迭代容器中的元素的行为</td>
+</tr>
+<tr>
+<td><code>__reversed__</code>(self)</td>
+<td>定义当被 reversed() 调用时的行为</td>
+</tr>
+<tr>
+<td><code>__contains__</code>(self, item)</td>
+<td>定义当使用成员测试运算符（in 或 not in）时的行为</td>
+</tr>
+</tbody></table>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/09/17/a-id-48/">十大经典排序算法（动图演示）</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/16/a-id-47/">Mysql的隔离级别</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

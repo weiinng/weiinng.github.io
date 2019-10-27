@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Django2.0.4 + Uploadify3.0（h5版）实现多文件异步上传和删除 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Django2.0.4 + Uploadify3.0（h5版）实现多文件异步上传和删除</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">March 25, 2019&nbsp;&nbsp;15:37:36</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Python/">Python</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <img src="/2019/03/25/a-id-72/u=4222302472,3409890263&fm=26&gp=0.jpg">
+
+<p>  已经9012年了，如果你的网站还通过传统表单上传文件的话，那你简直低到爆了，也别干什么网络开发了，直接面壁去吧。</p>
+<p>  本文基于Uploadify异步上传控件来实现多文件异步上传的无刷新机制，用来提高效率和用户体验，由于uploadify基于jquery的，所以确保已经引入了稳定版的Jquery的，另外需要说明的是，uploadify分为闪光版和H5版，鉴于闪光早就已经被淘汰了，所以H5才是我们的选择，但是H5版居然需要收费，下一个要五美刀，我们当然不能当冤大头，可以考虑去下载一个免费的山寨开源版：HTTPS：//github.com/Double-Lv/Huploadify</p>
+<p>前端代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">&#123;#loading入js库＃&#125;</span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span> = <span class="string">'&#123;％static“js / jquery-1.12.1.min.js”％&#125;'</span> &gt;</span><span class="javascript"> &lt;<span class="regexp">/ script&gt; &lt;script src = '&#123;％static“js /</span> jquery。 Huploadify.js“％&#125;” &gt; <span class="xml"><span class="tag">&lt;/ <span class="attr">script</span>&gt;</span> </span></span></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">BODY</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span> = <span class="string">“text”</span> <span class="attr">value</span> = <span class="string">“100”</span> <span class="attr">id</span> = <span class="string">“t1”</span> &gt;</span>   </span></span><br><span class="line"></span><br><span class="line"><span class="xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span> = <span class="string">“upload”</span> &gt;</span> <span class="tag">&lt;/ <span class="attr">div</span>&gt;</span> </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="xml">    <span class="tag">&lt;<span class="name">SCRIPT</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">    让name = $ （“＃t1” ）。val （）;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="javascript">    <span class="keyword">var</span> up = $ （<span class="string">'＃upload'</span> ）。Huploadify （&#123; auto ：<span class="literal">false</span> ，</span></span><br><span class="line"><span class="javascript">		fileTypeExts ：<span class="string">'*。*'</span> ，</span></span><br><span class="line"><span class="javascript">        multi ：<span class="literal">true</span> ，</span></span><br><span class="line">		fileSizeLimit ：99999999999 ，</span><br><span class="line"><span class="javascript">        showUploadedPercent ：<span class="literal">true</span> ，</span></span><br><span class="line"><span class="javascript">        formData ：&#123; <span class="string">'name'</span> ：<span class="string">'123'</span> &#125;，</span></span><br><span class="line"><span class="javascript">		showUploadedSize ：<span class="literal">true</span> ，</span></span><br><span class="line">        removeTimeout ：9999999 ，</span><br><span class="line">        method ：'后”</span><br><span class="line">		 ，</span><br><span class="line"><span class="javascript">		uploader ：<span class="string">'/ md_admin / upload_img'</span> ，</span></span><br><span class="line"><span class="javascript">		onUploadStart ：<span class="function"><span class="keyword">function</span> （<span class="title">file</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">            <span class="built_in">console</span> 。日志（文件。名称+ <span class="string">'开始上传'</span> ）; <span class="comment">//$("#upload").Huploadify("settings","formData",&#123;'name':'someValue'&#125;）; </span></span></span><br><span class="line"><span class="javascript">            uploadify_option 。formData = &#123; name ：<span class="string">'0'</span> &#125;; &#125;，</span></span><br><span class="line"><span class="javascript">		onInit ：<span class="function"><span class="keyword">function</span> （<span class="title">obj</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。log （<span class="string">'初始化'</span> ）;</span></span><br><span class="line">            </span><br><span class="line">		</span><br><span class="line">			控制台。log （obj ）; &#125;，</span><br><span class="line"><span class="javascript">		onUploadComplete ：<span class="function"><span class="keyword">function</span> （<span class="title">file</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。日志（文件。名称+ <span class="string">'上传完成'</span> ）; &#125;，</span></span><br><span class="line"><span class="javascript">		onCancel ：<span class="function"><span class="keyword">function</span> （<span class="title">file</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。日志（文件。名称+ <span class="string">'删除成功'</span> ）; &#125;，</span></span><br><span class="line"><span class="javascript">		onClearQueue ：<span class="function"><span class="keyword">function</span> （<span class="title">queueItemCount</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。</span></span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line"><span class="javascript">		log （<span class="string">'有'</span> + queueItemCount + <span class="string">'个文件被删除了'</span> ）; &#125;，</span></span><br><span class="line"><span class="javascript">		onDestroy ：<span class="function"><span class="keyword">function</span> （）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。log （<span class="string">'destroyed！'</span> ）; &#125;，</span></span><br><span class="line"><span class="javascript">		onSelect ：<span class="function"><span class="keyword">function</span> （<span class="title">file</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。日志（文件。名称+ <span class="string">'加入上传队列'</span> ）; &#125;，</span></span><br><span class="line"><span class="javascript">		onQueueComplete ：<span class="function"><span class="keyword">function</span> （<span class="title">queueData</span> ）</span>&#123; </span></span><br><span class="line"><span class="javascript">			<span class="built_in">console</span> 。log （<span class="string">'队列中的文件全部上传完成'</span></span></span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		，queueData ）; &#125; &#125;;</span><br><span class="line">		</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line"><span class="xml">    <span class="tag">&lt;/ <span class="attr">SCRIPT</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="xml"><span class="tag">&lt;/ <span class="attr">BODY</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p> 后台视图文件：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">＃定义上传视图类<span class="class"><span class="keyword">class</span> <span class="title">UploadTest</span> （查看）：</span></span><br><span class="line"><span class="class"> </span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">    ＃定义上传方法<span class="title">def</span> <span class="title">post</span> （<span class="title">self</span> ，<span class="title">request</span> ）：＃接收文件，以对象的形式</span></span><br><span class="line">        img = request 。文件。获得（“文件” ）打印（请求。POST 。获得（'姓名' ，'未收到参数' ）） ＃文件名称是名称属性＃建立文件流对象</span><br><span class="line">        ˚F = 开放（OS ，路径，加入（UPLOAD_ROOT ，“ <span class="string">' ，img 。名字），</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        '</span>世行<span class="string">' ）＃写文件遍历图片文件流的块在IMG 。chunks （）：</span></span><br><span class="line"><span class="string">            f 。写（块）＃关闭文件流</span></span><br><span class="line"><span class="string">        f 。close （）返回HttpResponse （json 。转储（&#123; '</span>status<span class="string">' ：'</span>ok<span class="string">' &#125;，ensure_ascii = False ），content_type = '</span>application / json<span class="string">' ）</span></span><br></pre></td></tr></table></figure>
+
+<p>效果</p>
+<img src="/2019/03/25/a-id-72/20190325090350_24452.jpeg">
+
+<p>完成</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Python/"># Python</a>
+                    
+                        <a href="/tags/Django/"># Django</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/03/25/a-id-34/">案例详解：理解Python中的“解析式”</a>
+            
+            
+            <a class="next" rel="next" href="/2019/01/23/a-id-14/">Python2和Python3的区别?</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
