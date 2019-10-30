@@ -2,9 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://weiinng.cn/about/index.html</loc>
+    
+    <lastmod>2019-10-29T07:41:55.708Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://weiinng.cn/category/index.html</loc>
+    
+    <lastmod>2019-10-29T07:11:17.253Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://weiinng.cn/E-BOOK/index.html</loc>
+    
+    <lastmod>2019-10-29T07:11:07.362Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://weiinng.cn/2019/10/29/a-id-78/</loc>
+    
+    <lastmod>2019-10-28T18:10:19.892Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://weiinng.cn/2019/10/27/a-id-77/</loc>
     
-    <lastmod>2019-10-27T05:17:24.408Z</lastmod>
+    <lastmod>2019-10-27T05:33:13.587Z</lastmod>
     
   </url>
   
@@ -89,13 +117,6 @@
     <loc>http://weiinng.cn/2019/10/17/a-id-12/</loc>
     
     <lastmod>2019-10-17T05:11:05.349Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://weiinng.cn/about/index.html</loc>
-    
-    <lastmod>2019-10-16T10:52:55.775Z</lastmod>
     
   </url>
   
@@ -257,13 +278,6 @@
     <loc>http://weiinng.cn/2019/09/06/a-id-39/</loc>
     
     <lastmod>2019-09-25T08:49:11.024Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://weiinng.cn/E-BOOK/index.html</loc>
-    
-    <lastmod>2019-09-25T08:14:18.886Z</lastmod>
     
   </url>
   
@@ -558,13 +572,6 @@
     <loc>http://weiinng.cn/2019/07/07/a-id-28/</loc>
     
     <lastmod>2019-08-26T07:27:35.329Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://weiinng.cn/category/index.html</loc>
-    
-    <lastmod>2019-08-23T10:11:30.523Z</lastmod>
     
   </url>
   
