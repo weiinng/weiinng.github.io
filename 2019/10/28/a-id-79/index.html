@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>文件句柄、文件描述符与进程和多线程的那些事 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">文件句柄、文件描述符与进程和多线程的那些事</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 28, 2019&nbsp;&nbsp;11:01:54</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><strong>文件句柄（摘抄的一些概念，帮助理解）：</strong></p>
+<p>句柄是WONDOWS用来标识被应用程序所建立或使用的对象的唯一整数，WINDOWS使用各种各样的句柄标识诸如应用程序实例，窗口，控制，位图，GDI对象等等。WINDOWS句柄有点象C语言中的文件句柄。</p>
+<p>如果想更透彻一点地认识句柄，我可以告诉大家，句柄是一种指向指针的指针。我们知道，所谓指针是一种内存地址。应用程序启动后，组成这个程序的各对象是住留在内存的。如果简单地理解，似乎我们只要获知这个内存的首地址，那么就可以随时用这个地址访问对象。但是，如果您真的这样认为，那么您就大错特错了。我们知道，Windows是一个以虚拟内存为基础的操作系统。在这种系统环境下，Windows内存管理器经常在内存中来回移动对象，依此来满足各种应用程序的内存需要。对象被移动意味着它的地址变化了。如果地址总是如此变化，我们该到哪里去找该对象呢?</p>
+<p>为了解决这个问题，Windows操作系统为各应用程序腾出一些内存储地址，用来专门登记各应用对象在内存中的地址变化，而这个地址(存储单元的位置)本身是不变的。Windows内存管理器在移动对象在内存中的位置后，把对象新的地址告知这个句柄地址来保存。这样我们只需记住这个句柄地址就可以间接地知道对象具体在内存中的哪个位置。这个地址是在对象装载(Load)时由系统分配给的，当系统卸载时(Unload)又释放给系统。</p>
+<p>句柄是操作系统在生成对象时分配给对象的唯一标识。 通过句柄可以获取操作系统提供的服务。句柄不同于指针，如果你得到一个对象的指针，那你就可以在此对象上为所欲为了。于是系统不给你指针，而给用户一个加了限制的，用于跟踪对象的指针的标识——句柄。系统使用句柄向外提供服务就相对安全了。</p>
+<p><strong>总结：</strong></p>
+<p><strong>1、无论是文件句柄（Windows中概念），还是文件描述符（linux中概念），其最终目的都是用来定位打开的文件在内存中的位置，只是它们映射的方式不一样。</strong></p>
+<p><strong>2、文件句柄定位到的是文件对象，而非文件。而文件对象是对这个文件的一些状态、属性的封装，例如读取到的文件位置等。</strong></p>
+<p><strong>3、关于在进程、线程下，这个时候用文件句柄不好阐述，可以把文件句柄理解成下图中的文件描述符，如下图：</strong></p>
+<img src="/2019/10/28/a-id-79/105558_q6Il_551773.jpg">
+
+<p>每个进程有各自独立的文件描述符，打开不同的文件也都会有不同的打开文件表项，并且指向不同的v-node表项。</p>
+<p>此时没有共享文件，并且每个描述符对应一个不同的文件。</p>
+<img src="/2019/10/28/a-id-79/105558_ydJZ_551773.jpg">
+
+<p>不同的进程多次open一个文件，则会产生不同的打开文件表项，但最终指向的是同一个文件的v-node标项。</p>
+<p>此时，多个描述符也可以通过不同的文件表表项来引用同一个文件。例如，如果以同一个filename调用open函数两次，就会发生这种情况。关键思想是：每个描述符都有它自己的文件位置，所以对不同描述符的读操作可以从文件的不同位置获取数据。</p>
+<p>如果在多线程中打开同一个文件（不同于在主线程中打开一个文件，并将fd=open(file)的fd参数传给线程），则每个线程会有各自的文件描述符，按照上一条关键思想，这每个线程也会有保存自己的读取位置，互不影响。</p>
+<p><strong>深入理解计算机系统里还有这么段话：</strong>因为每个进程都有自己HANDLE的存储空间）；如果是同一个进程的线程，因为同基于I/O多路复用的流一样，多个线程运行在单一进程的上下文中，共享这个进程虚拟地址空间的整个内容，包括它的代码、数据、堆、共享库和打开的文件（句柄）。这个应该也是指的进程已经打开文件，则线程共享打开的文件。</p>
+<img src="/2019/10/28/a-id-79/105559_9Ukz_551773.jpg">
+
+<p>如果在调用fork之前父进程已经打开文件，则fork后子进程有一个父进程描述符表的副本。父子进程共享相同的打开文件集合，因此共享相同的文件位置。</p>
+<p>这个情况跟主线程已经open文件，并把fd传给启动的线程的情况是一样的。</p>
+<p><strong>另外关注上述图片表的解释如下：</strong></p>
+<img src="/2019/10/28/a-id-79/102848_HJXp_551773.jpg">
+
+
+<p>这下清楚不少，但是昨天关于Python中myFile = open(‘fileLoc’,’r’)的情况还不能照搬理解，因为Python的封装，open后返回的是文件对象，至于文件对象的本质，还需要进一步研究。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/29/a-id-78/">区块链火了！！！</a>
+            
+            
+            <a class="next" rel="next" href="/2019/10/27/a-id-77/">10分钟看懂Docker和K8S</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

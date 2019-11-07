@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>使用Docker-compose来封装celery4.1 + rabbitmq3.7服务，实现微服务架构 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">使用Docker-compose来封装celery4.1 + rabbitmq3.7服务，实现微服务架构</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 4, 2019&nbsp;&nbsp;9:51:28</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p><a href="https://v3u.cn/a_id_99" target="_blank" rel="noopener">python3.7+Tornado5.1.1+Celery3.1+Rabbitmq3.7.16实现异步队列任务</a> 详细阐述了如何进行安装部署和使用，但是过程太繁琐了，先得安装Erlang，再安装rabbitmq，然后各种配置，最后由于async关键字问题还得去修改三方库的源码，其实我们可以通过docker来将celery服务封装成镜像，如此一来，以后再使用celery或者别的系统依赖celery，我们只需要将该镜像以容器的形式跑服务即可，不需要繁琐的配置与安装。</p>
+<p>  首先新建celery_with_docker文件夹，cd celery_with_docker</p>
+<p>  建立dockerfile文件</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">FROM python</span><br><span class="line">LABEL author=<span class="string">"liuyue"</span></span><br><span class="line">LABEL purpose = <span class="string">''</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">RUN apt update</span><br><span class="line">RUN pip3 install setuptools</span><br><span class="line"></span><br><span class="line">ENV PYTHONIOENCODING=utf<span class="number">-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Build folder</span></span><br><span class="line">RUN mkdir -p /deploy/app</span><br><span class="line">WORKDIR /deploy/app</span><br><span class="line"><span class="comment">#only copy requirements.txt.  othors will be mounted by -v</span></span><br><span class="line"><span class="comment">#COPY app/requirements.txt /deploy/app/requirements.txt</span></span><br><span class="line"><span class="comment">#RUN pip3 install -r /deploy/app/requirements.txt</span></span><br><span class="line">RUN pip3 install celery</span><br><span class="line"></span><br><span class="line"><span class="comment"># run sh. Start processes in docker-compose.yml</span></span><br><span class="line"><span class="comment">#CMD ["/usr/bin/supervisord"]</span></span><br><span class="line">CMD [<span class="string">"/bin/bash"</span>]</span><br></pre></td></tr></table></figure>
+
+<p>  意思是基础镜像我们使用python，然后安装celery</p>
+<p>  然后新建docker-compose.yml</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Use postgres/example user/password credentials</span></span><br><span class="line">version: <span class="string">'3.4'</span></span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">    myrabbit:</span><br><span class="line">        <span class="comment">#restart: always</span></span><br><span class="line">        <span class="comment">#build: rabbitmq/</span></span><br><span class="line">        image: rabbitmq:<span class="number">3</span>-management</span><br><span class="line">        <span class="comment"># hostname: rabbit-taiga</span></span><br><span class="line">        environment:</span><br><span class="line">            RABBITMQ_ERLANG_COOKIE: SWQOKODSQALRPCLNMEQG</span><br><span class="line">            <span class="comment"># RABBITMQ_DEFAULT_USER: "guest"</span></span><br><span class="line">            <span class="comment"># RABBITMQ_DEFAULT_PASS: "guest"</span></span><br><span class="line">            <span class="comment"># RABBITMQ_DEFAULT_VHOST: "/"</span></span><br><span class="line">            <span class="comment"># RABBITMQ_NODENAME: taiga</span></span><br><span class="line">            RABBITMQ_DEFAULT_USER: liuyue</span><br><span class="line">            RABBITMQ_DEFAULT_PASS: liuyue</span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">"15672:15672"</span></span><br><span class="line">            <span class="comment"># - "5672:5672"</span></span><br><span class="line">    </span><br><span class="line">    api:</span><br><span class="line">        <span class="comment">#restart: always</span></span><br><span class="line">        stdin_open: true</span><br><span class="line">        tty: true</span><br><span class="line">        build: ./</span><br><span class="line">        image: celery-<span class="keyword">with</span>-docker-compose:latest</span><br><span class="line">        volumes:</span><br><span class="line">            - ./app:/deploy/app</span><br><span class="line">        ports:</span><br><span class="line">            - <span class="string">"80:80"</span></span><br><span class="line">        command: [<span class="string">"/bin/bash"</span>]</span><br><span class="line"></span><br><span class="line">    celeryworker:</span><br><span class="line">        image: celery-<span class="keyword">with</span>-docker-compose:latest</span><br><span class="line">        volumes:</span><br><span class="line">            - ./app:/deploy/app</span><br><span class="line">        command: [<span class="string">'celery'</span>, <span class="string">'-A'</span>, <span class="string">'tasks'</span>, <span class="string">'worker'</span>, <span class="string">'-c'</span>, <span class="string">'4'</span>, <span class="string">'--loglevel'</span>, <span class="string">'info'</span>]</span><br><span class="line">        depends_on:</span><br><span class="line">            - myrabbit</span><br></pre></td></tr></table></figure>
+
+<p>  这个配置文件的作用是，单独拉取rabbitmq镜像，启动rabbitmq服务，用户名和密码为：liuyue:liuyue然后在镜像内新建一个celery工程，目录放在/deploy/app，随后通过挂载文件夹的方式将宿主的app目录映射到/deploy/app,最后启动celery服务</p>
+<p>  最后，我们只需要在宿主机建立一个app文件夹，新建一些任务脚本即可</p>
+<p>  新建tasks.py</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> celery <span class="keyword">import</span> Celery</span><br><span class="line"></span><br><span class="line">SERVICE_NAME = <span class="string">'myrabbit'</span> </span><br><span class="line">app = Celery(backend = <span class="string">'rpc://'</span>, broker = <span class="string">'amqp://liuyue:liuyue@&#123;0&#125;:5672/'</span>.format(SERVICE_NAME))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.task</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    print(<span class="number">123123</span>)</span><br><span class="line">    <span class="keyword">return</span> x + y</span><br></pre></td></tr></table></figure>
+
+<p>   新建任务调用文件test.py</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> tasks <span class="keyword">import</span> add</span><br><span class="line"><span class="comment"># celery -A tasks worker -c 4 --loglevel=info</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">t1 = time.time()</span><br><span class="line">result = add.delay(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">print(result.get())</span><br><span class="line"> </span><br><span class="line">print(time.time() - t1)</span><br></pre></td></tr></table></figure>
+
+<p>   最后项目的目录结构是这样的</p>
+  <img src="/2019/10/04/a-id-80/20190928032556_35451.png">
+
+<p>  随后在项目根目录执行命令：docker-compose up –force-recreate</p>
+<p>  此时celery和rabbitmq服务已经启动</p>
+<p>  进入浏览器 <a href="http://localhost:15672/" target="_blank" rel="noopener">http://localhost:15672</a> 用账号登录 liuyue:liuyue</p>
+  <img src="/2019/10/04/a-id-80/20190928032837_19463.png">
+<p>  没有问题，此时我们进入容器内部</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -i -t celery-with-docker-compose-master_api_1 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>  可以看到，容器内已经通过挂载将宿主机的app文件夹共享了进来</p>
+  <img src="/2019/10/04/a-id-80/20190928033050_57667.png">
+
+<p>  随后我们执行异步任务：python3 test.py</p>
+  <img src="/2019/10/04/a-id-80/20190928033137_25339.png">
+
+
+
+<p>  可以看到执行成功了</p>
+  <img src="/2019/10/04/a-id-80/20190928033233_39707.png">
+
+
+
+<p>  由此可知，在宿主机，什么环境都不需要配置，只需要安装一个docker即可，异步任务队列的搭建和执行全部在docker的内部容器内，完全隔绝，只是具体的代码和脚本通过docker的挂载命令来在宿主机编写，也就是研发人员只需要在宿主机专注编写代码，而不需要管配置和部署的问题。</p>
+<p>   最后，附上项目的完整代码：<a href="https://gitee.com/QiHanXiBei/celery-with-docker-composer" target="_blank" rel="noopener">https://gitee.com/QiHanXiBei/celery-with-docker-composer</a> </p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2019/10/07/a-id-55/">Docker常用命令</a>
+            
+            
+            <a class="next" rel="next" href="/2019/09/27/a-id-56/">如何给老婆解释什么是RPC</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
