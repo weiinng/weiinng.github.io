@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Python3的原生协程和Tornado异步非阻塞 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python3的原生协程和Tornado异步非阻塞</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 2, 2019&nbsp;&nbsp;10:19:45</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>  我们知道在程序在执行 IO 密集型任务的时候，程序会因为等待 IO 而阻塞，而协程作为一种用户态的轻量级线程，可以帮我们解决这个问题。协程拥有自己的寄存器上下文和栈。协程调度切换时，将寄存器上下文和栈保存，在调度回来的时候，恢复先前保存的寄存器上下文和栈。因此协程能保留上一次调用时的状态，即所有局部状态的一个特定组合</p>
+<p>  说人话：说白了就是，当协程遇到io操作而阻塞时，立即切换到别的任务，如果操作完成则进行回调返回执行结果，提高了效率，同时这样也可以充分利用 CPU 和其他资源，这就是异步协程的优势，并且协程本质上是个单进程，相对于多进程来说，无需进程间上下文切换的开销，无需原子操作锁定及同步的开销，编程模型也非常简单。</p>
+<p>  在python2以及python3.3时代，人们使用协程还得基于greenlet或者gevent，greenlet机制的主要思想是：生成器函数或者协程函数中的yield语句挂起函数的执行，直到稍后使用next()或send()操作进行恢复为止。可以使用一个调度器循环在一组生成器函数之间协作多个任务，它的缺点是必须通过安装三方库进行使用，使用时由于封装特性导致性能有一定的流失。</p>
+<p>  终于在python3.4中，我们迎来了python的原生协程关键字:Async和Await，它们的底层基于生成器函数，使得协程的实现更加方便。</p>
+<p>  Async 用来声明一个函数为异步函数，异步函数的特点是能在函数执行过程中挂起，去执行其他异步函数，等到挂起条件（假设挂起条件是sleep(5)）消失后，也就是5秒到了再回来执行。</p>
+<p>  Await 用来用来声明程序挂起,比如异步程序执行到某一步时需要等待的时间很长，就将此挂起，去执行其他的异步程序</p>
+<p>  首先我们先来看一个不使用协程的程序</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">job</span><span class="params">(t)</span>:</span></span><br><span class="line">    time.sleep(t) </span><br><span class="line">    print(<span class="string">'用了%s'</span> % t)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    [job(t) <span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">3</span>)]</span><br><span class="line">start = time.time()</span><br><span class="line">main()</span><br><span class="line">print(time.time()-start)</span><br></pre></td></tr></table></figure>
+
+<img src="/2019/11/02/a-id-81/20190920070853_68425.png">  
+
+<p>  从运行结果可以看出，我们的 job 是按顺序执行的。必须执行完 job 1 才能开始执行 job 2， job 1 需要 1 秒的执行时间，job 2 需要 2 秒的执行时间，所以总时间是 3 秒多。</p>
+<p>  如果我们使用协程的方式，job 1 在等待 time.sleep(t) 执行结束的时候,是可以切换到 job 2 执行的。</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">job</span><span class="params">(t)</span>:</span>  <span class="comment"># 使用 async 关键字将一个函数定义为协程</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(t)  <span class="comment"># 等待 t 秒, 期间切换执行其他任务</span></span><br><span class="line">    print(<span class="string">'用了%s秒'</span> % t)</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(loop)</span>:</span>  <span class="comment"># 使用 async 关键字将一个函数定义为协程</span></span><br><span class="line">    tasks = [loop.create_task(job(t)) <span class="keyword">for</span> t <span class="keyword">in</span> range(<span class="number">1</span>,<span class="number">3</span>)]  <span class="comment"># 创建任务, 不立即执行</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.wait(tasks)  <span class="comment"># 执行并等待所有任务完成</span></span><br><span class="line">start = time.time()</span><br><span class="line">loop = asyncio.get_event_loop()  <span class="comment"># 建立 loop</span></span><br><span class="line">loop.run_until_complete(main(loop))  <span class="comment"># 执行 loop</span></span><br><span class="line">loop.close()  <span class="comment"># 关闭 loop</span></span><br><span class="line"></span><br><span class="line">print(time.time()-start)</span><br></pre></td></tr></table></figure>
+
+   <img src="/2019/11/02/a-id-81/20190920071108_26974.png">
+
+<p>  从运行结果可以看出，我们没有等待 job 1 执行结束再开始执行 job 2，而是 job 1 触发 await 的时候切换到了 job 2 。 这时 job 1 和 job 2 同时在执行 await asyncio.sleep(t)，所以最终程序的执行时间取决于执行时间最长的那个 job，也就是 job 2 的执行时间：2 秒</p>
+<p>  由此可见，效率提高非常明显。</p>
+<p>  同理，在之前一篇文章中：<a href="https://weiinng.cn/2019/10/11/a-id-82/">关于Tornado:真实的异步和虚假的异步</a> 提到了tornado默认是同步阻塞机制，如果要激活异步非阻塞的特性，需要使用异步写法，在那篇文章我使用的装饰器的形式来声明异步方法，而在这里，我们同样可以使用async和await来进行协程的异步非阻塞任务</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tornado.web</span><br><span class="line"><span class="keyword">from</span> tornado <span class="keyword">import</span> gen</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IndexHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.write(<span class="string">'index'</span>)</span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">doing</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">await</span> gen.sleep(<span class="number">10</span>)  <span class="comment"># here are doing some things</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Non-Blocking'</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NonBlockingHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></span><br><span class="line">        result = <span class="keyword">await</span> doing()</span><br><span class="line">        self.write(result)</span><br><span class="line">application = tornado.web.Application([</span><br><span class="line">    (<span class="string">r"/"</span>, IndexHandler),</span><br><span class="line">    (<span class="string">r"/nonblocking"</span>, NonBlockingHandler),</span><br><span class="line">])</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    application.listen(<span class="number">8888</span>)</span><br><span class="line">    tornado.ioloop.IOLoop.instance().start()</span><br></pre></td></tr></table></figure>
+
+<p>   可以看到，虽然代码可读性下降了一点，但是性能和效率却实实在在的提升了</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/10/29/a-id-78/">区块链火了！！！</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
