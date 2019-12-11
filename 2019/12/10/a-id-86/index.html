@@ -7,7 +7,7 @@
 
 
 
-<title>谁笑到最后？ | 张卫宁的技术博客</title>
+<title>Linux安装好用的宝塔面板 | 张卫宁的技术博客</title>
 
 
 
@@ -115,7 +115,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">谁笑到最后？</h1>
+            <h1 class="post-title">Linux安装好用的宝塔面板</h1>
             
                 <div class="post-meta">
                     
@@ -124,7 +124,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">November 11, 2019&nbsp;&nbsp;23:30:09</a>
+                        Date: <a href="#">December 10, 2019&nbsp;&nbsp;13:26:16</a>
                         </span>
                     
                     
@@ -133,22 +133,25 @@
         </header>
 
         <div class="post-content">
-            <p>今天是周一，也是2019年度的双11，一个把好好的光棍节完成购物街的日子，双11买买买，618买买买，突然想到以前的一个笑话，一个服装店，老板跟着小姨子跑了大促销，过几天老板和小姨子跑回来了又是大促销。</p>
-<p>这个双十一除了给猫咪买了点用的之外，自己也没买啥！</p>
-<p>今天是周一，离职已经将近一个月了，晚上也经常反思自己，这几年都做了些什么，之后该如何发展，一系列的问题，看到这个title觉得自己挺好笑的？咋想出这么个标题，哈哈。希望多年以后再回来看这篇文章，说还是我笑到了最后。</p>
-<p>这段时间也在回顾往年经历过的事情，项目，技术，总结回顾。</p>
-<p>也让自己前几年抛出去的心也收回来，从1做起。</p>
-<p>先上图</p>
-<img src="/2019/11/11/a-id-85/3123123123.png">
+            <blockquote>
+<p>玩了这么就linux系统还不知道有个宝塔面板可以动态安装，今天我就使用linux系统来安装宝塔面板。</p>
+</blockquote>
+<p><strong>安装要求：</strong></p>
+<p>内存：512M以上，推荐768M以上（纯面板约占系统60M内存）</p>
+<p>硬盘：100M以上可用硬盘空间（纯面板约占20M磁盘空间）</p>
+<p>系统：CentOS 7.1+ (Ubuntu16.04+.、Debian9.0+)，<strong>确保是干净的操作系统，</strong>没有安装过其它环境带的Apache/Nginx/php/MySQL<strong>（已有环境不可安装）</strong></p>
+<p>宝塔linux7.0版本是基于centos7开发的，务必使用centos7.x 系统</p>
+<p>提示：Centos官方已宣布在2020年停止对Centos6的维护更新，各大软件开发商也逐渐停止对Centos6的兼容，新服务器不建议使用Centos6</p>
+<p><strong>以下主机商必看（开端口教程，不开不能用）：</strong></p>
+<p>腾讯云：<a href="https://www.bt.cn/bbs/thread-1229-1-1.html" target="_blank" rel="noopener">https://www.bt.cn/bbs/thread-1229-1-1.html</a> <a href="https://cloud.tencent.com/redirect.php?redirect=1014&cps_key=624d99e25c64927aef8353ed6cd5536c&from=console" target="_blank" rel="noopener">腾讯云2折起</a></p>
+<p>阿里云：<a href="https://www.bt.cn/bbs/thread-2897-1-1.html" target="_blank" rel="noopener">https://www.bt.cn/bbs/thread-2897-1-1.html</a> <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=wkpc565a" target="_blank" rel="noopener">阿里云2折起</a><br>华为云：<a href="https://www.bt.cn/bbs/thread-3923-1-1.html" target="_blank" rel="noopener">https://www.bt.cn/bbs/thread-3923-1-1.html</a></p>
+<p><a href="https://www.bt.cn/bbs/forum.php?mod=viewthread&tid=1186&extra=page%3D1%26filter%3Dtypeid%26typeid%3D6" target="_blank" rel="noopener">如果要安装5.9老版本可以点这</a></p>
+<p><a href="https://www.bt.cn/bbs/thread-33389-1-1.html" target="_blank" rel="noopener">5.9平滑升级6.x</a></p>
+<p><a href="https://github.com/aaPanel/BaoTa" target="_blank" rel="noopener">GitHub Star</a></p>
+<p><strong>Linux面板7.0.2安装命令：（宝塔推荐使用充值0.08元即可使用的<a href="http://www.zun.com/list.html" target="_blank" rel="noopener">尊云zun.com</a>云服务器安装）</strong>使用SSH 连接工具（<a href="https://www.bt.cn/bbs/thread-1971-1-1.html" target="_blank" rel="noopener">查看使用方法</a>），挂载磁盘后（<a href="https://www.bt.cn/bbs/forum.php?mod=viewthread&tid=3187&extra=page%3D1" target="_blank" rel="noopener">查看</a>），根据系统执行框内命令开始安装（大约2分钟完成面板安装）<br><strong>Centos安装命令：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y wget &amp;&amp; wget -O install.sh http://download.bt.cn/install/install_6.0.sh &amp;&amp; sh install.sh</span><br></pre></td></tr></table></figure>
 
-<p>这是今天打开百度看到的三则广告，连在了一起，（因为我有登录，这个新闻是由算法推荐的，都是我感兴趣的内容）</p>
-<p>首先说第一条，一位大哥2009年，购买比特币现在过去10年比特币升值迅猛，这个大哥身价将近过百亿。（这笔买彩票还厉害）</p>
-<p>第二条一只天猫成交额96内突破百亿，12分49秒突破500亿，这些营业额，离不开公司的工程师的努力，真牛。</p>
-<p>透过现象看本质，他们如何部署的服务器为啥这么牛，运维真厉害。</p>
-<p>第三条京东的手机销量十天达到了十月份的二十倍销量，我也是京东的铁粉，拥有者好几年的PULS会员，现在已经不让我冲了。</p>
-<p>这些信息让我感触颇深，一个是比特币的发展行情，别看赚钱这么多，一个人赚钱多了就看不得跌了，心脏蹦蹦跳的那种，也让我看到了电商的崛起，已经完全压倒现在的实体店了，以后实体店估计只负责售后服务了，现在已经是网购快递到家的时代，也是5G时代，看过京东的快递车，物流机器人才发现世界真的在变化，再变强。</p>
-<p>但是呢，穷人们还在传统行业，富人们还在财富累积，整个时代推动的只是一小部分人，只有走出来才能看到世界的发展，就像当前刚毕业的时候，随便碰了一点壁就感觉，整个世界都在和我作对，还好当初坚持下来了。</p>
-<p>人的思想是根据格局改变的，如何看待事物的发展，如何看到实物的本质，才能有更长远的眼光，加油！给自己加油，希望自己就算那个笑到最后的人。</p>
+<p><strong>就说到这里吧具体很多功能都需要自己去探索。</strong></p>
 
         </div>
 
@@ -186,10 +189,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/12/10/a-id-86/">Linux安装好用的宝塔面板</a>
             
-            
-            <a class="next" rel="next" href="/2019/11/07/a-id-84/">捋羊毛，捋死羊！！</a>
+            <a class="next" rel="next" href="/2019/11/11/a-id-85/">谁笑到最后？</a>
             
         </section>
 
