@@ -7,7 +7,7 @@
 
 
 
-<title>Linux安装好用的宝塔面板 | 张卫宁的技术博客</title>
+<title>《央视融媒》视频上传解决方案 | 张卫宁的技术博客</title>
 
 
 
@@ -111,11 +111,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Linux安装好用的宝塔面板</h1>
+            <h1 class="post-title">《央视融媒》视频上传解决方案</h1>
             
                 <div class="post-meta">
                     
@@ -124,7 +186,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">December 10, 2019&nbsp;&nbsp;13:26:16</a>
+                        Date: <a href="#">December 17, 2019&nbsp;&nbsp;17:53:08</a>
                         </span>
                     
                     
@@ -133,25 +195,38 @@
         </header>
 
         <div class="post-content">
-            <blockquote>
-<p>玩了这么就linux系统还不知道有个宝塔面板可以动态安装，今天我就使用linux系统来安装宝塔面板。</p>
-</blockquote>
-<p><strong>安装要求：</strong></p>
-<p>内存：512M以上，推荐768M以上（纯面板约占系统60M内存）</p>
-<p>硬盘：100M以上可用硬盘空间（纯面板约占20M磁盘空间）</p>
-<p>系统：CentOS 7.1+ (Ubuntu16.04+.、Debian9.0+)，<strong>确保是干净的操作系统，</strong>没有安装过其它环境带的Apache/Nginx/php/MySQL<strong>（已有环境不可安装）</strong></p>
-<p>宝塔linux7.0版本是基于centos7开发的，务必使用centos7.x 系统</p>
-<p>提示：Centos官方已宣布在2020年停止对Centos6的维护更新，各大软件开发商也逐渐停止对Centos6的兼容，新服务器不建议使用Centos6</p>
-<p><strong>以下主机商必看（开端口教程，不开不能用）：</strong></p>
-<p>腾讯云：<a href="https://www.bt.cn/bbs/thread-1229-1-1.html" target="_blank" rel="noopener">https://www.bt.cn/bbs/thread-1229-1-1.html</a> <a href="https://cloud.tencent.com/redirect.php?redirect=1014&cps_key=624d99e25c64927aef8353ed6cd5536c&from=console" target="_blank" rel="noopener">腾讯云2折起</a></p>
-<p>阿里云：<a href="https://www.bt.cn/bbs/thread-2897-1-1.html" target="_blank" rel="noopener">https://www.bt.cn/bbs/thread-2897-1-1.html</a> <a href="https://promotion.aliyun.com/ntms/act/qwbk.html?userCode=wkpc565a" target="_blank" rel="noopener">阿里云2折起</a><br>华为云：<a href="https://www.bt.cn/bbs/thread-3923-1-1.html" target="_blank" rel="noopener">https://www.bt.cn/bbs/thread-3923-1-1.html</a></p>
-<p><a href="https://www.bt.cn/bbs/forum.php?mod=viewthread&tid=1186&extra=page%3D1%26filter%3Dtypeid%26typeid%3D6" target="_blank" rel="noopener">如果要安装5.9老版本可以点这</a></p>
-<p><a href="https://www.bt.cn/bbs/thread-33389-1-1.html" target="_blank" rel="noopener">5.9平滑升级6.x</a></p>
-<p><a href="https://github.com/aaPanel/BaoTa" target="_blank" rel="noopener">GitHub Star</a></p>
-<p><strong>Linux面板7.0.2安装命令：（宝塔推荐使用充值0.08元即可使用的<a href="http://www.zun.com/list.html" target="_blank" rel="noopener">尊云zun.com</a>云服务器安装）</strong>使用SSH 连接工具（<a href="https://www.bt.cn/bbs/thread-1971-1-1.html" target="_blank" rel="noopener">查看使用方法</a>），挂载磁盘后（<a href="https://www.bt.cn/bbs/forum.php?mod=viewthread&tid=3187&extra=page%3D1" target="_blank" rel="noopener">查看</a>），根据系统执行框内命令开始安装（大约2分钟完成面板安装）<br><strong>Centos安装命令：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y wget &amp;&amp; wget -O install.sh http://download.bt.cn/install/install_6.0.sh &amp;&amp; sh install.sh</span><br></pre></td></tr></table></figure>
+            <p>自我介绍：</p>
+<p>我是我部负责技术的一名员工，本篇文章主要解决视频上传速度的解决办法。</p>
+<h1 id="一-邮箱上传"><a href="#一-邮箱上传" class="headerlink" title="一.邮箱上传"></a>一.邮箱上传</h1><p>首先以QQ邮箱为例子，只要使用发送邮件即可，添加附件。</p>
+<img src="/2019/12/17/a-id-87/20191218101421.png">
 
-<p><strong>就说到这里吧具体很多功能都需要自己去探索。</strong></p>
+<p>但是这个上传的速度非常感人。</p>
+<h1 id="二-百度云上传"><a href="#二-百度云上传" class="headerlink" title="二.百度云上传"></a>二.百度云上传</h1><p>这个方法是基于第三方平台的，百度网盘，其实某度做了这么多人，搜索引擎被人骂的体无完肤，也在乡亲父老们口上留了一句话，有问题上百度，看某度，某度的第一条新闻肯定是跑题的，这也就是为啥骂他的原因，简直就是收钱办事，说了这么多但是百度网盘的效率还是蛮不错的，虽然都要钱把，但是这个上传下载的速度还是比邮箱稍微快一点的。</p>
+<p>优点：</p>
+<ol>
+<li>视频云存储。</li>
+<li>一次上传N次下载。</li>
+<li>视频分享便捷。</li>
+</ol>
+<p>方法步骤：</p>
+<ol>
+<li><p>注册百度账号，下载百度网盘。</p>
+<p>PC端地址：<a href="http://pan.baidu.com/download" target="_blank" rel="noopener">http://pan.baidu.com/download</a></p>
+<p>APP端：直接打开应用商店下载即可。</p>
+</li>
+<li><p>登录客户端主页面使用上传的功能。</p>
+<img src="/2019/12/17/a-id-87/20191218103432.png">
+</li>
+<li><p>将视频制作为链接进行分享。</p>
+<img src="/2019/12/17/a-id-87/20191218103914.png">
+</li>
+<li><p>就可以将这个链接获取到，在使用邮箱将链接，和提取码发送给我部我部会将链接内容提取下载。</p>
+</li>
+<li><p>普通用户有两个T的存储空间所以不要在意空间限制。</p>
+</li>
+<li><p>这就是视频上传的基本方法。</p>
+</li>
+</ol>
 
         </div>
 
@@ -189,10 +264,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2019/12/17/a-id-87/">《央视融媒》视频上传解决方案</a>
             
-            
-            <a class="next" rel="next" href="/2019/11/11/a-id-85/">谁笑到最后？</a>
+            <a class="next" rel="next" href="/2019/12/10/a-id-86/">Linux安装好用的宝塔面板</a>
             
         </section>
 
