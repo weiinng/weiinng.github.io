@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>央视融媒视频上传解决方案 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">央视融媒视频上传解决方案</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 24, 2019&nbsp;&nbsp;10:33:48</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/星光影视园/">星光影视园</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>解决传统的FTP上传速度慢容易垮掉的问题，以下为将视频上传到七牛云存储的解决办法，纯web操作。</p>
+<p>首先打开七牛云的官方网站。</p>
+<img src="/2019/12/24/a-id-88/20191224103714.png">
+
+<p><a href="https://www.qiniu.com/" target="_blank" rel="noopener">https://www.qiniu.com/</a></p>
+<p>登录状态下进入管理控制台。</p>
+
+
+<p>进去之后点击左边的侧边看进入对象存储。</p>
+<img src="/2019/12/24/a-id-88/20191224103944.png">
+
+<p>选择一个空间。</p>
+<img src="/2019/12/24/a-id-88/20191224104032.png">
+
+<p>进入空间之后选择内容管理</p>
+<img src="/2019/12/24/a-id-88/20191224104252.png">
+
+
+
+<img src="/2019/12/24/a-id-88/20191224104150.png">
+
+<p>进入之后跳到一个上传文件的页面。</p>
+<img src="/2019/12/24/a-id-88/20191224104343.png">
+
+<p>选择指定影片添加即可。</p>
+<img src="/2019/12/24/a-id-88/20191224110520.png">
+
+<p>这个软件是支持批量操作的。</p>
+<img src="/2019/12/24/a-id-88/20191224110600.png">
+
+<p>用完时候关闭去内容管理找你上传影片的名字。</p>
+<img src="/2019/12/24/a-id-88/20191224110745.png">
+
+<p>选择复制外部连接。</p>
+<img src="/2019/12/24/a-id-88/20191224110857.png">
+
+<p>然后放在url地址栏查看是否可以播放。</p>
+<img src="/2019/12/24/a-id-88/20191224110928.png">
+
+<img src="/2019/12/24/a-id-88/音乐.gif">
+
+<h3 id="接下来是讲如何展示。"><a href="#接下来是讲如何展示。" class="headerlink" title="接下来是讲如何展示。"></a>接下来是讲如何展示。</h3><p>首先进入我们的后台管理系统。</p>
+<p>简单介绍一下。</p>
+<img src="/2019/12/24/a-id-88/0191224115403.png">
+
+<p>发布文章页面：</p>
+<img src="/2019/12/24/a-id-88/20191224120053.png">
+
+<p>填写完常规信息之后就到了文章内容，首先说说视频的两种，标签：</p>
+<h4 id="1-视频老式标签。"><a href="#1-视频老式标签。" class="headerlink" title="1.视频老式标签。"></a>1.视频老式标签。</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"text-align: center;"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">iframe</span> <span class="attr">allowfullscreen</span>=<span class="string">"true"</span> <span class="attr">frameborder</span>=<span class="string">"0"</span> <span class="attr">height</span>=<span class="string">"100%"</span> 			<span class="attr">src</span>=<span class="string">"http://www.cctvzyzg.com/video/%E5%A4%AE%E8%A7%86%E8%A7%A6%E5%AA%92.mp4"</span> <span class="attr">width</span>=<span class="string">"100%"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-视频新式标签"><a href="#2-视频新式标签" class="headerlink" title="2.视频新式标签"></a>2.视频新式标签</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"text-align: center;"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">video</span> </span></span><br><span class="line"><span class="tag">           <span class="attr">src</span>=<span class="string">"http://qiniu.weiinng.cn/%E6%88%91%E7%9A%84%E5%BD%B1%E7%89%872.mp4"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">width</span>=<span class="string">"800px"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">height</span>=<span class="string">"600px"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">autoplay</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">loop</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">muted</span>=<span class="string">"false"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">controls</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">page-gesture</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">show-fullscreen-btn</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">show-center-play-btn</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">enable-progress-gesture</span>=<span class="string">"true"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">objectFit</span>=<span class="string">"cover"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">style</span>=<span class="string">"&#123;</span></span></span><br><span class="line"><span class="tag"><span class="string">                  border: 0;</span></span></span><br><span class="line"><span class="tag"><span class="string">                  &#125;"</span></span></span><br><span class="line"><span class="tag">           &gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">video</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>src ：必填字段就是视频的播放地址，刚才上传到七牛云并召回来的外链。</li>
+<li>width：视频的宽度，px结尾。</li>
+<li>height：视频的高度，px结尾。</li>
+<li>autoplay：视频是否自动播放。默认false不自动播放，如果修改为true则为自动播放。</li>
+<li>loop：是否循环播放。默认false不循环播放，如果修改为true则为循环播放。</li>
+<li>muted：石佛偶静音播放，默认为false不静音模仿，如果修改为ture则为静音播放。</li>
+</ul>
+<p>剩下的属性请见下方。</p>
+<p>如果不懂请咨询作者。</p>
+<p>新式标签内容比较多但是需要修改的没有几处。</p>
+<h5 id="所有属性："><a href="#所有属性：" class="headerlink" title="所有属性："></a>所有属性：</h5><table>
+<thead>
+<tr>
+<th align="left">属性名</th>
+<th align="left">类型</th>
+<th align="left">默认值</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">src</td>
+<td align="left">String</td>
+<td align="left"></td>
+<td align="left">要播放视频的资源地址</td>
+</tr>
+<tr>
+<td align="left">autoplay</td>
+<td align="left">Boolean</td>
+<td align="left">false</td>
+<td align="left">是否自动播放</td>
+</tr>
+<tr>
+<td align="left">loop</td>
+<td align="left">Boolean</td>
+<td align="left">false</td>
+<td align="left">是否循环播放</td>
+</tr>
+<tr>
+<td align="left">muted</td>
+<td align="left">Boolean</td>
+<td align="left">false</td>
+<td align="left">是否静音播放</td>
+</tr>
+<tr>
+<td align="left">initial-time</td>
+<td align="left">Number</td>
+<td align="left"></td>
+<td align="left">指定视频初始播放位置，单位为秒（s）。</td>
+</tr>
+<tr>
+<td align="left">duration</td>
+<td align="left">Number</td>
+<td align="left"></td>
+<td align="left">指定视频时长，单位为秒（s）。</td>
+</tr>
+<tr>
+<td align="left">controls</td>
+<td align="left">Boolean</td>
+<td align="left">true</td>
+<td align="left">是否显示默认播放控件（播放/暂停按钮、播放进度、时间）</td>
+</tr>
+<tr>
+<td align="left">danmu-list</td>
+<td align="left">Object Array</td>
+<td align="left"></td>
+<td align="left">弹幕列表</td>
+</tr>
+<tr>
+<td align="left">danmu-btn</td>
+<td align="left">Boolean</td>
+<td align="left">false</td>
+<td align="left">是否显示弹幕按钮，只在初始化时有效，不能动态变更</td>
+</tr>
+<tr>
+<td align="left">enable-danmu</td>
+<td align="left">Boolean</td>
+<td align="left">false</td>
+<td align="left">是否展示弹幕，只在初始化时有效，不能动态变更</td>
+</tr>
+<tr>
+<td align="left">page-gesture</td>
+<td align="left">Boolean</td>
+<td align="left">false</td>
+<td align="left">在非全屏模式下，是否开启亮度与音量调节手势</td>
+</tr>
+<tr>
+<td align="left">direction</td>
+<td align="left">Number</td>
+<td align="left"></td>
+<td align="left">设置全屏时视频的方向，不指定则根据宽高比自动判断。有效值为 0（正常竖向）, 90（屏幕逆时针90度）, -90（屏幕顺时针90度）</td>
+</tr>
+<tr>
+<td align="left">show-progress</td>
+<td align="left">Boolean</td>
+<td align="left">true</td>
+<td align="left">若不设置，宽度大于240时才会显示</td>
+</tr>
+<tr>
+<td align="left">show-fullscreen-btn</td>
+<td align="left">Boolean</td>
+<td align="left">true</td>
+<td align="left">是否显示全屏按钮</td>
+</tr>
+<tr>
+<td align="left">show-play-btn</td>
+<td align="left">Boolean</td>
+<td align="left">true</td>
+<td align="left">是否显示视频底部控制栏的播放按钮</td>
+</tr>
+<tr>
+<td align="left">show-center-play-btn</td>
+<td align="left">Boolean</td>
+<td align="left">true</td>
+<td align="left">是否显示视频中间的播放按钮</td>
+</tr>
+<tr>
+<td align="left">enable-progress-gesture</td>
+<td align="left">Boolean</td>
+<td align="left">true</td>
+<td align="left">是否开启控制进度的手势</td>
+</tr>
+<tr>
+<td align="left">objectFit</td>
+<td align="left">String</td>
+<td align="left">contain</td>
+<td align="left">当视频大小与 video 容器大小不一致时，视频的表现形式。contain：包含，fill：填充，cover：覆盖</td>
+</tr>
+<tr>
+<td align="left">poster</td>
+<td align="left">String</td>
+<td align="left"></td>
+<td align="left">视频封面的图片网络资源地址，如果 controls 属性值为 false 则设置 poster 无效</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>一个文章可以放多个视频任意组合包括图文视频都可以放在一起。但是需要对html语法有一定了解。</p>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2019/12/17/a-id-87/">《央视融媒》视频上传解决方案</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
