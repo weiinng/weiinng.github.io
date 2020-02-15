@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>《央视融媒》个摄制中心视频上传方案 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">《央视融媒》个摄制中心视频上传方案</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">January 4, 2020&nbsp;&nbsp;15:46:09</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/星光影视园/">星光影视园</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="后台操作文档"><a href="#后台操作文档" class="headerlink" title="后台操作文档"></a>后台操作文档</h1><p>一.登录后台</p>
+<p>打开浏览器输入106.13.67.197:8000或8001端口进入登录页面，可根据官方提供的账号密码进行登录</p>
+<img src="/2020/01/04/a-id-89/图片1.png">
+
+<p>登录失败，请查看错误提示信息，重新登录</p>
+<img src="/2020/01/04/a-id-89/图片2.png">
+
+<p>二.登录成功后，进入我的桌面</p>
+<img src="/2020/01/04/a-id-89/图片3.png">
+
+<p>三.分类管理</p>
+<p>点击分类管理，有分类/栏目/标签三个管理页面，当前是分类管理，输入分类名称，点击箭头2添加，添加成功数据会在下面箭头3进行展示，箭头4是编辑可以进行修改，箭头5是删除可以对数据进行删除，谨慎操作（栏目/标签同理）</p>
+<img src="/2020/01/04/a-id-89/图片4.png">
+
+<p>四．(1)点击箭头1视频管理，有电影/微视频管理两个页面，输入查询信息点击箭头3搜索自己喜欢的电影，没有点击箭头2进行添加</p>
+<img src="/2020/01/04/a-id-89/图片5.png"> 
+
+<p>(2).进入添加页面，在箭头1输入信息，带*号的必须添加，查看是否有分类，没有点击箭头2进行添加，确定无误点击箭头3提交进行添加。</p>
+<img src="/2020/01/04/a-id-89/图片6.png"> 
+
+<p>(3).添加成功，自动跳转到电影列表页面，在箭头1可以看到所有数据以及添加成功的新数据，点击箭头4可以对数据进行编辑修改，点击箭头5可以对数据进行删除，谨慎操作。注意看是否审核通过，通过可以点击箭头6进行下架 下架之后信息不能在app 上显示。如果没有图片可以点击箭头2进行添加，没有视频可以点击箭头3进行添加</p>
+<img src="/2020/01/04/a-id-89/图片7.png"> 
+
+<p>(4).进行添加图片页面，核对箭头1数据是否是自己添加的数据，仔细阅读箭头2内容。点击箭头3进行添加</p>
+<img src="/2020/01/04/a-id-89/图片8.png"> 
+
+<p>(5).选择图片，点击箭头进行添加</p>
+<img src="/2020/01/04/a-id-89/图片9.png"> 
+
+<p>(6).添加成功自动会跳转到电影列表页面，这个时候上传图片就变成查看了（上传电影同理），点击箭头查看图片，进入详情页同样点击打印名称也可以进入详情页</p>
+<img src="/2020/01/04/a-id-89/图片10.png"> 
+
+<p>(7).进入详情页，查看电影详细信息，没有视频可以点击箭头进行上传（原理跟图片一致）</p>
+<img src="/2020/01/04/a-id-89/图片11.png"> 
+
+<p>(8).微视频管理同理，需要我们注意添加微视频信息的时候，作者是固定的，不能添加选择。</p>
+<img src="/2020/01/04/a-id-89/图片12.png">  
+
+<p>五．(1).其他页面同理也是一样的操作，需要注意作者管理里面数据是各个摄制中心，摄制中心登录时候的相关信息</p>
+ <img src="/2020/01/04/a-id-89/图片13.png"> 
+
+<p>(2) .用户管理页面是app用户使用的，状态为停用的都在删除的会员里面，箭头2修改密码不能谨慎操作，因为是用户的。</p>
+<img src="/2020/01/04/a-id-89/图片14.png">  
+
+<p>(3) .评论管理中的评论和意见反馈页面是用户的。我们可以查看，并且删除</p>
+<img src="/2020/01/04/a-id-89/图片15.png">  
+
+<p>(4) .管理员管理里面是管理员的相关信息，可以点击箭头1进行添加，箭头2编辑，箭头3删除。</p>
+<img src="/2020/01/04/a-id-89/图片16.png">  
+
+<p>(5) .系统管理是系统的相关信息，可以实时编辑修改</p>
+<img src="/2020/01/04/a-id-89/图片17.png">  
+
+<p>自此操作说明完毕，请详细阅读，谨慎操作，祝您使用愉快！！！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/02/15/a-id-90/">短视频项目总结</a>
+            
+            
+            <a class="next" rel="next" href="/2019/12/24/a-id-88/">《央视融媒》后台视频更新解决方案</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
