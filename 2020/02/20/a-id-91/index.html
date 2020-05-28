@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>通过安卓手机获取微信小程序包进行反编译方法 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">通过安卓手机获取微信小程序包进行反编译方法</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">February 20, 2020&nbsp;&nbsp;13:26:59</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <blockquote>
+<p>偶然有需求了解别人的小程序实现方法，网上相关资料很多，顺便了解了一下，做个总结，没啥技术含量，分享出来。</p>
+</blockquote>
+<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><ul>
+<li>安装Nodejs</li>
+<li>一台<strong>root后的安卓手机</strong>或者装有<strong>可以打开微信小程序的安卓模拟器</strong></li>
+<li>一个敢于折腾的耐心</li>
+</ul>
+<blockquote>
+<p>看起来很简单的样子</p>
+</blockquote>
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><h3 id="安装反编译工具"><a href="#安装反编译工具" class="headerlink" title="安装反编译工具"></a>安装反编译工具</h3><p>【推荐】方法一：你可以通过git clone将它存在本地</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/qwerty472123/wxappUnpacker.git</span><br></pre></td></tr></table></figure>
+
+<p>将工具放在需要的目录内（例如<code>wxappUnpacker</code>）。</p>
+<p>方法二：也可以直接下载这个工具包，点击<a href="https://github.com/qwerty472123/wxappUnpacker/archive/master.zip" target="_blank" rel="noopener">下载</a>，并解压出来。</p>
+<p>接着在该项目内执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install esprima css-tree cssbeautify vm2 uglify-es js-beautify escodegen</span><br></pre></td></tr></table></figure>
+
+<p>安装完项目依赖后开始进行最复杂的操作，提取小程序包。</p>
+<h3 id="提取微信小程序文件包"><a href="#提取微信小程序文件包" class="headerlink" title="提取微信小程序文件包"></a>提取微信小程序文件包</h3><p>此时你有两个选择：通过安卓虚拟机获取，用你已经root的安卓机操作。</p>
+<h4 id="安卓虚拟机"><a href="#安卓虚拟机" class="headerlink" title="安卓虚拟机"></a>安卓虚拟机</h4><ul>
+<li><p>如果你是Windows，这就好说了。</p>
+<p>【推荐】选择<a href="https://www.yeshen.com/" target="_blank" rel="noopener">夜神模拟器</a>下载并安装。</p>
+<p>【似乎不太好用】我已经实践过了，这里有破解版的模拟器：<a href="http://www.zdfans.com/html/18525.html" target="_blank" rel="noopener">Genymotion v2.12.2破解版</a>。但是你要注册一个账号来添加虚拟设备，进行安装。安装完成后就可以启动了。</p>
+<p>【失败】网易的Mumu也是安卓模拟器，但是经过实践，居然不支持微信小程序。</p>
+</li>
+<li><p>如果你是MacOS</p>
+<p>上面提到的<code>Genymotion</code>也是支持MacOS的，不过还是很麻烦。</p>
+<p>Mumu似乎不错，结果上面提到了，MacOS下也是打不开微信小程序的。</p>
+<p>结论：请自行尝试<code>Genymotion</code>模拟，或者找其他我还没发现的模拟器。</p>
+</li>
+</ul>
+<h4 id="已Root安卓手机"><a href="#已Root安卓手机" class="headerlink" title="已Root安卓手机"></a>已Root安卓手机</h4><p>你用有一台牛逼闪闪的安卓手机，但是大部分手机不允许root的，或者说root也是非常复杂的，所以如果你不懂得如何root，请考虑使用安卓虚拟机！</p>
+<p>如果你优秀的root过了，这里又有两个方案：</p>
+<ol>
+<li>【风险极高】粗暴的下载一个root explorer破解版，并授权root权限！</li>
+<li>【推荐】从谷歌商店或者可靠的应用市场下载<code>Root Explorer</code>，土豪请付款购买，好像不到<code>6美元</code>，我这里尝试了一下<code>ES文件浏览器</code>也可以，所以接下来下载它并安装好。</li>
+</ol>
+<p><strong>看到这里，我当你已经拥有了一台可以登录微信、安装了文件管理工具、并给它授予最高权限的安卓手机了！</strong></p>
+<h4 id="提取文件"><a href="#提取文件" class="headerlink" title="提取文件"></a>提取文件</h4><ul>
+<li>打开微信，登录微信账号。</li>
+<li>打开一个小程序，让他正确加载显示后就可以关闭了（这个时候小程序的包已经报留在你的手机某个位置了）。</li>
+<li>打开文件管理工具（模拟器终会提示root，真机请手动授权root权限），访问这个路径<code>根目录（非存储） &gt; data &gt; data &gt; com.tencent.mm &gt; MicroMsg &gt; 9f69************ad8d(类似这样的标识你所登录的账号的目录) &gt; appBrand &gt; pkg</code>，可以看到类似下面这样的文件：<ul>
+<li>_46541548_7.wxapkg</li>
+<li>_-529198367_190.wxapkg</li>
+<li>*.wxapkg</li>
+</ul>
+</li>
+<li>如果不多的话将他们打包成zip，发送给微信朋友或者其他方法上传到网络硬盘。</li>
+<li>再到电脑上把刚接收的或者上传的zip下载到电脑上，解压出来。</li>
+</ul>
+<p>此时，文件就拿到了。</p>
+<h2 id="反编译"><a href="#反编译" class="headerlink" title="反编译"></a>反编译</h2><p>进入工具目录<code>wxappUnpacker</code>，建一个文件夹，比如<code>pkg</code>，将刚才拿到的文件放在这里。</p>
+<p>假设，我要尝试反编译这个文件<code>_46541548_7.wxapkg</code>，执行命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node wuWxapkg.js ./pkg/_46541548_7.wxapkg</span><br></pre></td></tr></table></figure>
+
+<p>顺利的话会生成一个同名的目录。打开这个目录就能看到了。</p>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><p>程序出问题，工具出问题，代码有BUG，再常见不过了。以下几个异常，你也许也发生过，可能不明白，我把我遇到的异常理解分享一下：</p>
+<ul>
+<li><p>未安装成功工具依赖的模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Error: Cannot find module &apos;uglify-es&apos;</span><br><span class="line">    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:581:15)</span><br><span class="line">    at Function.Module._load (internal/modules/cjs/loader.js:507:25)</span><br><span class="line">    at Module.require (internal/modules/cjs/loader.js:637:17)</span><br><span class="line">    at require (internal/modules/cjs/helpers.js:22:18)</span><br><span class="line">    at Object.&lt;anonymous&gt; (/Users/whidy/webs/wxappUnpacker/wuJs.js:3:16)</span><br><span class="line">    at Module._compile (internal/modules/cjs/loader.js:689:30)</span><br><span class="line">    at Object.Module._extensions..js (internal/modules/cjs/loader.js:700:10)</span><br><span class="line">    at Module.load (internal/modules/cjs/loader.js:599:32)</span><br><span class="line">    at tryModuleLoad (internal/modules/cjs/loader.js:538:12)</span><br><span class="line">    at Function.Module._load (internal/modules/cjs/loader.js:530:3)</span><br></pre></td></tr></table></figure>
+
+<p>那就是你没装好依赖，再执行一次<code>npm run uglify-es</code>。</p>
+</li>
+<li><p>未识别的包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">Saving files...</span><br><span class="line">Unpack done.</span><br><span class="line">/Users/whidy/webs/wxappUnpacker/wuWxapkg.js:104</span><br><span class="line">        &#125;else throw Error(&quot;This package is unrecognizable.\nMay be this package is a subPackage which should be unpacked with -s=&lt;MainDir&gt;.\nOtherwise, please decrypted every type of file by hand.&quot;)</span><br><span class="line">              ^</span><br><span class="line"></span><br><span class="line">Error: This package is unrecognizable.</span><br><span class="line">May be this package is a subPackage which should be unpacked with -s=&lt;MainDir&gt;.</span><br><span class="line">Otherwise, please decrypted every type of file by hand.</span><br><span class="line">    at Array.packDone (/Users/whidy/webs/wxappUnpacker/wuWxapkg.js:104:14)</span><br><span class="line">    at CntEvent.decount (/Users/whidy/webs/wxappUnpacker/wuLib.js:17:43)</span><br><span class="line">    at ioLimit.runWithCb.err (/Users/whidy/webs/wxappUnpacker/wuLib.js:73:11)</span><br><span class="line">    at agent (/Users/whidy/webs/wxappUnpacker/wuLib.js:54:14)</span><br><span class="line">    at FSReqWrap.oncomplete (fs.js:141:20)</span><br></pre></td></tr></table></figure>
+
+<p>好像挺顺利，东西也出来了，可是最后还是报错了，推断是包内有包，子包解压失败。有关更多可以阅读：<a href="https://github.com/qwerty472123/wxappUnpacker/issues/35" target="_blank" rel="noopener">https://github.com/qwerty4721…</a></p>
+</li>
+<li><p>未定义的<code>$gwx</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Saving files...</span><br><span class="line">Unpack done.</span><br><span class="line">/Users/whidy/webs/wxappUnpacker/wuWxapkg.js:104</span><br><span class="line">        &#125;else throw Error(&quot;This package is unrecognizable.\nMay be this package is a subPackage which should be unpacked with -s=&lt;MainDir&gt;.\nOtherwise, please decrypted every type of file by hand.&quot;)</span><br><span class="line">              ^</span><br><span class="line"></span><br><span class="line">Error: This package is unrecognizable.</span><br><span class="line">May be this package is a subPackage which should be unpacked with -s=&lt;MainDir&gt;.</span><br><span class="line">Otherwise, please decrypted every type of file by hand.</span><br><span class="line">    at Array.packDone (/Users/whidy/webs/wxappUnpacker/wuWxapkg.js:104:14)</span><br><span class="line">    at CntEvent.decount (/Users/whidy/webs/wxappUnpacker/wuLib.js:17:43)</span><br><span class="line">    at ioLimit.runWithCb.err (/Users/whidy/webs/wxappUnpacker/wuLib.js:73:11)</span><br><span class="line">    at agent (/Users/whidy/webs/wxappUnpacker/wuLib.js:54:14)</span><br><span class="line">    at FSReqWrap.oncomplete (fs.js:141:20)</span><br></pre></td></tr></table></figure>
+
+<p>这个就要修改一下工具源码了，打开<code>wuWxss.js</code>文件，修改内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 原始</span><br><span class="line">function runVM(name,code)&#123;</span><br><span class="line">    let wxAppCode=&#123;&#125;,handle=&#123;cssFile:name&#125;;</span><br><span class="line">    let vm=new VM(&#123;sandbox:Object.assign(new GwxCfg(),&#123;__wxAppCode__:wxAppCode,setCssToHead:cssRebuild.bind(handle)&#125;)&#125;);</span><br><span class="line">    vm.run(code);</span><br><span class="line">    for(let name in wxAppCode)if(name.endsWith(&quot;.wxss&quot;))&#123;</span><br><span class="line">        handle.cssFile=path.resolve(frameName,&quot;..&quot;,name);</span><br><span class="line">        wxAppCode[name]();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>改成新的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function runVM(name,code)&#123;</span><br><span class="line">    let wxAppCode=&#123;&#125;,handle=&#123;cssFile:name&#125;;</span><br><span class="line">    let gg = new GwxCfg();</span><br><span class="line">    let tsandbox =&#123;$gwx:GwxCfg.prototype[&quot;$gwx&quot;],__mainPageFrameReady__:GwxCfg.prototype[&quot;$gwx&quot;],__wxAppCode__:wxAppCode,setCssToHead:cssRebuild.bind(handle)&#125;;</span><br><span class="line">    let vm = new VM(&#123;sandbox:tsandbox&#125;);</span><br><span class="line">    vm.run(code);</span><br><span class="line">    for(let name in wxAppCode)if(name.endsWith(&quot;.wxss&quot;))&#123;</span><br><span class="line">        handle.cssFile=path.resolve(frameName,&quot;..&quot;,name);</span><br><span class="line">        wxAppCode[name]();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>再重新跑一次，Bingo！万事大吉。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>总的来说，这个操作还是比较容易的，最大的难点就是想办法提出文件了。工具别人写好了，有问题，Issue上面的解决方案很多，很快就能解决。</p>
+<p>想要实现更多，也可以参考工具的说明文档通过不同的命令操作。</p>
+<p>当然，小程序缓存到本地是迫不得已的，为了提高加载速度嘛。这个东西，微信官方大概已经知道了，我想可能也会封堵吧。这个微信官方或许也只是单纯打包了一下，所以就比较容易破解，如果他加壳，加密的话，或许以后就难了。</p>
+<p>这也让我想起很多年前，我也搞过类似的事情，大约8年前玩安卓手机的时候，解锁Bootload，开启Root来自个性化手机几乎满天都是，大把一键root，一键解锁工具，因此那时候安卓手机安全性很低，小白用户不懂，一不小心就中毒群发小广告。</p>
+<p>那时候也流行<strong>Wifi万能钥匙</strong>，流量很贵的啦，我经常蹭了网，再去系统目录找到那个存放wifi的配置文件来查看别人家的Wifi密码。然后再用这个密码尝试admin/密码，看看路由啥的，不过我没搞过破坏的。</p>
+<p>好了，大家如果还有不明白的，可以留言，我有空再分析一下这个工具的实现方式，也顺便尝试一下其他小程序（SWAN，头条，支付宝等），是否也是类似的，等有了结论再来一篇了~</p>
+<p>原文链接：<a href="https://segmentfault.com/a/1190000018592740?utm_source=tag-newest" target="_blank" rel="noopener">https://segmentfault.com/a/1190000018592740?utm_source=tag-newest</a></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/05/01/a-id-92/">Golang基础（一）</a>
+            
+            
+            <a class="next" rel="next" href="/2020/02/15/a-id-90/">短视频项目总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

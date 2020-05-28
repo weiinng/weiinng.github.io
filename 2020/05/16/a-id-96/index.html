@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Golang基础-切片类型 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Golang基础-切片类型</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 16, 2020&nbsp;&nbsp;10:22:16</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Golang/">Golang</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="切片"><a href="#切片" class="headerlink" title="切片"></a>切片</h1><h2 id="切片类型"><a href="#切片类型" class="headerlink" title="切片类型"></a>切片类型</h2><ul>
+<li><p>切片的英文名称 slice</p>
+</li>
+<li><p>切片：具有可变长度相同类型元素序列</p>
+</li>
+<li><p>由于长度是可变的，可以解决数组长度在数据个数不正确情况下浪费内存的情况。</p>
+</li>
+<li><p>切片和数组声明语法最主要的区别就是长度</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> slice []<span class="keyword">string</span> <span class="comment">//切片</span></span><br><span class="line"><span class="keyword">var</span> array[<span class="number">3</span>]<span class="keyword">string</span> <span class="comment">//数组</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+<ul>
+<li><p>切片只声明为nil，没有开辟内存空间，不能直接操作切片，需要初始化</p>
+<ul>
+<li>注意：切片只能和nil进行判断是否相等</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> slice []<span class="keyword">string</span></span><br><span class="line">	fmt.Println(slice)</span><br><span class="line">	fmt.Println(slice==<span class="literal">nil</span>)</span><br><span class="line">	fmt.Printf(<span class="string">"%p"</span>,slice)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="定义切片"><a href="#定义切片" class="headerlink" title="定义切片"></a>定义切片</h2><ul>
+<li><p>通过直接指定初始值定初始化一个切片变量</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">names:= []<span class="keyword">string</span>&#123;<span class="string">"abc"</span>,<span class="string">"佳明哥"</span>&#125;</span><br><span class="line">fmt.Println(names)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>定义完切片后就可以通过<code>切片对象[脚标]</code>取出或修改切片中元素内容，语法和数组相同</p>
+</li>
+</ul>
+<h2 id="切片是引用类型"><a href="#切片是引用类型" class="headerlink" title="切片是引用类型"></a>切片是引用类型</h2><ul>
+<li>引用类型在变量之间赋值时传递的是地址，引用类型变量就是这个类型的指针，切片就是引用类型。</li>
+<li>值类型在变量之间赋值时传递的是值的副本。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//切片是引用类型</span></span><br><span class="line">names:= []<span class="keyword">string</span>&#123;<span class="string">"abc"</span>,<span class="string">"nige"</span>&#125;</span><br><span class="line">fmt.Println(names)</span><br><span class="line"></span><br><span class="line">names1 := names</span><br><span class="line">names1[<span class="number">0</span>] = <span class="string">"张***"</span></span><br><span class="line">fmt.Println(names1,names)</span><br><span class="line">fmt.Printf(<span class="string">"%p %p"</span>,names1,names)</span><br></pre></td></tr></table></figure>
+
+<h2 id="make函数"><a href="#make函数" class="headerlink" title="make函数"></a>make函数</h2><ul>
+<li><p>Go语言中可以使用make函数创建 slice 、 map 、 channel 、interface</p>
+</li>
+<li><p>使用make函数定义无内容，但是不是nil的切片，意味着切片已经申请了内存空间</p>
+<ul>
+<li>make（类型，初始长度 [，初始容量]）</li>
+<li>初始容量可以省略，默认和长度相等。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">slice := <span class="built_in">make</span>([]<span class="keyword">string</span>,<span class="number">0</span>)  <span class="comment">//长度为0的切片，没有第三个参数表示容量和长度</span></span><br><span class="line">slice1 := <span class="built_in">make</span>([]<span class="keyword">string</span>,<span class="number">0</span>,<span class="number">2</span>) <span class="comment">//长度为0 容量为 2</span></span><br><span class="line">fmt.Println(slice,slice1)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>长度表示切片中元素实际个数，容量表示切片占用空间大小，且切片成倍增加。当增加到1024后按照一定百分比增加。</p>
+<ul>
+<li>len(slice)   查看切片长度</li>
+<li>cap(slice)  查看切片的容量</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">slice :=<span class="built_in">make</span>([]<span class="keyword">string</span>,<span class="number">0</span>)   <span class="comment">//长度为0的切片，没有地第三个参数表示容量和长度相等。</span></span><br><span class="line">slice1 := <span class="built_in">make</span>([]<span class="keyword">string</span>,<span class="number">0</span>,<span class="number">3</span>)  <span class="comment">//长度为0 ，容量为2</span></span><br><span class="line">fmt.Println(<span class="built_in">len</span>(slice),<span class="built_in">cap</span>(slice))</span><br><span class="line">fmt.Println(<span class="built_in">len</span>(slice1),<span class="built_in">cap</span>(slice1))</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h1 id="copy函数"><a href="#copy函数" class="headerlink" title="copy函数"></a>copy函数</h1><ul>
+<li><p>通过copy函数可以把一个切片内容复制到另一个切片中</p>
+</li>
+<li><p>Go语言标准库源码定义如下</p>
+<ul>
+<li>第一个参数是目标切片，接收第二个参数内容</li>
+<li>第二个参数是源切片，把内容拷贝到第一个参数中</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">copy</span><span class="params">(dst,src[]<span class="keyword">type</span>)</span> <span class="title">int</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拷贝时严格按照脚标来拷贝</p>
+</li>
+</ul>
+<p>例子：</p>
+<ul>
+<li><p>把短切片拷贝到长切片</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 := []<span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>&#125;</span><br><span class="line">s2 := []<span class="keyword">int</span> &#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line"><span class="built_in">copy</span>(s2,s1)</span><br><span class="line">fmt.Println(s1)   <span class="comment">//输出：&#123;1 2&#125;</span></span><br><span class="line">fmt.Println(s2)   <span class="comment">//输出：&#123;1 2 5 6&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把长切片拷贝到短切片中</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 := []<span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>&#125;</span><br><span class="line">s2 := []<span class="keyword">int</span> &#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line"><span class="built_in">copy</span>(s1,s2)</span><br><span class="line">fmt.Println(s1)   <span class="comment">//输出：&#123;3 4&#125;</span></span><br><span class="line">fmt.Println(s2)   <span class="comment">//输出：&#123;3 4 5 6&#125;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把切片片段拷贝到切片中</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s1 := []<span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>&#125;</span><br><span class="line">s2 := []<span class="keyword">int</span> &#123;<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;</span><br><span class="line"><span class="built_in">copy</span>(s1,s2[<span class="number">1</span>:])</span><br><span class="line">fmt.Println(s1)   <span class="comment">//输出：&#123;3 4&#125;</span></span><br><span class="line">fmt.Println(s2)   <span class="comment">//输出：&#123;3 4 5 6&#125;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Golang/"># Golang</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/05/17/a-id-97/">Golang基础-切片类型</a>
+            
+            
+            <a class="next" rel="next" href="/2020/05/07/a-id-95/">Golang基础</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

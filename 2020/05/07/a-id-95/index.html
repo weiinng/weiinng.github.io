@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Golang基础 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Golang基础</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">May 7, 2020&nbsp;&nbsp;9:59:36</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Golang/">Golang</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="随机数"><a href="#随机数" class="headerlink" title="随机数"></a>随机数</h2><ul>
+<li>math/rand实现了伪随机数生成器。</li>
+<li>在Go语言中随机数需要设置种子，如果不设置种子随机数的结果每次都会相同。</li>
+<li>默认种子是1，而且同种子产生的随机数是相同的。</li>
+<li>可以使用当前时间的纳秒差计算随机数，在一定程度上保证了种子的唯一性。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"math/rand"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	rand.Seed(time.Now().UnixNano())</span><br><span class="line">	fmt.Println(rand.Int63n(<span class="number">10</span>))</span><br><span class="line">	fmt.Println(rand.Int63n(<span class="number">10</span>))</span><br><span class="line">	fmt.Println(rand.Int63n(<span class="number">10</span>))</span><br><span class="line">	fmt.Println(rand.Int63n(<span class="number">10</span>))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h2><ul>
+<li><p>数组：具有固定长度相同类型的元素序列。</p>
+</li>
+<li><p>声明数组的语法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// var 对象名 [长度]元素类型</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr [<span class="number">5</span>]<span class="keyword">int</span></span><br><span class="line">fmt.Println(arr) <span class="comment">//输出【0 0 0 0 0】</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>数组就是内存中一段固定长度的连续空间</p>
+</li>
+<li><p>声明数组后数组就会在内存中开辟一块连续空间，每个值都称为元素，且元素值为类型对应的默认值，列入int类型默认值为0，String类型默认值为空字符串。</p>
+</li>
+<li><p>数组中每个元素按照顺序都有自己整数类型的脚标，脚标从第一个元素0向后依次为1</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">声明var arr[int] 数组</th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>arr[0] = 0</td>
+<td align="center">arr[1] = 0</td>
+<td>arr[2] = 0</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>数组中实际开发中主要作用是充当临时容器，因为声明一个数组变量比声明多个相同类型变量在操作时更方便。</p>
+</li>
+</ul>
+<h2 id="数组的创建和赋值"><a href="#数组的创建和赋值" class="headerlink" title="数组的创建和赋值"></a>数组的创建和赋值</h2><ul>
+<li>可以在声明数组时可以同时给数组赋值，赋值时要求长度必须大于等于初始值个数。</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 方式1:完整写法</span></span><br><span class="line">	<span class="keyword">var</span> arr [<span class="number">3</span>]<span class="keyword">int</span> = [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">	<span class="comment">//方式2：短变量方式</span></span><br><span class="line">	arr2 := [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">	<span class="comment">//方式3：长度大于初始值。长度为4，只给钱三个元素赋值，其余元素回是默认值</span></span><br><span class="line">	arr3 := [<span class="number">4</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">	<span class="comment">//方式4：赋值时长度不变，数据长度根据元素个数确定</span></span><br><span class="line">	arr4 := [...]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>我们可以通过<strong>数组名[脚表]</strong>对数组中元素进行操作</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">arr1 := [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line">	<span class="comment">//通过下表的方式来取出数组中的某一个值</span></span><br><span class="line">	fmt.Println(arr1[<span class="number">2</span>])</span><br><span class="line"></span><br><span class="line">	<span class="comment">//可以通过数组+下标 的方式对数据中的指定元素进行重新赋值</span></span><br><span class="line">	arr1[<span class="number">2</span>] = <span class="number">10</span></span><br><span class="line">	fmt.Println(arr1)</span><br><span class="line"></span><br><span class="line">	<span class="comment">//通过len函数来获取数组的长度</span></span><br><span class="line">	<span class="comment">//取下标需要-1 如果超出数组的下标范围会报错</span></span><br><span class="line">	fmt.Println(<span class="built_in">len</span>(arr1))</span><br></pre></td></tr></table></figure>
+
+<h2 id="fot循环"><a href="#fot循环" class="headerlink" title="fot循环"></a>fot循环</h2><ul>
+<li><p>循环：让程序多次运行相同的代码</p>
+</li>
+<li><p>for循环是go语言中唯一一个循环结构。</p>
+</li>
+<li><p>for循环经典语法</p>
+<ul>
+<li>先执行表达式1</li>
+<li>执行表达式判断是否成立，如果成立执行循环体</li>
+<li>循环体执行完成之后执行表达式3</li>
+<li>再次执行表达式2，判断是否成立</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">for 表达式1；表达式2；表达式3&#123;</span><br><span class="line">	// 循环体</span><br><span class="line">	fmt.Println(&quot;循环的是我！&quot;)</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>for循环用的最多的地方就是遍历数组切片等。</p>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for 的表达式 1 2 3都可以不填，因为没有了结束条件最终表达式是一个死循环。</span></span><br><span class="line"><span class="keyword">for</span>&#123;</span><br><span class="line">    fmt.Println(<span class="string">"张卫宁"</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//界与正常写法和死循环之间的 for循环,可以把i定义在外面。</span></span><br><span class="line">i:= <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i&lt;<span class="number">5</span>&#123;</span><br><span class="line">    fmt.Println(<span class="string">"张卫宁！"</span>)</span><br><span class="line">    i++</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大多数会使用第一种方案。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Golang/"># Golang</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/05/16/a-id-96/">Golang基础-切片类型</a>
+            
+            
+            <a class="next" rel="next" href="/2020/05/05/a-id-94/">Golang基础-原码、反码、补码</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
