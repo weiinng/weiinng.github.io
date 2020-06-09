@@ -7,7 +7,7 @@
 
 
 
-<title>Golang基础-切片类型 | 张卫宁的技术博客</title>
+<title>【Gc】 | 张卫宁的技术博客</title>
 
 
 
@@ -177,7 +177,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Golang基础-切片类型</h1>
+            <h1 class="post-title">【Gc】</h1>
             
                 <div class="post-meta">
                     
@@ -186,50 +186,55 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">May 17, 2020&nbsp;&nbsp;17:01:42</a>
+                        Date: <a href="#">June 3, 2020&nbsp;&nbsp;17:47:21</a>
                         </span>
                     
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/Golang/">Golang</a>
-                            
-                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h1 id="map"><a href="#map" class="headerlink" title="map"></a>map</h1><ul>
-<li><p>map以散列表方式存储键值对集合</p>
+            <h1 id="一-GC"><a href="#一-GC" class="headerlink" title="一.GC"></a>一.GC</h1><ul>
+<li><p>GC英文全称 garbage collector</p>
 </li>
-<li><p>map中每个元素都是键值对</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">map</span>[key]value</span><br></pre></td></tr></table></figure>
+<li><p>Go语言GC是相对C/C++语言非常重要的改进。</p>
 </li>
-<li><p>key是操作map的唯一标准，可以通过key对map中元素进行增加/删除/修改/查看</p>
-</li>
-<li><p>key是唯一的，添加重复的key会覆盖之前的元素</p>
-</li>
-<li><p>map是值类型，值声明时为空指针（nil）</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span></span><br><span class="line">fmt.Println(m == <span class="literal">nil</span>)  <span class="comment">//输出 true</span></span><br><span class="line">fmt.Printf(<span class="string">"%p"</span>,m)  <span class="comment">//输出 0×0</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>map读写数据时并不是并发安全的，可以结合RWMutex保证并发安全。</p>
-</li>
-</ul>
-<h2 id="实例化map的几种方式"><a href="#实例化map的几种方式" class="headerlink" title="实例化map的几种方式"></a>实例化map的几种方式</h2><ul>
-<li><p>使用make函数实例化一个没有初始值的map</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>)</span><br><span class="line">fmt.Println(m==<span class="literal">nil</span>) <span class="comment">//输出 false</span></span><br><span class="line">fmt.Printf(<span class="string">"%p"</span>,m)  <span class="comment">//输出内存地址</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>可以在声明map时直接给map赋初始值，注意初始值在一行和多行写的语法区别</p>
+<li><p>一些常用的GC算法。</p>
 <ul>
-<li>map中元素键值对必须满足：key：value</li>
-<li>key和value的类型必须和map[key]value类型严格对应</li>
+<li><p>引用计算法：当对象被引用时计算器+1，不被引用时-1</p>
+<ul>
+<li>PHP和Object-C使用。</li>
+<li>相互引用无法回收。</li>
+<li>计数增加消耗。</li>
 </ul>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">m := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;<span class="string">"name"</span>:<span class="string">"zhangmoumou"</span>,<span class="string">"address"</span>:<span class="string">"北京市昌平区"</span>&#125;</span><br><span class="line">m1 := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">    <span class="string">"name"</span>:<span class="string">"zhangmoumou"</span>,</span><br><span class="line">    <span class="string">"address"</span>:<span class="string">"北京市昌平区"</span>,</span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(m,m1)</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>go语言中的map是无序的。</p>
+<li><p>Mark And  Sweep 标记和清除算法。停止程序运行，递归遍历对象，进行标记，标记完成后将所有没有引用的对象清除。</p>
+<ul>
+<li>由于标记需要停止程序（Stop th world），当对象特别多是，标记和清除过程比较耗时（可能几百毫秒），很难受。</li>
+</ul>
+</li>
+<li><p>三色标记法：</p>
+<p>是Mark And Sweep的改进版，从逻辑上分为白色区（未搜索），灰色区（正搜索），黑色区（已搜索）。</p>
+<p>灰色区内容是子引用没有进行搜索，黑色区表示子引用存在。</p>
+</li>
+<li><p>分代收集，一般情况下有三代，例如java中新生代，老年代，永久代，当新生代中带有阈值时会把对象放到老年代，相同道理老年代内容达到阈值会放到永久代。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="二-GO语言中的GC"><a href="#二-GO语言中的GC" class="headerlink" title="二.GO语言中的GC"></a>二.GO语言中的GC</h1><ul>
+<li>Go语言中采用Stop The world 方式。</li>
+<li>GoLang每个版本基本上都会有对Gc进行优化，从golang 1.5开始支持并发(concurrent)收集，从1.8版本已经吧STW时间优化到了100微妙，通常只需要10微妙以下，且在1.10版本时再次优化减少GC对CPU占用。</li>
+<li>Go语言中GC是自动运行的，在下情况不会触发GC。<ul>
+<li>当需要申请内存时，发现GC是上次GC两倍时会触发。</li>
+<li>每2分钟自动运行一次GC。</li>
+</ul>
+</li>
+<li>GC调优<ul>
+<li>小对象复用，局部变量尽量少声明，多个小对象可以放到结构体，方便GC扫描。</li>
+<li>少用String的“+”</li>
+</ul>
 </li>
 </ul>
 
@@ -259,10 +264,6 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
-                    
-                        <a href="/tags/Golang/"># Golang</a>
-                    
-                        
                 </span>
             </div>
             <div>
@@ -273,10 +274,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/05/28/a-id-98/">Golang-go程</a>
             
-            
-            <a class="next" rel="next" href="/2020/05/16/a-id-96/">Golang基础-切片类型</a>
+            <a class="next" rel="next" href="/2020/05/28/a-id-98/">Golang-go程</a>
             
         </section>
 
