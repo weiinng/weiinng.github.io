@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+
+<title>Golang-iris框架【一】 | 张卫宁的技术博客</title>
+
+
+
+    <link rel="icon" href="/cat.png">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">weining&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">weining&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                    <a class="menu-item" href="/E-BOOK">E-BOOK</a>
+                
+                    <a class="menu-item" href="http://deceptivestarry.gitee.io/finddata">Search</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Golang-iris框架【一】</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Wenng</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 11, 2020&nbsp;&nbsp;11:26:26</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Golang/">Golang</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Iris"><a href="#Iris" class="headerlink" title="Iris"></a>Iris</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>iris是一款Go语言中用来开发的web应用框架，该框架支持编写一次并在任何地方以最小机器功率运行，如Android、ios、Linux和windows等。该框架只需要一个可执行的服务就可以在平台上运行了。</p>
+<p>iris框架以简单而强大的api而被开发者熟悉。iris除了为开发者提供非常简单的访问方式外，还同样支持MVC。另外，用iris构建微服务也很容易。</p>
+<p>在iris框架的官方网站上，被称为速度最快的go后端开发框架。在iris的网站文档上，列出了该框架具备的一些特点和框架特性，列举如下：</p>
+<ol>
+<li>聚焦高性能</li>
+<li>健壮的静态路由支持和通配符子域名支持</li>
+<li>师徒系统支持超过5以上的模板</li>
+<li>支持定制事件的高可拓展性websocket API</li>
+<li>带有GC，内存 &amp; Redis 提供支持会话</li>
+<li>方便的中间件和插件</li>
+<li>完整REST API</li>
+<li>能定制的HTTP错误</li>
+<li>源码改变后自动加载</li>
+</ol>
+<p>等等还有很多特性，大家可以参考iris官方文档。在GoWeb开发的诸多框架中，各个维度的性能比较如下：</p>
+<img src="/2020/06/11/a-id-100/20200611性能比较.webp">
+
+<img src="/2020/06/11/a-id-100/20200611性能图标.webp">
+
+<h2 id="Iris框架学习渠道"><a href="#Iris框架学习渠道" class="headerlink" title="Iris框架学习渠道"></a>Iris框架学习渠道</h2><p>在学习Iris框架过程时，我们需要有相应的配套资料才能够完成我们的学习。下面是学习Iris框架过程中可能会用到的资料。</p>
+<ol>
+<li>Iris官网：<a href="https://iris-go.com/" target="_blank" rel="noopener">https://iris-go.com/</a></li>
+<li>Iris框架源码地址：<a href="https://github.com/kataras/iris" target="_blank" rel="noopener">https://github.com/kataras/iris</a></li>
+<li>Iris框架中文学习文档： <a href="https://studyiris.com/doc/" target="_blank" rel="noopener">https://studyiris.com/doc/</a></li>
+</ol>
+<p>当然，还有其他相关资料，比如说xorm框架等，这些我们在后面的课程文档中学习到以后再做解释和说明。</p>
+<h2 id="Iris框架安装"><a href="#Iris框架安装" class="headerlink" title="Iris框架安装"></a>Iris框架安装</h2><h3 id="官方版"><a href="#官方版" class="headerlink" title="官方版"></a>官方版</h3><p>环境要求：iris框架要求golang版本至少为1.8。各位同学可以通过打开终端，执行：go version 命令来查看自己机器的go环境版本。</p>
+<p>安装Iris框架非常简单，使用go语言的全局安装第三方代码的命令get即可。安装Iris框架的命令如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">go</span> get -u github.com/kataras/iris</span><br></pre></td></tr></table></figure>
+
+<p>在本地终端中执行如上的安装命令，等待命令执行成功，即表示Iris源码下载安装完成。安装完成Iris框架以后，能够在本地机器的GoPath环境目录中的src/github.com/目录下找到iris框架对应的包名，如下图所示：</p>
+<img src="/2020/06/11/a-id-100/16935426-ee0753523f1bc153.webp">
+
+<p>如图所示的kataras/iris所在的目录就是iris框架的源码，如上图所示即是安装成功。</p>
+<h3 id="私教版"><a href="#私教版" class="headerlink" title="私教版"></a>私教版</h3><p><strong>下午在操作安装iris的时候应该是被墙了，一直提示不成功，然后在网上找了以下方法，为了大家避免踩坑，我贴出来</strong></p>
+<p>golang 1.13 可以直接执行：</p>
+<p>粘贴 $ 之后的命令！</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> env -w GO111MODULE=on</span><br><span class="line">$ <span class="keyword">go</span> env -w GOPROXY=https:<span class="comment">//goproxy.cn,direct</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>阿里云 Go Module 国内镜像仓库服务</strong></p>
+<p>设置方法</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> env -w GO111MODULE=on</span><br><span class="line">$ <span class="keyword">go</span> env -w GOPROXY=https:<span class="comment">//mirrors.aliyun.com/goproxy/,direct</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们使用代理镜像，参考<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fgoproxy%2Fgoproxy.cn" target="_blank" rel="noopener">goproxy</a>。执行如下命令：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ echo <span class="string">"export GO111MODULE=on"</span> &gt;&gt; ~/.profile</span><br><span class="line">$ echo <span class="string">"export GOPROXY=https://goproxy.cn"</span> &gt;&gt; ~/.profile</span><br><span class="line">$ source ~/.profile</span><br></pre></td></tr></table></figure>
+
+<p>之后就可以执行成功了，如下图：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="keyword">go</span> get  -u github.com/kataras/iris</span><br><span class="line"><span class="keyword">go</span> get github.com/kataras/iris: module github.com/kataras/iris: Get <span class="string">"https://goproxy.cn/github.com/kataras/iris/@v/list"</span>: dial tcp: i/o timeout</span><br><span class="line">zhaoliang:iris zhaoliang$ <span class="keyword">go</span> get  -u github.com/kataras/iris</span><br><span class="line"><span class="keyword">go</span>: downloading github.com/kataras/iris v11<span class="number">.1</span><span class="number">.1</span>+incompatible</span><br><span class="line"><span class="keyword">go</span>: github.com/kataras/iris upgrade =&gt; v11<span class="number">.1</span><span class="number">.1</span>+incompatible</span><br><span class="line"><span class="keyword">go</span>: downloading gopkg.in/yaml.v2 v2<span class="number">.2</span><span class="number">.2</span></span><br><span class="line"><span class="keyword">go</span>: finding module <span class="keyword">for</span> <span class="keyword">package</span> github.com/flosch/pongo2</span><br><span class="line"><span class="keyword">go</span>: finding module <span class="keyword">for</span> <span class="keyword">package</span> github.com/Joker/jade</span><br><span class="line"><span class="keyword">go</span>: finding module <span class="keyword">for</span> <span class="keyword">package</span> github.com/iris-contrib/formBinder</span><br><span class="line"><span class="keyword">go</span>: downloading golang.org/x/sys v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200202164722</span>-d101bd2416d5</span><br><span class="line"><span class="keyword">go</span>: downloading github.com/Joker/jade v1<span class="number">.0</span><span class="number">.0</span></span><br><span class="line"><span class="keyword">go</span>: downloading github.com/flosch/pongo2 v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20190707114632</span>-bbf5a6c351f4</span><br><span class="line"><span class="keyword">go</span>: downloading github.com/iris-contrib/formBinder v5<span class="number">.0</span><span class="number">.0</span>+incompatible</span><br><span class="line"><span class="keyword">go</span>: found github.com/iris-contrib/formBinder in github.com/iris-contrib/formBinder v5<span class="number">.0</span><span class="number">.0</span>+incompatible</span><br><span class="line"><span class="keyword">go</span>: found github.com/Joker/jade in github.com/Joker/jade v1<span class="number">.0</span><span class="number">.0</span></span><br><span class="line"><span class="keyword">go</span>: found github.com/flosch/pongo2 in github.com/flosch/pongo2 v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20190707114632</span>-bbf5a6c351f4</span><br><span class="line"><span class="keyword">go</span>: finding module <span class="keyword">for</span> <span class="keyword">package</span> github.com/gorilla/schema</span><br><span class="line"><span class="keyword">go</span>: downloading github.com/juju/errors v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20181118221551</span><span class="number">-089</span>d3ea4e4d5</span><br><span class="line"><span class="keyword">go</span>: downloading github.com/gorilla/schema v1<span class="number">.1</span><span class="number">.0</span></span><br><span class="line"><span class="keyword">go</span>: found github.com/gorilla/schema in github.com/gorilla/schema v1<span class="number">.1</span><span class="number">.0</span></span><br><span class="line"><span class="keyword">go</span>: github.com/modern-<span class="keyword">go</span>/reflect2 upgrade =&gt; v1<span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="keyword">go</span>: github.com/modern-<span class="keyword">go</span>/concurrent upgrade =&gt; v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20180306012644</span>-bacd9c7ef1dd</span><br><span class="line"><span class="keyword">go</span>: golang.org/x/text upgrade =&gt; v0<span class="number">.3</span><span class="number">.2</span></span><br><span class="line"><span class="keyword">go</span>: github.com/juju/errors upgrade =&gt; v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200330140219</span><span class="number">-3</span>fe23663418f</span><br><span class="line"><span class="keyword">go</span>: golang.org/x/net upgrade =&gt; v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200501053045</span>-e0ff5e5a1de5</span><br><span class="line"><span class="keyword">go</span>: golang.org/x/crypto upgrade =&gt; v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200429183012</span><span class="number">-4</span>b2356b1ed79</span><br><span class="line"><span class="keyword">go</span>: gopkg.in/yaml.v2 upgrade =&gt; v2<span class="number">.2</span><span class="number">.8</span></span><br><span class="line"><span class="keyword">go</span>: golang.org/x/sys upgrade =&gt; v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200501052902</span><span class="number">-10377860</span>bb8e</span><br><span class="line"><span class="keyword">go</span>: downloading golang.org/x/crypto v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200429183012</span><span class="number">-4</span>b2356b1ed79</span><br><span class="line"><span class="keyword">go</span>: downloading gopkg.in/yaml.v2 v2<span class="number">.2</span><span class="number">.8</span></span><br><span class="line"><span class="keyword">go</span>: downloading github.com/juju/errors v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200330140219</span><span class="number">-3</span>fe23663418f</span><br><span class="line"><span class="keyword">go</span>: downloading golang.org/x/sys v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200501052902</span><span class="number">-10377860</span>bb8e</span><br><span class="line"><span class="keyword">go</span>: downloading golang.org/x/net v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20200501053045</span>-e0ff5e5a1de5</span><br><span class="line"><span class="keyword">go</span>: downloading github.com/modern-<span class="keyword">go</span>/reflect2 v1<span class="number">.0</span><span class="number">.1</span></span><br><span class="line"><span class="keyword">go</span>: downloading github.com/modern-<span class="keyword">go</span>/concurrent v0<span class="number">.0</span><span class="number">.0</span><span class="number">-20180306012644</span>-bacd9c7ef1dd</span><br></pre></td></tr></table></figure>
+
+<h2 id="源码案例"><a href="#源码案例" class="headerlink" title="源码案例"></a>源码案例</h2><p>在iris源码安装完成以后，iris框架为开发者提供了自己学习的实战案例，供开发者自行学习。iris提供的案例在iris框架目录中的_example目录下，在学习时可以进行参考。</p>
+<p>接下来我们就可以开始学习iris的相关内容，进行代码开发了。</p>
+<h2 id="Iris构造服务实例"><a href="#Iris构造服务实例" class="headerlink" title="Iris构造服务实例"></a>Iris构造服务实例</h2><p>在安装完成Iris的源码后，我们就开始来编写最简单的一个Iris的服务。在Iris中，构建并运行一个服务实例需要两步：</p>
+<ol>
+<li><p>通过iris.New()方法可以实例化一个应用服务对象app</p>
+</li>
+<li><p>通过Run方法开启端口监听服务，运行服务实例</p>
+</li>
+</ol>
+<p>如下是一个最简单的服务案例Demo</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">"github.com/kataras/iris"</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">//1.创建app结构体对象</span></span><br><span class="line"></span><br><span class="line">app := iris.New()</span><br><span class="line"></span><br><span class="line"><span class="comment">//2.端口监听</span></span><br><span class="line"></span><br><span class="line">app.Run(iris.Addr(<span class="string">":7999"</span>), iris.WithoutServerError(iris.ErrServerClosed))</span><br><span class="line"></span><br><span class="line"><span class="comment">////application.Run(iris.Addr(":8080"))//第一种</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//application.Run(iris.Addr(":8080"), iris.WithoutServerError(iris.ErrServerClosed)) //第二种</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Wenng</span>
+                    </p>
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY<strong>?</strong></strong></span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Golang/"># Golang</a>
+                    
+                        <a href="/tags/框架/"># 框架</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2020/06/11/a-id-101/">a-id-101</a>
+            
+            
+            <a class="next" rel="next" href="/2020/06/03/a-id-99/">【Gc】</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Wenng | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
